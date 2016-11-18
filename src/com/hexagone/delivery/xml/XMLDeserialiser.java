@@ -9,9 +9,11 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.hexagone.delivery.models.DeliveryQuery;
+import com.hexagone.delivery.models.Intersection;
 import com.hexagone.delivery.models.Map;
 
 public class XMLDeserialiser {
@@ -43,7 +45,30 @@ public class XMLDeserialiser {
 		return new DeliveryQuery();
 	}
 	
-	private static Map buildMap(Element elem) throws XMLException{
-		return new Map();
+	private static Map buildMap(Element racine) throws XMLException{
+		Map map = new Map();
+		NodeList intersections = racine.getElementsByTagName("noeud");
+		for(int i = 0; i<intersections.getLength();i++){
+			map.addIntersection(createIntersection((Element) intersections.item(i)));
+		}
+		
+		NodeList roads = racine.getElementsByTagName("troncon");
+		for(int i = 0; i<roads.getLength();i++){
+			map.addIntersection(createIntersection((Element) intersections.item(i)));
+		}
+		
+		return map;
+	}
+	
+	
+	private static Intersection createIntersection(Element elementXML){
+		
+		int id = Integer.parseInt(elementXML.getAttribute("id"));
+		int x = Integer.parseInt(elementXML.getAttribute("x"));
+		int y = Integer.parseInt(elementXML.getAttribute("y"));
+		Intersection intersection = new Intersection(id, x, y);
+		
+		return intersection;
+		
 	}
 }
