@@ -14,7 +14,7 @@ local.properties
 # External tool builders
 .externalToolBuilders/
 lib/
-.classpath
+*.classpath
 
 # Locally stored "Eclipse launch configurations"
 *.launch
