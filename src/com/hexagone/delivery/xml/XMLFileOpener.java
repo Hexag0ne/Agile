@@ -1,13 +1,13 @@
 /**
  * 
  */
-package com.hexagone.xml;
+package com.hexagone.delivery.xml;
 
 import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
-import com.hexagone.xml.XMLExceptions;
+import com.hexagone.delivery.xml.XMLException;
 /**
  * This class provides the methods to open any xml file on the system.
  * 
@@ -18,10 +18,10 @@ public class XMLFileOpener extends FileFilter {
 	
 	private static XMLFileOpener instance = null;
 	private XMLFileOpener(){}
-	protected XMLFileOpener getInstance(){
+	protected static XMLFileOpener getInstance(){
 		if(instance == null) instance = new XMLFileOpener();
 		return instance;
-	}	
+	}
 	
 	public File open () throws XMLException{
 		int returnValue;
@@ -31,7 +31,6 @@ public class XMLFileOpener extends FileFilter {
 		if (returnValue != JFileChooser.APPROVE_OPTION) 
         	throw new XMLException("Problem opening XML file");
         return new File(jFileChooserXML.getSelectedFile().getAbsolutePath());
-		
 	}
 
 	/*

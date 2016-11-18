@@ -2,21 +2,33 @@ package com.hexagone.delivery.models;
 
 public class DeliveryQuery
 {
-    private DemandeDeLivraisons demandeDeLivraisons;
+    private Warehouse warehouse;
 
-    public DemandeDeLivraisons getDemandeDeLivraisons ()
+    private Delivery[] delivery;
+
+    public Warehouse getWarehouse ()
     {
-        return demandeDeLivraisons;
+        return warehouse;
     }
 
-    public void setDemandeDeLivraisons (DemandeDeLivraisons demandeDeLivraisons)
+    public void setWarehouse (Warehouse warehouse)
     {
-        this.demandeDeLivraisons = demandeDeLivraisons;
+        this.warehouse = warehouse;
+    }
+
+    public Delivery[] getDelivery ()
+    {
+        return delivery;
+    }
+
+    public void setDelivery (Delivery[] delivery)
+    {
+        this.delivery = delivery;
     }
 
     @Override
     public String toString()
     {
-        return "ClassPojo [demandeDeLivraisons = "+demandeDeLivraisons+"]";
+        return "ClassPojo [warehouse = "+warehouse+", delivery = "+delivery+"]";
     }
 }

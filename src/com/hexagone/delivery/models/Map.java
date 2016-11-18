@@ -1,5 +1,5 @@
 package com.hexagone.delivery.models;
 
-public class DemandeDeLivraisons {
+public class Map {
 
 }
