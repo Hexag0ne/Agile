@@ -1,12 +1,5 @@
 package com.hexagone.delivery.launcher;
 
-import java.io.File;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
-import com.hexagone.delivery.models.DeliveryQuery;
-
 /**
  * Classe qui gère le lancement de l'application. Point d'entrée de l'éxécutable
  */

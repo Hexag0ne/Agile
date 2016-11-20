@@ -20,6 +20,5 @@ public class Road {
 		this.destination = destination;
 		this.length = length;
 		this.speed = speed;
-		
 	}
 }
