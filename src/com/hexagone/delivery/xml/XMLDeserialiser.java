@@ -57,9 +57,9 @@ public class XMLDeserialiser {
 			map.addIntersection(createIntersection((Element) intersections.item(i)));
 		}
 		
+		
 		return map;
 	}
-	
 	
 	private static Intersection createIntersection(Element elementXML){
 		
