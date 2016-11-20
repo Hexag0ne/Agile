@@ -13,9 +13,17 @@ public class Intersection {
 	private Point coordinates;
 	private int id;
 	
-	public Intersection(int id, int x, int y){
+	public Intersection(int id){
 		this.id = id;
-		coordinates = new Point(x,y);
 	}
-
+	
+	public Intersection(int id, int x, int y){
+		this(id);
+		this.coordinates = new Point(x,y);
+	}
+	
+	@Override
+	public String toString() {
+		return "ID: " + id;
+	}
 }

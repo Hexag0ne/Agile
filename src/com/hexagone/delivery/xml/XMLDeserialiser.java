@@ -3,6 +3,8 @@ package com.hexagone.delivery.xml;
 import java.io.File;
 import java.io.IOException;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -21,28 +23,25 @@ public class XMLDeserialiser {
 		return (Map) load();
 	}
 	
-	public static DeliveryQuery loadDeliveryQuery() throws XMLException, ParserConfigurationException, SAXException, IOException{
-		return (DeliveryQuery) load();
+	public static DeliveryQuery loadDeliveryQuery() throws XMLException, JAXBException {
+		File xml = XMLFileOpener.getInstance().open();
+		JAXBContext jaxbContext = JAXBContext.newInstance(DeliveryQuery.class);
+		javax.xml.bind.Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+		DeliveryQuery dq = (DeliveryQuery) jaxbUnmarshaller.unmarshal(xml);
+		return dq;
 	}
 	
-	private static Object load() throws XMLException, ParserConfigurationException, SAXException, IOException{
+	private static Object load() throws XMLException, ParserConfigurationException, SAXException, IOException {
 		File xml = XMLFileOpener.getInstance().open();
         DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();	
         Document document = docBuilder.parse(xml);
         Element racine = document.getDocumentElement();
-        if (racine.getNodeName().equals("demandeDeLivraisons")) {
-           return buildDeliveryQuery(racine);
-        }
-        else if (racine.getNodeName().equals("reseau")) {
+        if (racine.getNodeName().equals("reseau")) {
         	return buildMap(racine);
         }
         else {
-        	throw new XMLException("Document non conforme");
+        	throw new XMLException("Document not valid.");
         }
-	}
-	
-	private static DeliveryQuery buildDeliveryQuery(Element elem) throws XMLException {
-		return new DeliveryQuery();
 	}
 	
 	private static Map buildMap(Element racine) throws XMLException{
@@ -56,7 +55,6 @@ public class XMLDeserialiser {
 		for(int i = 0; i<roads.getLength();i++){
 			map.addIntersection(createIntersection((Element) intersections.item(i)));
 		}
-		
 		
 		return map;
 	}

@@ -1,27 +1,41 @@
 package com.hexagone.delivery.models;
 
+import java.util.Date;
+
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import com.hexagone.delivery.xml.DateAdapter;
+import com.hexagone.delivery.xml.IntersectionAdapter;
+
+@XmlRootElement(name="entrepot")
 public class Warehouse
 {
-    private String address;
+    private Intersection intersection;
 
-    private String departureTime;
+    private Date departureTime;
 
-    public String getAddress ()
+    public Intersection getIntersection ()
     {
-        return address;
+        return intersection;
     }
 
-    public void setAddress (String address)
+    @XmlJavaTypeAdapter(IntersectionAdapter.class)
+    @XmlAttribute(name="adresse")
+    public void setIntersection (Intersection intersection)
     {
-        this.address = address;
+        this.intersection = intersection;
     }
 
-    public String getDepartureTime ()
+    public Date getDepartureTime ()
     {
         return departureTime;
     }
-
-    public void setDepartureTime (String departureTime)
+    
+    @XmlJavaTypeAdapter(DateAdapter.class)
+    @XmlAttribute(name="heureDepart")
+    public void setDepartureTime (Date departureTime)
     {
         this.departureTime = departureTime;
     }
@@ -29,6 +43,6 @@ public class Warehouse
     @Override
     public String toString()
     {
-        return "ClassPojo [address = "+address+", departureTime = "+departureTime+"]";
+        return "ClassPojo [intersection = "+intersection+", departureTime = "+departureTime+"]";
     }
 }

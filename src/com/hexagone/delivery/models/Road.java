@@ -9,16 +9,16 @@ package com.hexagone.delivery.models;
  */
 public class Road {
 
-	private int lenght;
+	private int length;
 	private int speed;
 	private String roadName;
 	private Intersection origin;
 	private Intersection destination;
 	
-	public Road(Intersection origin, Intersection destination, int lenght, int speed){
+	public Road(Intersection origin, Intersection destination, int length, int speed){
 		this.origin = origin;
 		this.destination = destination;
-		this.lenght = lenght;
+		this.length = length;
 		this.speed = speed;
 		
 	}
