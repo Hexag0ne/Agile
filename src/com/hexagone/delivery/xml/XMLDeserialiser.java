@@ -18,6 +18,11 @@ import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Intersection;
 import com.hexagone.delivery.models.Map;
 
+/**
+ * This class provides the various methods allowing the user to pick a map or a delivery file on its file system and
+ * load it into the application as a part of the model
+ *	@see com.hexagone.delivery.models
+ */
 public class XMLDeserialiser {
 	public static Map loadMap() throws XMLException, ParserConfigurationException, SAXException, IOException{
 		return (Map) load();
