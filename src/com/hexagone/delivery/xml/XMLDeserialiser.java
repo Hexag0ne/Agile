@@ -17,6 +17,7 @@ import org.xml.sax.SAXException;
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Intersection;
 import com.hexagone.delivery.models.Map;
+import com.hexagone.delivery.models.Road;
 
 /**
  * This class provides the various methods allowing the user to pick a map or a delivery file on its file system and
@@ -49,29 +50,54 @@ public class XMLDeserialiser {
         }
 	}
 	
-	private static Map buildMap(Element racine) throws XMLException{
+	/**
+	 * This method creates a Map from the root node of a properly formed xml document.
+	 * @param racine the root node of the xml maps file
+	 * @return Map object corresponding to the node given as parameter
+	 * @throws XMLException
+	 * @see Map
+	 */
+	private static Map buildMap(Element root) throws XMLException{
 		Map map = new Map();
-		NodeList intersections = racine.getElementsByTagName("noeud");
+		NodeList intersections = root.getElementsByTagName("noeud");
 		for(int i = 0; i<intersections.getLength();i++){
 			map.addIntersection(createIntersection((Element) intersections.item(i)));
 		}
 		
-		NodeList roads = racine.getElementsByTagName("troncon");
+		NodeList roads = root.getElementsByTagName("troncon");
 		for(int i = 0; i<roads.getLength();i++){
-			map.addIntersection(createIntersection((Element) intersections.item(i)));
+			map.addRoad(createRoad((Element) intersections.item(i)));
 		}
 		
 		return map;
 	}
 	
+	/**
+	 * This method creates an Intersection instance, given the appropriate xml node.
+	 * @param elementXML the node corresponding to an intersection
+	 * @return an intersection object corresponding to the information given in the node provided as parameter
+	 * @see Intersection
+	 */
 	private static Intersection createIntersection(Element elementXML){
 		
 		int id = Integer.parseInt(elementXML.getAttribute("id"));
 		int x = Integer.parseInt(elementXML.getAttribute("x"));
 		int y = Integer.parseInt(elementXML.getAttribute("y"));
 		Intersection intersection = new Intersection(id, x, y);
-		
 		return intersection;
-		
+	}
+	
+	/**
+	 * This method creates a Road instance, given the appropriate xml node.
+	 * @param elementXML the node corresponding to a road
+	 * @return a road corresponding to the xml node provided as parameter
+	 */
+	private static Road createRoad(Element elementXML){
+		Integer origin = new Integer(elementXML.getAttribute("origine"));
+		Integer destination = new Integer(elementXML.getAttribute("destination"));
+		int length = Integer.parseInt(elementXML.getAttribute("longueur"));
+		int speed = Integer.parseInt(elementXML.getAttribute("vitesse"));
+		String name = elementXML.getAttribute("nomRue");
+		return new Road(origin, destination, length, speed, name);
 	}
 }
