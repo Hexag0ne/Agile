@@ -13,16 +13,23 @@ package com.hexagone.delivery.models;
  * <li>it's length</li>
  * <li>the average speed motorists travel on this road</li>
  * </ul> 
+ * Note that if a real road allows cars to travel both ways, it will me modelized as <strong>two different roads
+ * </strong> in the map.
  */
 public class Road {
 
+	/** Length of the road between the two intersections in <strong>decimeters</strong> */
 	private int length;
+	/** Average speed at which cars travel down this road in <strong>Km/h</strong> */
 	private int speed;
+	/** Name of the Road */
 	private String roadName;
-	private Intersection origin;
-	private Intersection destination;
+	/** Unique identifier of the node from which the road spans */
+	private int origin;
+	/** Unique identifier of the towards which the road goes */
+	private int destination;
 	
-	public Road(Intersection origin, Intersection destination, int length, int speed){
+	public Road(int origin, int destination, int length, int speed){
 		this.origin = origin;
 		this.destination = destination;
 		this.length = length;
