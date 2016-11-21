@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.hexagone.delivery.models;
 
 /**
@@ -25,9 +22,18 @@ public class Road {
 	/** Name of the Road */
 	private String roadName;
 	/** Unique identifier of the node from which the road spans */
-	private int origin;
+	private Integer origin;
 	/** Unique identifier of the towards which the road goes */
-	private int destination;
+	private Integer destination;
+	
+	/**
+	 * Allows the user to get a copy of the origin intersection of the road.
+	 * @return a copy of the origin intersection identifier
+	 */
+	public Integer getOrigin()
+	{
+		return new Integer(origin);
+	}
 	
 	public Road(int origin, int destination, int length, int speed){
 		this.origin = origin;

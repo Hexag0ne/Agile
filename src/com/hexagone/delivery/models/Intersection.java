@@ -11,7 +11,16 @@ import java.awt.Point;
  */
 public class Intersection {
 	private Point coordinates;
-	private int id;
+	private Integer id;
+	
+	/**
+	 * Allows the user to get a copy of the intersection's identifier.
+	 * @return an Integer copy of the identifier.
+	 */
+	public Integer getId()
+	{
+		return new Integer(id);
+	}
 	
 	public Intersection(int id){
 		this.id = id;
