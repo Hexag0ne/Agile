@@ -35,10 +35,11 @@ public class Road {
 		return new Integer(origin);
 	}
 	
-	public Road(int origin, int destination, int length, int speed){
+	public Road(Integer origin, Integer destination, int length, int speed, String name){
 		this.origin = origin;
 		this.destination = destination;
 		this.length = length;
 		this.speed = speed;
+		this.roadName = name;
 	}
 }
