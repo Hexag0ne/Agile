@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Map {
+	
+	
 	private  ArrayList<Intersection> intersections;
 	private HashMap<Integer,ArrayList<Road>> roads; 
 	

@@ -26,6 +26,16 @@ public class Road {
 	/** Unique identifier of the towards which the road goes */
 	private Integer destination;
 	
+	
+	/**
+	 * Computes the time needed to travel down a road
+	 * @return the time as a number of seconds
+	 */
+	public Integer getTime()
+	{
+		return new Integer((36/100)*(length/speed)); 
+	}
+	
 	/**
 	 * Allows the user to get a copy of the origin intersection of the road.
 	 * @return a copy of the origin intersection identifier
