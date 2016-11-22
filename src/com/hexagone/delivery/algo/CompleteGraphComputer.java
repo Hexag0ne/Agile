@@ -95,7 +95,7 @@ public class CompleteGraphComputer {
 	 * @param array the array from whih one wants to find the minimum
 	 * @return the index of the minimum element in the array as an int
 	 */
-	private int smallestCostIndex(Integer [] array)
+	private static int smallestCostIndex(Integer [] array)
 	{
 		int index = 0;
 		Integer currentMinimum = Integer.MAX_VALUE;
@@ -116,7 +116,7 @@ public class CompleteGraphComputer {
 	 * @param Object the object one is looking for its index
 	 * @return
 	 */
-	private int indexOf(Object [] array, Object Object)
+	private static int indexOf(Object [] array, Object Object)
 	{
 		int index = 0;
 		for ( ; index < array.length ; index ++)
