@@ -6,8 +6,7 @@ import com.hexagone.delivery.models.Intersection;
 
 public class IntersectionAdapter extends XmlAdapter<String, Intersection> {
 
-	public Intersection unmarshal(String v)
-	{
+	public Intersection unmarshal(String v) {
 		return new Intersection(Integer.parseInt(v));
 	}
 
