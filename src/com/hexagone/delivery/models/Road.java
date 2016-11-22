@@ -45,6 +45,15 @@ public class Road {
 		return new Integer(origin);
 	}
 	
+	/**
+	 * Allows the user to get a copy of the destination node of the road
+	 * @return the unique identifier node as an Integer
+	 */
+	public Integer getDestination()
+	{
+		return new Integer(destination);
+	}
+	
 	public Road(Integer origin, Integer destination, int length, int speed, String name){
 		this.origin = origin;
 		this.destination = destination;
