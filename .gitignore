@@ -11,6 +11,9 @@ local.properties
 .loadpath
 .recommenders
 
+# Generated text
+export/*.txt
+
 # External tool builders
 .externalToolBuilders/
 lib/
