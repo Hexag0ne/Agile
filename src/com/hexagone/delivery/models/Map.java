@@ -2,12 +2,35 @@ package com.hexagone.delivery.models;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class Map {
 	
 	
 	private  ArrayList<Intersection> intersections;
 	private HashMap<Integer,ArrayList<Road>> roads; 
+	
+	/**
+	 * Gives all the instersection identifiers of the map
+	 * @return the identidfiers of the intersections in the map as a set.
+	 */
+	public HashSet<Integer> getAllIntersectionIdentifiers()
+	{
+		HashSet<Integer> set = new HashSet<Integer>(roads.keySet());
+		return set;
+	}
+	
+	/**
+	 * Allows the user to access all the roads starting from an intersection whose identifiers is provided as a 
+	 * parameter
+	 * @param identifier the unique identifier of the intersection
+	 * @return the list of all roads originating from the intersection as an ArrayList<Road>
+	 * @see Road
+	 */
+	public ArrayList<Road> getRoadsStartingFrom(Integer identifier)
+	{
+		return roads.get(identifier);
+	}
 	
 	/**
 	 * Default constructor.
