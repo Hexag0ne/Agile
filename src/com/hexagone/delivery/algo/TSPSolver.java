@@ -82,7 +82,7 @@ public abstract class TSPSolver {
 				 bestSolutionCost = coutVus;
 	    	}
 	    } else if (coutVus + bound(sommetCrt, unseenIntersections, costs, stayTime) < bestSolutionCost){ //If there still is a chance of finding a better solution with this combination
-	        Iterator<Integer> it = iterator(sommetCrt, unseenIntersections, costs, stayTime);
+	        Iterator<Integer> it = iterator((Integer) sommetCrt, unseenIntersections, costs, stayTime);
 	        while (it.hasNext()){
 	        	Integer prochainSommet = it.next();
 	        	seenIntersections.add(prochainSommet);
@@ -122,7 +122,7 @@ public abstract class TSPSolver {
 	 * @param duree : duree[i] = duree pour visiter le sommet i, avec 0 <= i < nbSommets
 	 * @return un iterateur permettant d'iterer sur tous les sommets de nonVus
 	 */
-	protected abstract Iterator<Integer> iterator(Integer sommetCrt, ArrayList<Integer> nonVus, int[][] cout, int[] duree);
+	protected abstract Iterator<Integer> iterator(Integer sommetCrt, ArrayList<Integer> nonVus, Integer[][] cout, Integer[] duree);
 	
 	
 	/**
