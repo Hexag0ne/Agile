@@ -9,6 +9,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import com.hexagone.delivery.xml.DateAdapter;
 import com.hexagone.delivery.xml.IntersectionAdapter;
 
+/**
+ * This class models a warehouse
+ */
 @XmlRootElement(name = "entrepot")
 public class Warehouse {
 	private Intersection intersection;
