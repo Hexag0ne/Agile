@@ -4,11 +4,9 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.List;
 import java.awt.Point;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,14 +19,14 @@ import com.hexagone.delivery.models.Map;
 import com.hexagone.delivery.models.Road;
 import com.hexagone.delivery.models.Warehouse;
 
-public class MapFrame extends JPanel{
-    
+public class DeliveryPanel extends JPanel{
+
 	private Map map;
 	private DeliveryQuery deliveryQuery;
 	//Cet entier permet de rétrécir le graphe
 	private static int coefficient=2;
 	
-	MapFrame(Map map, DeliveryQuery deliveryQuery){
+	DeliveryPanel(Map map, DeliveryQuery deliveryQuery){
 		super();
 		this.map=map;
 		this.deliveryQuery=deliveryQuery;
@@ -82,7 +80,6 @@ public class MapFrame extends JPanel{
 			Warehouse warehouse = deliveryQuery.getWarehouse();
 			Delivery[] deliveries = deliveryQuery.getDelivery();
 			
-			g.setColor(Color.RED);
 			Intersection intersectionWarehouse = warehouse.getIntersection();
 			Point pointWarehouse = new Point();
 			for(Intersection in:intersections){
@@ -91,11 +88,29 @@ public class MapFrame extends JPanel{
 					break;
 				}
 			}
-			System.out.println(pointWarehouse);
+			 //Draw Warehouse
+			g.setColor(Color.RED);
 			g.fillOval(((pointWarehouse.x))/coefficient,((pointWarehouse.y))/coefficient,10,10);
+			g.drawString("Entrepôt", ((pointWarehouse.x))/coefficient +5 , ((pointWarehouse.y))/coefficient);
+			
+			//Draw Delivery points
+			g.setColor(Color.GREEN);
+			for(Delivery d: deliveries){
+				Intersection i = d.getIntersection();
+				Point pointDelivery = new Point();
+				for(Intersection in:intersections){
+					if((in.getId()).equals(i.getId())){
+						pointDelivery = in.getCoordinates();
+						break;
+					}
+				}
+				g.fillOval(((pointDelivery.x))/coefficient,((pointDelivery.y))/coefficient,10,10);
+				
+				
+			}
+			
 		}
 		
 	}
 
-	
 }
