@@ -29,11 +29,19 @@ public class Intersection {
 
 	public Intersection(int id, int x, int y) {
 		this(id);
-		this.coordinates = new Point(x, y);
+		this.setCoordinates(new Point(x, y));
 	}
 
 	@Override
 	public String toString() {
-		return "Intersection [coordinates = " + coordinates + ", id = " + id + "]";
+		return "Intersection [coordinates = " + getCoordinates() + ", id = " + id + "]";
+	}
+
+	public Point getCoordinates() {
+		return coordinates;
+	}
+
+	public void setCoordinates(Point coordinates) {
+		this.coordinates = coordinates;
 	}
 }
