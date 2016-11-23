@@ -14,30 +14,45 @@ public class Planning {
 	private static final String PATH_NAME = "export/planning.txt";
 
 	/*
-	 * The warehouse where the planning will start
+	 * List of intersections given by TSP
 	 */
-	private Warehouse warehouse;
+	private Integer[] intersections;
 	
 	/*
-	 * The roads the deliverer will take 
+	 * List of roads traveled by for solution
 	 */
-	private Road[] route;
+	private Road[] roads;
+	
+	private Map map;
 	
 	/*
 	 * Returns the total time a planning will take for delivery man
 	 */
 	public int getTotalTime() {
 		int totalTime = 0;
-		for (Road road : route) {
+		for (Road road : roads) {
 			totalTime += road.getTime();
 		}
 		return totalTime;
 	}
 	
-	public Planning() {
-		// do nothing for now
+	public Planning(Integer[] intersections, Map map) {
+		this.intersections = intersections;
+		this.map = map;
+		this.roads = this.calculateRoads();
 	}
 	
+	private Road[] calculateRoads() {
+		for (Integer inter : intersections) {
+			System.out.println("");
+		}
+		return null;
+	}
+	
+	public Road[] getRoads() {
+		return this.roads;
+	}
+
 	public void generateTxt() {
 		File outfile = new File(PATH_NAME);
 		PrintWriter writer;

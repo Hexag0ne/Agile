@@ -96,7 +96,6 @@ public abstract class TSPSolver {
 	        }	    
 	    }
 	 }
-
 	
 	private int getNumberOfIntersections(){
 		return costs.length;
