@@ -36,11 +36,14 @@ public class MapFrame extends JPanel{
 		intersections = map.getIntersections();
 		Set<Integer> roads = new HashSet<Integer>();
 		roads = (map.getRoads()).keySet();
+		
+		//Cet entier permet de rétrécir le graphe
+		int coefficient=2;
 		for(Intersection i:intersections){
 			Point p = new Point();
 			p = i.getCoordinates();
 			g.setColor(Color.BLUE);
-			g.fillOval((p.x),(p.y),10,10);
+			g.fillOval(((p.x))/coefficient,((p.y))/coefficient,10,10);
 		}
 		for(int j: roads){
 			ArrayList<Road> roadsFromI = new ArrayList<Road>();
@@ -62,7 +65,7 @@ public class MapFrame extends JPanel{
 						break;
 					}
 				}
-				Line2D lin = new Line2D.Float((origine.x)+5, (origine.y)+5, (destination.x)+5, (destination.y)+5);
+				Line2D lin = new Line2D.Float(((origine.x)/coefficient)+5, ((origine.y)/coefficient)+5, ((destination.x)/coefficient)+5, ((destination.y)/coefficient)+5);
 		        g2.draw(lin);
 			}
 		}

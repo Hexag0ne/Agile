@@ -29,8 +29,7 @@ import com.hexagone.delivery.models.Road;
  */
 public class XMLDeserialiser {
 	public static Map loadMap() throws XMLException {
-		//File xml = XMLFileOpener.getInstance().open();
-		File xml = new File("/Users/mehdib/Downloads/archivePLD2016/plan5x5.xml");
+		File xml = XMLFileOpener.getInstance().open();
 		try {
 			DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Document document = docBuilder.parse(xml);
@@ -42,8 +41,7 @@ public class XMLDeserialiser {
 	}
 
 	public static DeliveryQuery loadDeliveryQuery() throws XMLException {
-		//File xml = XMLFileOpener.getInstance().open();
-		File xml = new File("/Users/mehdib/Downloads/archivePLD2016/livraisons10x10-4.xml");
+		File xml = XMLFileOpener.getInstance().open();
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(DeliveryQuery.class);
 			javax.xml.bind.Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
