@@ -68,7 +68,7 @@ public class MainFrame extends JFrame {
 				deliveryQuery = new DeliveryQuery();
 				try {
 					deliveryQuery= XMLDeserialiser.loadDeliveryQuery();
-					deliveryPanel= new DeliveryPanel(map,deliveryQuery);
+					deliveryPanel= new 	MapFrame(map,deliveryQuery);
 					deliveryPanel.repaint();
 					all.remove(mapPanel);
 					all.add(deliveryPanel,BorderLayout.CENTER);

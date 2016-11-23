@@ -78,22 +78,40 @@ public class MapFrame extends JPanel{
 		}
 		
 		//Draw Delivery
-		if((this.deliveryQuery) != null){
-			Warehouse warehouse = deliveryQuery.getWarehouse();
-			Delivery[] deliveries = deliveryQuery.getDelivery();
-			
-			g.setColor(Color.RED);
-			Intersection intersectionWarehouse = warehouse.getIntersection();
-			Point pointWarehouse = new Point();
-			for(Intersection in:intersections){
-				if((in.getId()).equals(intersectionWarehouse.getId())){
-					pointWarehouse = in.getCoordinates();
-					break;
+				if((this.deliveryQuery) != null){
+					Warehouse warehouse = deliveryQuery.getWarehouse();
+					Delivery[] deliveries = deliveryQuery.getDelivery();
+					
+					Intersection intersectionWarehouse = warehouse.getIntersection();
+					Point pointWarehouse = new Point();
+					for(Intersection in:intersections){
+						if((in.getId()).equals(intersectionWarehouse.getId())){
+							pointWarehouse = in.getCoordinates();
+							break;
+						}
+					}
+					 //Draw Warehouse
+					g.setColor(Color.RED);
+					g.fillOval(((pointWarehouse.x))/coefficient,((pointWarehouse.y))/coefficient,10,10);
+					g.drawString("Entrepôt", ((pointWarehouse.x))/coefficient +5 , ((pointWarehouse.y))/coefficient);
+					
+					//Draw Delivery points
+					g.setColor(Color.GREEN);
+					for(Delivery d: deliveries){
+						Intersection i = d.getIntersection();
+						Point pointDelivery = new Point();
+						for(Intersection in:intersections){
+							if((in.getId()).equals(i.getId())){
+								pointDelivery = in.getCoordinates();
+								break;
+							}
+						}
+						g.fillOval(((pointDelivery.x))/coefficient,((pointDelivery.y))/coefficient,10,10);
+						
+						
+					}
+					
 				}
-			}
-			System.out.println(pointWarehouse);
-			g.fillOval(((pointWarehouse.x))/coefficient,((pointWarehouse.y))/coefficient,10,10);
-		}
 		
 	}
 
