@@ -18,8 +18,7 @@ public class Main {
 	public static void main(String[] args) throws XMLException {
 		DeliveryQuery dq = XMLDeserialiser.loadDeliveryQuery();
 		Map map = XMLDeserialiser.loadMap();
-		System.out.println(map.getAllIntersectionIdentifiers());
-		Integer[] sols = {1, 5, 8, 10};
+		Integer[] sols = {0, 6, 12};
 		Planning pl = new Planning(sols, map);
 		System.out.println(pl.getRoads());
 		//pl.generateTxt();

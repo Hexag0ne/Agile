@@ -3,6 +3,7 @@ package com.hexagone.delivery.models;
 import java.io.File;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -21,7 +22,7 @@ public class Planning {
 	/*
 	 * List of roads traveled by for solution
 	 */
-	private Road[] roads;
+	private ArrayList<Road> roads;
 	
 	private Map map;
 	
@@ -42,14 +43,24 @@ public class Planning {
 		this.roads = this.calculateRoads();
 	}
 	
-	private Road[] calculateRoads() {
-		for (Integer inter : intersections) {
-			System.out.println("");
+	private ArrayList<Road> calculateRoads() {
+		ArrayList<Road> final_roads = new ArrayList<Road>();
+		for (int i=0; i<intersections.length-1; i++) {
+			Integer it1 = intersections[i];
+			Integer it2 = intersections[i+1];
+			System.out.println("Between (" + it1 + "," + it2 + ")");
+			ArrayList<Road> roads = this.map.getRoadsStartingFrom(it1);
+			System.out.println(roads);
+			for (Road r : roads) {
+				if (r.getDestination() == it2) {
+					final_roads.add(r);
+				}
+			}
 		}
-		return null;
+		return final_roads;
 	}
 	
-	public Road[] getRoads() {
+	public ArrayList<Road> getRoads() {
 		return this.roads;
 	}
 
