@@ -1,7 +1,9 @@
 package com.hexagone.delivery.algo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Map;
@@ -29,42 +31,48 @@ public class CompleteGraphComputer {
 
 		/** We compute the cost of going to each node from each node */
 		for (int i = 0; i < passageIntersections.length; i++) {
-			adjacencyMatrix[i] = computeCosts(map, passageIntersections, i);
+			int numberOfIntersections = map.getIntersections().size();
+			HashMap<Integer,Integer> cost = new HashMap<Integer,Integer>(numberOfIntersections);
+			HashMap<Integer,Integer> previousIntersection = new HashMap<Integer,Integer>(numberOfIntersections);
+						
+			computeCosts(map, passageIntersections[i], previousIntersection, cost);
+			
+			Integer [] adjacencyLine = new Integer [nbPassagePoints];
+			for (int j = 0; j < nbPassagePoints; j++)
+			{
+				adjacencyLine[j] = cost.get(passageIntersections[j]);
+			}
+			adjacencyMatrix[i] = adjacencyLine;
 		}
 
 		/** Return */
 		return adjacencyMatrix;
 	}
 
-	private static Integer[] computeCosts(Map map, Integer[] passageIntersections, int originIndex) {
-		/** Initialisation of the two piles of nodes */
+	private static void computeCosts(Map map, Integer intersection, 
+			HashMap<Integer, Integer> previousIntersection, HashMap<Integer,Integer> cost) {
 		/** Set of the non-visited nodes */
 		HashSet<Integer> nonVisitedNodes = map.getAllIntersectionIdentifiers();
-
+		
 		/** Cost array initialisation */
-		Integer[] costs = new Integer[passageIntersections.length];
-		for (int i = 0; i < costs.length; i++) {
-			costs[i] = Integer.MAX_VALUE;
-		}
-		costs[originIndex] = 0;
-
+		cost.put(intersection, 0);
+		
 		/** Beginning of the computation */
 		while (!nonVisitedNodes.isEmpty()) {
 			/**
 			 * We select the node with the smallest 'distance' so far. In the
 			 * first iteration, the origin node is selected
 			 */
-			int indexSmallest = smallestCostIndex(costs);
-			Integer currentIntersection = passageIntersections[indexSmallest];
+			intersection = smallestCost(cost);
 
 			/** We visit this intersection */
-			nonVisitedNodes.remove(currentIntersection);
+			nonVisitedNodes.remove(intersection);
 
 			/**
 			 * we go through each of the available neighbours starting from the
 			 * current intersection
 			 */
-			ArrayList<Road> neighbours = map.getRoadsStartingFrom(currentIntersection);
+			ArrayList<Road> neighbours = map.getRoadsStartingFrom(intersection);
 			for (Road road : neighbours) {
 				/**
 				 * We check if the destination road is still inside the
@@ -72,40 +80,43 @@ public class CompleteGraphComputer {
 				 */
 				Integer destination = road.getDestination();
 				if (nonVisitedNodes.contains(destination)) {
-					int time = costs[indexSmallest] + road.getTime();
-					int indiceDestination = indexOf(passageIntersections, destination);
+					Integer costToDestination = cost.get(intersection) + road.getTime();
 
 					/**
 					 * If we found a shorter path towards destination, we
-					 * replace the cost in the cost array
+					 * replace the cost in the cost map
 					 */
-					if (costs[indiceDestination] > time) {
-						costs[indiceDestination] = time;
+					if (!cost.containsKey(destination) ||  cost.get(destination) > costToDestination) {
+						cost.put(destination, costToDestination);
+						previousIntersection.put(destination, intersection);
 					}
 				}
 			}
 		}
-
-		return costs;
 	}
 
 	/**
-	 * This method gives the index of the smallest element in the array
+	 * This method gives the key of the smallest element in the array
 	 * 
 	 * @param array
 	 *            the array from whih one wants to find the minimum
 	 * @return the index of the minimum element in the array as an int
 	 */
-	private static int smallestCostIndex(Integer[] array) {
-		int index = 0;
-		Integer currentMinimum = Integer.MAX_VALUE;
-		for (int i = 0; i < array.length; i++) {
-			if (currentMinimum > array[i]) {
-				index = i;
-				currentMinimum = array[i];
+	private static Integer smallestCost(HashMap<Integer,Integer> hashMap) {
+		Iterator<Integer> keySetIterator = hashMap.keySet().iterator();
+		Integer key = keySetIterator.next();
+		Integer smallestCost = hashMap.get(key);
+		while (keySetIterator.hasNext())
+		{
+			Integer newKey = keySetIterator.next();
+			Integer newCost = hashMap.get(newKey);
+			if (newCost < smallestCost)
+			{
+				key = smallestCost;
+				smallestCost = newCost;
 			}
 		}
-		return index;
+		return key;
 	}
 
 	/**
