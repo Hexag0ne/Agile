@@ -39,7 +39,7 @@ public class MainFrame extends JFrame {
 	private DeliveryQuery deliveryQuery;
 	private Point p;
 
-	MainFrame() throws XMLException, ParserConfigurationException, SAXException, IOException {
+	public MainFrame() throws XMLException {
 		super();
 
 		// MouseListener for point delivery details
