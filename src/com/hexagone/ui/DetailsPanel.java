@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -32,7 +34,7 @@ public class DetailsPanel extends JPanel {
 		setBackground(Color.WHITE);
 
 		int adresse = 999999999, duration = 0;
-		Date startSchedule = null, endSchedule = null;
+		Date startSchedule = null, endSchedule = null, departureTime=null;
 
 		Double dx = p.getX();
 		Integer px = dx.intValue();
@@ -70,20 +72,40 @@ public class DetailsPanel extends JPanel {
 			}
 
 		}
-
-		JLabel titleLabel = new JLabel("Détails:");
+		
+		int idWarehouse = warehouse.getIntersection().getId();
+		if(idPoint == idWarehouse){
+			adresse = idPoint;
+			departureTime= warehouse.getDepartureTime();
+			System.out.println(departureTime);
+		}
+		
+		JLabel titleLabel = new JLabel("Détails:  ");
 		this.add(titleLabel);
-		JLabel adresseLabel = new JLabel("Adresse :" + adresse);
+		JLabel adresseLabel = new JLabel("Adresse : " + adresse+"  ");
 		this.add(adresseLabel);
-		JLabel durationLabel = new JLabel("Durée :" + duration);
-		this.add(durationLabel);
+		if(duration !=0){
+			JLabel durationLabel = new JLabel("Durée : " + duration+" min");
+			this.add(durationLabel);
+		}
+		
 		if (startSchedule != null) {
-			JLabel startScheduleLabel = new JLabel("Date de départ: " + startSchedule.toString());
+			Calendar startCalendar = GregorianCalendar.getInstance();
+			startCalendar.setTime(startSchedule);
+			JLabel startScheduleLabel = new JLabel("Début de la plage horaire: " + startCalendar.get(Calendar.HOUR_OF_DAY)+"h"+startCalendar.get(Calendar.MINUTE)+" ");
 			this.add(startScheduleLabel);
 		}
 		if (endSchedule != null) {
-			JLabel endScheduleLabel = new JLabel("Date de départ: " + endSchedule.toString());
+			Calendar endCalendar = GregorianCalendar.getInstance();
+			endCalendar.setTime(endSchedule);
+			JLabel endScheduleLabel = new JLabel("Fin de la plage horaire: " + endCalendar.get(Calendar.HOUR_OF_DAY)+"h"+endCalendar.get(Calendar.MINUTE)+" ");
 			this.add(endScheduleLabel);
+		}
+		if(departureTime != null){
+			Calendar departureCalendar = GregorianCalendar.getInstance();
+			departureCalendar.setTime(departureTime);
+			JLabel departureLabel= new JLabel("Date de départ: "+departureCalendar.get(Calendar.HOUR_OF_DAY)+"h"+departureCalendar.get(Calendar.MINUTE)+"  ");
+			this.add(departureLabel);
 		}
 
 	}

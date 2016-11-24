@@ -37,7 +37,7 @@ public class Delivery {
 	}
 
 	@XmlJavaTypeAdapter(DateAdapter.class)
-	@XmlAttribute(name = "debutPlage")
+	@XmlAttribute(name = "finPlage")
 	public void setEndSchedule(Date endSchedule) {
 		this.endSchedule = endSchedule;
 	}
@@ -56,7 +56,7 @@ public class Delivery {
 	}
 
 	@XmlJavaTypeAdapter(DateAdapter.class)
-	@XmlAttribute(name = "finPlage")
+	@XmlAttribute(name = "debutPlage")
 	public void setStartSchedule(Date startSchedule) {
 		this.startSchedule = startSchedule;
 	}
