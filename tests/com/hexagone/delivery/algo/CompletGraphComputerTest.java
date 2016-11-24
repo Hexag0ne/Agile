@@ -2,6 +2,8 @@ package com.hexagone.delivery.algo;
 
 import static org.junit.Assert.*;
 
+import java.util.HashMap;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,19 +19,14 @@ public class CompletGraphComputerTest {
 	}
 
 	@Test
-	public void testIndexOf() throws Exception {
-		Integer [] array = new Integer [3];
-		array [0] = new Integer(0);
-		array [1] = new Integer(1);
-		array [2] = new Integer(2);
+	public void testSmallestCost() throws Exception {
+		HashMap<Integer,Integer> map = new HashMap<Integer,Integer>(2);
+		map.put(new Integer(0), new Integer(Integer.MAX_VALUE));
+		map.put(new Integer(45), new Integer(5));
 		
-		int index0 = CompleteGraphComputer.indexOf(array, new Integer(0));
-		int index1 = CompleteGraphComputer.indexOf(array, new Integer(1));
-		int index2 = CompleteGraphComputer.indexOf(array, new Integer(2));
+		Integer test = CompleteGraphComputer.smallestCost(map);
 		
-		assertEquals(0,index0);
-		assertEquals(1,index1);
-		assertEquals(2,index2);
+		assertEquals(new Integer(45),test);
 	}
 
 }
