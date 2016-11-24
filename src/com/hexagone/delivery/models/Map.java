@@ -80,7 +80,7 @@ public class Map {
 		roadListFromOrigin.add(r);
 		roads.put(r.getOrigin(), roadListFromOrigin);
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Map [intersections = " + getIntersections() + ", roads = " + roads + "]";

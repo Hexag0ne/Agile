@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * This class models a planning (feuille de route)
- * It is the result of all calculations made from a map and a delivery query
- * to provide a planning for a delivery person
+ * This class models a planning (feuille de route) It is the result of all
+ * calculations made from a map and a delivery query to provide a planning for a
+ * delivery person
  */
 public class Planning {
 	private static final String PATH_NAME = "export/planning.txt";
@@ -18,14 +18,14 @@ public class Planning {
 	 * List of intersections given by TSP
 	 */
 	private Integer[] intersections;
-	
+
 	/*
 	 * List of roads traveled by for solution
 	 */
 	private ArrayList<Road> roads;
-	
+
 	private Map map;
-	
+
 	/*
 	 * Returns the total time a planning will take for delivery man
 	 */
@@ -36,18 +36,18 @@ public class Planning {
 		}
 		return totalTime;
 	}
-	
+
 	public Planning(Integer[] intersections, Map map) {
 		this.intersections = intersections;
 		this.map = map;
 		this.roads = this.calculateRoads();
 	}
-	
+
 	private ArrayList<Road> calculateRoads() {
 		ArrayList<Road> final_roads = new ArrayList<Road>();
-		for (int i=0; i<intersections.length-1; i++) {
+		for (int i = 0; i < intersections.length - 1; i++) {
 			Integer it1 = intersections[i];
-			Integer it2 = intersections[i+1];
+			Integer it2 = intersections[i + 1];
 			System.out.println("Between (" + it1 + "," + it2 + ")");
 			ArrayList<Road> roads = this.map.getRoadsStartingFrom(it1);
 			System.out.println(roads);
@@ -59,7 +59,7 @@ public class Planning {
 		}
 		return final_roads;
 	}
-	
+
 	public ArrayList<Road> getRoads() {
 		return this.roads;
 	}
@@ -75,31 +75,18 @@ public class Planning {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/*
-	 * String representation of a planning
-	 * Example:
-	 * 		Mon planning (22 Nov. 2016)
-	 * 			Entrepôt 1
-	 * 				Arrivée: 14h00. Départ: 14h10. Adresse: Intersection 2.
-	 * 				Itinéraire:
-	 * 					Prendre l'intersection 1
-	 * 					Suivre la route h0
-	 * 					Aller à l'intersection 2
-	 * 			Livraison A:
-	 * 				Arrivée: 14h20. Départ: 14h40. Adresse: Intersection 3.
-	 * 				Itinéraire:
-	 * 					Aller à l'intersection 1
-	 * 					Aller à l'intersection 2
-	 * 					Suivre la route v2
-	 * 			Livraison B:
-	 * 				Arrivée: 15h20. Départ: 15h40. Adresse: Intersection 6.
-	 * 				Itinéraire:
-	 * 					Aller à l'intersection 5
-	 * 					Suivre la route v0
-	 * 					Aller à l'intersection 6
-	 * 			Entrepôt ABC:
-	 * 				15h40
+	 * String representation of a planning Example:
+	 * Mon planning (22 Nov. 2016)
+	 * Entrepôt 1 Arrivée: 14h00. Départ: 14h10. Adresse: Intersection 2.
+	 * Itinéraire: Prendre l'intersection 1 Suivre la route h0 Aller à
+	 * l'intersection 2 Livraison A: Arrivée: 14h20. Départ: 14h40. Adresse:
+	 * Intersection 3. Itinéraire: Aller à l'intersection 1 Aller à
+	 * l'intersection 2 Suivre la route v2 Livraison B: Arrivée: 15h20. Départ:
+	 * 15h40. Adresse: Intersection 6. Itinéraire: Aller à l'intersection 5
+	 * Suivre la route v0 Aller à l'intersection 6 Entrepôt ABC: 15h40
+	 * N.B: The structured representation was flattened by Eclipse formatting.
 	 */
 	@Override
 	public String toString() {
@@ -116,19 +103,19 @@ public class Planning {
 		startDate = small.format(date);
 		endDate = small.format(date);
 		origin = "3";
-		res += "\t" + type + "\n"; 
+		res += "\t" + type + "\n";
 		res += "\t\tArrivée: " + startDate + ". Départ: " + endDate + ". Adresse: Intersection " + origin + ".\n";
 		// Iterate over EACH instruction given
-			String instruction, name;
-			// Iter 1
-			instruction = "Prendre l'intersection"; // or "Suivre la route"
-			name = "1";
-			res += "\t\t\t" + instruction + " " + name + "\n";
-			// Iter 2
-			instruction = "Suivre la route"; // or "Suivre la route"
-			name = "1";
-			res += "\t\t\t" + instruction + " " + name + "\n";
-			// Fin des instructions
+		String instruction, name;
+		// Iter 1
+		instruction = "Prendre l'intersection"; // or "Suivre la route"
+		name = "1";
+		res += "\t\t\t" + instruction + " " + name + "\n";
+		// Iter 2
+		instruction = "Suivre la route"; // or "Suivre la route"
+		name = "1";
+		res += "\t\t\t" + instruction + " " + name + "\n";
+		// Fin des instructions
 		return res;
 	}
 }

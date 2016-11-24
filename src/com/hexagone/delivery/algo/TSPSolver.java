@@ -3,8 +3,6 @@ package com.hexagone.delivery.algo;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.naming.TimeLimitExceededException;
-
 /**
  * This class provides the basic interface and implementation for the Travelling
  * Salesman Problem faced in this software

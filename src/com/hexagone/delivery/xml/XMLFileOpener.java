@@ -7,7 +7,6 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
-import com.hexagone.delivery.xml.XMLException;
 
 /**
  * This class provides the methods to open any xml file on the system.

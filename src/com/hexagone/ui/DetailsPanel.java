@@ -1,7 +1,6 @@
 package com.hexagone.ui;
 
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.util.ArrayList;

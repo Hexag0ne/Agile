@@ -65,7 +65,7 @@ public class Road {
 		this.speed = speed;
 		this.roadName = name;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Road [length=" + length + ", speed=" + speed + ", roadName=" + roadName + ", origin=" + origin
