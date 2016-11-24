@@ -9,6 +9,14 @@ public class Map {
 	private ArrayList<Intersection> intersections;
 	private HashMap<Integer, ArrayList<Road>> roads;
 
+	public HashMap<Integer, ArrayList<Road>> getRoads() {
+		return roads;
+	}
+
+	public void setRoads(HashMap<Integer, ArrayList<Road>> roads) {
+		this.roads = roads;
+	}
+
 	/**
 	 * Gives all the intersection identifiers of the map
 	 * 
@@ -37,7 +45,7 @@ public class Map {
 	 * Default constructor. No intersection or road exists in the map yet.
 	 */
 	public Map() {
-		this.intersections = new ArrayList<Intersection>();
+		this.setIntersections(new ArrayList<Intersection>());
 		this.roads = new HashMap<Integer, ArrayList<Road>>();
 	}
 
@@ -52,7 +60,7 @@ public class Map {
 	 *            part of the map, no intersection share the same identifier.
 	 */
 	public void addIntersection(Intersection intersection) {
-		intersections.add(intersection);
+		getIntersections().add(intersection);
 	}
 
 	/**
@@ -75,6 +83,14 @@ public class Map {
 	
 	@Override
 	public String toString() {
-		return "Map [intersections = " + intersections + ", roads = " + roads + "]";
+		return "Map [intersections = " + getIntersections() + ", roads = " + roads + "]";
+	}
+
+	public ArrayList<Intersection> getIntersections() {
+		return intersections;
+	}
+
+	public void setIntersections(ArrayList<Intersection> intersections) {
+		this.intersections = intersections;
 	}
 }
