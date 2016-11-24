@@ -23,8 +23,8 @@ import com.hexagone.delivery.models.Warehouse;
 
 public class MapFrame extends JPanel{
     
-	private Map map;
-	private DeliveryQuery deliveryQuery;
+	private static Map map;
+	private static DeliveryQuery deliveryQuery;
 	//Cet entier permet de rétrécir le graphe
 	private static int coefficient=2;
 	
@@ -112,6 +112,42 @@ public class MapFrame extends JPanel{
 					}
 					
 				}
+		
+	}
+
+	public static Boolean checkPoint(Point p) {
+
+		Boolean pointIsDeliveryPoint=false;
+		ArrayList<Intersection> intersections = new ArrayList<Intersection>(); 
+		intersections = map.getIntersections();
+		Warehouse warehouse = deliveryQuery.getWarehouse();
+		Delivery[] deliveries = deliveryQuery.getDelivery();
+		for(Delivery d: deliveries){
+			Intersection i = d.getIntersection();
+			Point pointDelivery = new Point();
+			for(Intersection in:intersections){
+				if((in.getId()).equals(i.getId())){
+					pointDelivery = in.getCoordinates();
+					break;
+				}
+			}
+			Double dx=p.getX();
+			Integer px = dx.intValue();
+			Double dy=p.getY();
+			Integer py = dy.intValue();
+			Double dxpd=(pointDelivery.getX())/coefficient;
+			Integer pxpd = dxpd.intValue();
+			Double dypd=(pointDelivery.getY())/coefficient;
+			Integer pypd = dypd.intValue();
+			if(((px < pxpd+5) || (px > pxpd-5) ) && ((py < pypd+5) || (py > pypd-5) )){
+				pointIsDeliveryPoint=true;	
+				break;
+			}
+			
+			
+		}
+		
+		return pointIsDeliveryPoint;
 		
 	}
 

@@ -5,9 +5,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 
 import javax.swing.ImageIcon;
@@ -32,13 +35,62 @@ public class MainFrame extends JFrame {
 	private JPanel mapPanel;
 	private JPanel deliveryPanel;
 	private JPanel header;
-	private JPanel detail;
+	private JPanel detailPanel;
 	private static Map map;
 	private DeliveryQuery deliveryQuery;
+	private Point p;
+	
 
 	MainFrame() throws XMLException, ParserConfigurationException, SAXException, IOException {
 		super();
-
+		
+		//MouseListener for point delivery details
+				final MouseListener details = new MouseListener() {
+					
+					@Override
+					public void mouseReleased(MouseEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void mousePressed(MouseEvent e) {
+						p = e.getPoint();
+						Boolean b=MapFrame.checkPoint(p);
+						if(b){
+							if(detailPanel!=null){
+								all.remove(detailPanel);
+							}
+							detailPanel= new DetailsPanel(map,deliveryQuery,p);
+							all.add(detailPanel,BorderLayout.EAST);
+							all.validate();
+							all.repaint();
+							validate();
+							repaint();
+						}
+						
+					}
+					
+					@Override
+					public void mouseExited(MouseEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+				};
+				
+		//Listener for "Charger Plan" Button
 		ActionListener uploadMap = new ActionListener() {
 
 			@Override
@@ -59,7 +111,8 @@ public class MainFrame extends JFrame {
 
 			}
 		};
-
+		
+		//Listener for "Charger Livraison" Button
 		ActionListener uploadDelivery = new ActionListener() {
 
 			@Override
@@ -70,6 +123,7 @@ public class MainFrame extends JFrame {
 					deliveryQuery= XMLDeserialiser.loadDeliveryQuery();
 					deliveryPanel= new 	MapFrame(map,deliveryQuery);
 					deliveryPanel.repaint();
+					deliveryPanel.addMouseListener(details);
 					all.remove(mapPanel);
 					all.add(deliveryPanel,BorderLayout.CENTER);
 					all.validate();
@@ -82,7 +136,9 @@ public class MainFrame extends JFrame {
 
 			}
 		};
-
+		
+		
+		
 		this.setTitle("Delivery App"); 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setSize(screenSize.width, screenSize.height);
@@ -93,7 +149,7 @@ public class MainFrame extends JFrame {
 		all = new JPanel();
 		all.setLayout(new BorderLayout());
 		all.setBackground(Color.WHITE);
-
+        
 
 		header=new JPanel();
 		header.setLayout(new GridLayout(2, 2));
