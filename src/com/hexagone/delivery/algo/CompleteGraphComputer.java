@@ -102,7 +102,7 @@ public class CompleteGraphComputer {
 	 *            the array from whih one wants to find the minimum
 	 * @return the index of the minimum element in the array as an int
 	 */
-	private static Integer smallestCost(HashMap<Integer,Integer> hashMap) {
+	static Integer smallestCost(HashMap<Integer,Integer> hashMap) {
 		Iterator<Integer> keySetIterator = hashMap.keySet().iterator();
 		Integer key = keySetIterator.next();
 		Integer smallestCost = hashMap.get(key);
@@ -112,30 +112,10 @@ public class CompleteGraphComputer {
 			Integer newCost = hashMap.get(newKey);
 			if (newCost < smallestCost)
 			{
-				key = smallestCost;
+				key = newKey;
 				smallestCost = newCost;
 			}
 		}
 		return key;
-	}
-
-	/**
-	 * This method gives the index in an array of the specified object
-	 * 
-	 * @param array
-	 *            the array in which the object is contained
-	 * @param Object
-	 *            the object one is looking for its index
-	 * @return
-	 */
-	static int indexOf(Object[] array, Object Object) {
-		int index = 0;
-		for (; index < array.length; index++) {
-			if (array[index].equals(Object)) {
-				break;
-			}
-		}
-
-		return index;
 	}
 }
