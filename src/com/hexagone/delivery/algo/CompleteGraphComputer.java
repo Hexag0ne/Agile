@@ -117,10 +117,10 @@ public class CompleteGraphComputer {
 	 *            the object one is looking for its index
 	 * @return
 	 */
-	private static int indexOf(Object[] array, Object Object) {
+	static int indexOf(Object[] array, Object Object) {
 		int index = 0;
 		for (; index < array.length; index++) {
-			if (array[index] == Object) {
+			if (array[index].equals(Object)) {
 				break;
 			}
 		}
