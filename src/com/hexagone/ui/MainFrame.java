@@ -8,6 +8,10 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -39,15 +43,12 @@ public class MainFrame extends JFrame {
 	private static int coefficient=2;
 	private DeliveryQuery deliveryQuery;
 	private Point p;
-	
 	private JButton computeTourButton;
-	public ArrayList<Integer> tour;
+	private int deliveryPoint=0;
 
 	public MainFrame() throws XMLException {
 		super();
 
-		// MouseListener for point delivery details
-		
 
 		// Listener for "Charger Plan" Button
 		ActionListener uploadMap = new ActionListener() {
@@ -96,10 +97,44 @@ public class MainFrame extends JFrame {
 
 			}
 		};
-		
-		
-		
-	
+
+		KeyListener keyListener = new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				int key = e.getKeyCode();
+				if(key == KeyEvent.VK_D){
+					deliveryPoint +=1;
+					((MapFrame) tourPanel).startTour(deliveryPoint);
+					tourPanel.revalidate();
+					tourPanel.repaint();
+					all.validate();
+					all.repaint();
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {}
+
+			@Override
+			public void keyPressed(KeyEvent e) {}
+		};
+		//Listener for calcuateTour button
+		ActionListener calculateTourListener =new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				tourPanel = new MapFrame(map, deliveryQuery,true,coefficient,null);
+				tourPanel.repaint();
+				tourPanel.addMouseListener(details);
+				tourPanel.addKeyListener(keyListener);
+				all.remove(deliveryPanel);
+				all.add(tourPanel, BorderLayout.CENTER);
+				all.validate();
+				all.repaint();
+			}
+		};
 
 		this.setTitle("Delivery App");
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -124,23 +159,22 @@ public class MainFrame extends JFrame {
 		computeTourButton.addActionListener(new ComputeTourListener());
 		header.add(computeTourButton);
 		
-		
 		//mainPanel components
 		mainPanel=new JPanel();
 		mainPanel.setBackground(Color.WHITE);
 		mainPanel.setLayout(new BorderLayout());
 		//JScrollBar vbar=new JScrollBar(JScrollBar.VERTICAL, 30, 20, 0, 300);
 		//vbar.setUnitIncrement(2);
-        //vbar.setBlockIncrement(1);
-        //mainPanel.add(vbar, BorderLayout.EAST);
-		
+		//vbar.setBlockIncrement(1);
+		//mainPanel.add(vbar, BorderLayout.EAST);
+
 		all.add(mainPanel);
 		all.add(header, BorderLayout.NORTH);
-		
+
 
 		this.setContentPane(all);
 	}
-	
+
 
 	/**
 	 * This class provides the reaction to be performed upon clicking on 
@@ -202,8 +236,11 @@ public class MainFrame extends JFrame {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			p = e.getPoint();
-			Boolean b = MapFrame.checkPoint(p);
-			if (b) {
+			/** TODO 
+			 * Repair display of delivery points details.
+			 */
+			//Boolean b = MapFrame.checkPoint(p);
+			if (false) {
 				if (detailPanel != null) {
 					all.remove(detailPanel);
 				}

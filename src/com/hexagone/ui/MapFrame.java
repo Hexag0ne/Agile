@@ -197,78 +197,68 @@ public class MapFrame extends JPanel {
 				
 				
 			}
-			addKeyListener(new KeyListener() {
-				
-				@Override
-				public void keyTyped(KeyEvent e) {
-					int key = e.getKeyCode();
-					System.out.println("yassine");
-				    if(key == KeyEvent.VK_D){
-				    	System.out.println("yassine");
-				    	ArrayList<Intersection> intersections = new ArrayList<Intersection>();
-						intersections = map.getIntersections();
-				    	Set<Integer> idDPs =tour.keySet();
-                        Iterator<Integer> iterator = idDPs.iterator();
-                        iterator.hasNext();
-                        int idDP  = iterator.next();
-                        Point pointDP=null;
-                        for (Intersection in : intersections) {
-    						if ((in.getId()).equals(idDP)) {
-    							pointDP = in.getCoordinates();
-    							break;
-    						}
-    					}
-                        g.setColor(Color.ORANGE);
-                        g.fillOval(((pointDP.x)) / coefficient, ((pointDP.y)) / coefficient, 10, 10);
-				    }
-					
-				}
-				
-				@Override
-				public void keyReleased(KeyEvent e) {}
-				
-				@Override
-				public void keyPressed(KeyEvent e) {System.out.println("yassine");}
-			});
-
+			
 
 		}
 
 	}
 
-	public static Boolean checkPoint(Point p) {
+	
 
-		Boolean pointIsDeliveryPoint = false;
+	public void startTour(int deliveryPoint) {
 		ArrayList<Intersection> intersections = new ArrayList<Intersection>();
 		intersections = map.getIntersections();
-		Warehouse warehouse = deliveryQuery.getWarehouse();
-		Delivery[] deliveries = deliveryQuery.getDelivery();
-		for (Delivery d : deliveries) {
-			Intersection i = d.getIntersection();
-			Point pointDelivery = new Point();
-			for (Intersection in : intersections) {
-				if ((in.getId()).equals(i.getId())) {
-					pointDelivery = in.getCoordinates();
-					break;
-				}
-			}
-			Double dx = p.getX();
-			Integer px = dx.intValue();
-			Double dy = p.getY();
-			Integer py = dy.intValue();
-			Double dxpd = (pointDelivery.getX()) / coefficient;
-			Integer pxpd = dxpd.intValue();
-			Double dypd = (pointDelivery.getY()) / coefficient;
-			Integer pypd = dypd.intValue();
-			if (((px < pxpd + 5) || (px > pxpd - 5)) && ((py < pypd + 5) || (py > pypd - 5))) {
-				pointIsDeliveryPoint = true;
+		LinkedHashMap<Integer, ArrayList<Road>> tour = new LinkedHashMap<>();
+        ArrayList<Road> road21 = new ArrayList<>();
+        road21.add(new Road(21, 16));
+        road21.add(new Road(16,11));
+        road21.add(new Road(11, 12));
+        road21.add(new Road(12,13));
+		tour.put(21, road21);
+		
+		ArrayList<Road> road13 = new ArrayList<>();
+		road13.add(new Road(13,8));
+		road13.add(new Road(8,7));
+		road13.add(new Road(7,2));
+		road13.add(new Road(2,3));
+		road13.add(new Road(3,4));
+		road13.add(new Road(4,9));
+		tour.put(13,road13);
+		
+		ArrayList<Road> road9 = new ArrayList<>();
+		road9.add(new Road(9,4));
+		road9.add(new Road(4,3));
+		tour.put(9,road9);
+		
+		ArrayList<Road> road3 = new ArrayList<>();
+		road3.add(new Road(3,2));
+		road3.add(new Road(2,1));
+		tour.put(3, road3);
+		
+		ArrayList<Road> road1 = new ArrayList<>();
+		road1.add(new Road(1,0));
+		road1.add(new Road(0,5));
+		road1.add(new Road(5,10));
+		road1.add(new Road(10,11));
+		road1.add(new Road(11,16));
+		road1.add(new Road(16,21));
+		tour.put(1, road1);
+		
+		Set<Integer> idDPs = tour.keySet();
+        Iterator<Integer> iterator = idDPs.iterator();
+        iterator.hasNext();
+        int idDP  = iterator.next();
+        Point pointDP=null;
+        for (Intersection in : intersections) {
+			if ((in.getId()).equals(idDP)) {
+				pointDP = in.getCoordinates();
 				break;
 			}
-
 		}
-
-		return pointIsDeliveryPoint;
-
+        Graphics g = this.getGraphics();
+        g.setColor(Color.ORANGE);
+        g.fillOval(((pointDP.x)) / coefficient, ((pointDP.y)) / coefficient, 10, 10);
+		
 	}
 
 	public void setTour(ArrayList<Integer> t)
