@@ -40,7 +40,7 @@ public class DeliveryQuery {
 
 		return tab;
 	}
-	
+
 	public Delivery[] getDeliveries() {
 		return deliveries;
 	}

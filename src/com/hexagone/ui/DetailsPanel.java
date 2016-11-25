@@ -34,7 +34,7 @@ public class DetailsPanel extends JPanel {
 		setBackground(Color.WHITE);
 
 		int adresse = 999999999, duration = 0;
-		Date startSchedule = null, endSchedule = null, departureTime=null;
+		Date startSchedule = null, endSchedule = null, departureTime = null;
 
 		Double dx = p.getX();
 		Integer px = dx.intValue();
@@ -49,9 +49,9 @@ public class DetailsPanel extends JPanel {
 		int idPoint = 999999999;
 		for (Intersection in : intersections) {
 			planPoint = in.getCoordinates();
-			Double dppx = (planPoint.getX())/coefficient;
+			Double dppx = (planPoint.getX()) / coefficient;
 			Integer ippx = dppx.intValue();
-			Double dppy = (planPoint.getY())/coefficient;
+			Double dppy = (planPoint.getY()) / coefficient;
 			Integer ippy = dppy.intValue();
 			if ((px < (ippx + 10)) && (px > (ippx - 10)) && (py < (ippy + 10)) && (py > (ippy - 10))) {
 				idPoint = in.getId();
@@ -72,42 +72,45 @@ public class DetailsPanel extends JPanel {
 			}
 
 		}
-		
+
 		int idWarehouse = warehouse.getIntersection().getId();
-		if(idPoint == idWarehouse){
+		if (idPoint == idWarehouse) {
 			adresse = idPoint;
-			departureTime= warehouse.getDepartureTime();
-			
+			departureTime = warehouse.getDepartureTime();
+
 		}
-		
-		if(adresse != 999999999){
+
+		if (adresse != 999999999) {
 			JLabel titleLabel = new JLabel("Détails:  ");
 			this.add(titleLabel);
-			JLabel adresseLabel = new JLabel("Adresse : " + adresse+"  ");
+			JLabel adresseLabel = new JLabel("Adresse : " + adresse + "  ");
 			this.add(adresseLabel);
 		}
-		
-		if(duration !=0){
-			JLabel durationLabel = new JLabel("Durée : " + duration+" min");
+
+		if (duration != 0) {
+			JLabel durationLabel = new JLabel("Durée : " + duration + " min");
 			this.add(durationLabel);
 		}
-		
+
 		if (startSchedule != null) {
 			Calendar startCalendar = GregorianCalendar.getInstance();
 			startCalendar.setTime(startSchedule);
-			JLabel startScheduleLabel = new JLabel("Début de la plage horaire: " + startCalendar.get(Calendar.HOUR_OF_DAY)+"h"+startCalendar.get(Calendar.MINUTE)+" ");
+			JLabel startScheduleLabel = new JLabel("Début de la plage horaire: "
+					+ startCalendar.get(Calendar.HOUR_OF_DAY) + "h" + startCalendar.get(Calendar.MINUTE) + " ");
 			this.add(startScheduleLabel);
 		}
 		if (endSchedule != null) {
 			Calendar endCalendar = GregorianCalendar.getInstance();
 			endCalendar.setTime(endSchedule);
-			JLabel endScheduleLabel = new JLabel("Fin de la plage horaire: " + endCalendar.get(Calendar.HOUR_OF_DAY)+"h"+endCalendar.get(Calendar.MINUTE)+" ");
+			JLabel endScheduleLabel = new JLabel("Fin de la plage horaire: " + endCalendar.get(Calendar.HOUR_OF_DAY)
+					+ "h" + endCalendar.get(Calendar.MINUTE) + " ");
 			this.add(endScheduleLabel);
 		}
-		if(departureTime != null){
+		if (departureTime != null) {
 			Calendar departureCalendar = GregorianCalendar.getInstance();
 			departureCalendar.setTime(departureTime);
-			JLabel departureLabel= new JLabel("Date de départ: "+departureCalendar.get(Calendar.HOUR_OF_DAY)+"h"+departureCalendar.get(Calendar.MINUTE)+"  ");
+			JLabel departureLabel = new JLabel("Date de départ: " + departureCalendar.get(Calendar.HOUR_OF_DAY) + "h"
+					+ departureCalendar.get(Calendar.MINUTE) + "  ");
 			this.add(departureLabel);
 		}
 

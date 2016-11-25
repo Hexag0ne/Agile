@@ -5,8 +5,6 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -15,18 +13,14 @@ import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.print.attribute.SetOfIntegerSyntax;
 import javax.swing.JPanel;
 
-import com.hexagone.delivery.algo.CompleteGraphComputer;
-import com.hexagone.delivery.algo.TSPSolverV1;
 import com.hexagone.delivery.models.Delivery;
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Intersection;
 import com.hexagone.delivery.models.Map;
 import com.hexagone.delivery.models.Road;
 import com.hexagone.delivery.models.Warehouse;
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 public class MapFrame extends JPanel {
 
@@ -35,14 +29,15 @@ public class MapFrame extends JPanel {
 	private static Boolean calculateflag;
 	private ArrayList<Integer> tour;
 	// Shrink coefficient
-	private static int coefficient=1;
+	private static int coefficient = 1;
 
-	MapFrame(Map map, DeliveryQuery deliveryQuery,Boolean calculateflag, int coefficient, ArrayList<Integer> arrayList) {
+	MapFrame(Map map, DeliveryQuery deliveryQuery, Boolean calculateflag, int coefficient,
+			ArrayList<Integer> arrayList) {
 		super();
 		this.map = map;
 		this.deliveryQuery = deliveryQuery;
-		this.calculateflag=calculateflag;
-		this.coefficient=coefficient;
+		this.calculateflag = calculateflag;
+		this.coefficient = coefficient;
 		this.tour = arrayList;
 		FlowLayout fl = new FlowLayout();
 		setLayout(fl);
@@ -122,59 +117,58 @@ public class MapFrame extends JPanel {
 
 		}
 
-		if(MapFrame.calculateflag == true){
+		if (MapFrame.calculateflag == true) {
 
-
-			for(int j=0;j < tour.size();j++){
-				for(Intersection in: intersections){
-					if((in.getId()).equals(tour.get(j))){
+			for (int j = 0; j < tour.size(); j++) {
+				for (Intersection in : intersections) {
+					if ((in.getId()).equals(tour.get(j))) {
 						Point p = in.getCoordinates();
 						g.setColor(Color.BLACK);
-						g.drawString(""+j, ((p.x)+10) / coefficient, ((p.y)+10) / coefficient);
+						g.drawString("" + j, ((p.x) + 10) / coefficient, ((p.y) + 10) / coefficient);
 					}
 				}
 			}
-			
+
 			LinkedHashMap<Integer, ArrayList<Road>> tour = new LinkedHashMap<>();
-            ArrayList<Road> road21 = new ArrayList<>();
-            road21.add(new Road(21, 16));
-            road21.add(new Road(16,11));
-            road21.add(new Road(11, 12));
-            road21.add(new Road(12,13));
+			ArrayList<Road> road21 = new ArrayList<>();
+			road21.add(new Road(21, 16));
+			road21.add(new Road(16, 11));
+			road21.add(new Road(11, 12));
+			road21.add(new Road(12, 13));
 			tour.put(21, road21);
-			
+
 			ArrayList<Road> road13 = new ArrayList<>();
-			road13.add(new Road(13,8));
-			road13.add(new Road(8,7));
-			road13.add(new Road(7,2));
-			road13.add(new Road(2,3));
-			road13.add(new Road(3,4));
-			road13.add(new Road(4,9));
-			tour.put(13,road13);
-			
+			road13.add(new Road(13, 8));
+			road13.add(new Road(8, 7));
+			road13.add(new Road(7, 2));
+			road13.add(new Road(2, 3));
+			road13.add(new Road(3, 4));
+			road13.add(new Road(4, 9));
+			tour.put(13, road13);
+
 			ArrayList<Road> road9 = new ArrayList<>();
-			road9.add(new Road(9,4));
-			road9.add(new Road(4,3));
-			tour.put(9,road9);
-			
+			road9.add(new Road(9, 4));
+			road9.add(new Road(4, 3));
+			tour.put(9, road9);
+
 			ArrayList<Road> road3 = new ArrayList<>();
-			road3.add(new Road(3,2));
-			road3.add(new Road(2,1));
+			road3.add(new Road(3, 2));
+			road3.add(new Road(2, 1));
 			tour.put(3, road3);
-			
+
 			ArrayList<Road> road1 = new ArrayList<>();
-			road1.add(new Road(1,0));
-			road1.add(new Road(0,5));
-			road1.add(new Road(5,10));
-			road1.add(new Road(10,11));
-			road1.add(new Road(11,16));
-			road1.add(new Road(16,21));
+			road1.add(new Road(1, 0));
+			road1.add(new Road(0, 5));
+			road1.add(new Road(5, 10));
+			road1.add(new Road(10, 11));
+			road1.add(new Road(11, 16));
+			road1.add(new Road(16, 21));
 			tour.put(1, road1);
 
 			for (Entry<Integer, ArrayList<Road>> entry : tour.entrySet()) {
-				
+
 				ArrayList<Road> roadsToNextDP = entry.getValue();
-				for (Road r:roadsToNextDP){
+				for (Road r : roadsToNextDP) {
 					g.setColor(Color.YELLOW);
 					Graphics2D g2 = (Graphics2D) g;
 					Point destination = null;
@@ -195,70 +189,66 @@ public class MapFrame extends JPanel {
 							((destination.x) / coefficient) + 5, ((destination.y) / coefficient) + 5);
 					g2.draw(lin);
 				}
-				
-				
+
 			}
-			
 
 		}
 
 	}
 
-	
-
 	public void startTour(int deliveryPoint) {
 		ArrayList<Intersection> intersections = new ArrayList<Intersection>();
 		intersections = map.getIntersections();
 		LinkedHashMap<Integer, ArrayList<Road>> tour = new LinkedHashMap<>();
-        ArrayList<Road> road21 = new ArrayList<>();
-        road21.add(new Road(21, 16));
-        road21.add(new Road(16,11));
-        road21.add(new Road(11, 12));
-        road21.add(new Road(12,13));
+		ArrayList<Road> road21 = new ArrayList<>();
+		road21.add(new Road(21, 16));
+		road21.add(new Road(16, 11));
+		road21.add(new Road(11, 12));
+		road21.add(new Road(12, 13));
 		tour.put(21, road21);
-		
+
 		ArrayList<Road> road13 = new ArrayList<>();
-		road13.add(new Road(13,8));
-		road13.add(new Road(8,7));
-		road13.add(new Road(7,2));
-		road13.add(new Road(2,3));
-		road13.add(new Road(3,4));
-		road13.add(new Road(4,9));
-		tour.put(13,road13);
-		
+		road13.add(new Road(13, 8));
+		road13.add(new Road(8, 7));
+		road13.add(new Road(7, 2));
+		road13.add(new Road(2, 3));
+		road13.add(new Road(3, 4));
+		road13.add(new Road(4, 9));
+		tour.put(13, road13);
+
 		ArrayList<Road> road9 = new ArrayList<>();
-		road9.add(new Road(9,4));
-		road9.add(new Road(4,3));
-		tour.put(9,road9);
-		
+		road9.add(new Road(9, 4));
+		road9.add(new Road(4, 3));
+		tour.put(9, road9);
+
 		ArrayList<Road> road3 = new ArrayList<>();
-		road3.add(new Road(3,2));
-		road3.add(new Road(2,1));
+		road3.add(new Road(3, 2));
+		road3.add(new Road(2, 1));
 		tour.put(3, road3);
-		
+
 		ArrayList<Road> road1 = new ArrayList<>();
-		road1.add(new Road(1,0));
-		road1.add(new Road(0,5));
-		road1.add(new Road(5,10));
-		road1.add(new Road(10,11));
-		road1.add(new Road(11,16));
-		road1.add(new Road(16,21));
+		road1.add(new Road(1, 0));
+		road1.add(new Road(0, 5));
+		road1.add(new Road(5, 10));
+		road1.add(new Road(10, 11));
+		road1.add(new Road(11, 16));
+		road1.add(new Road(16, 21));
 		tour.put(1, road1);
-		
+
 		Set<Integer> idDPs = tour.keySet();
-        Iterator<Integer> iterator = idDPs.iterator();
-        iterator.hasNext();
-        int idDP  = iterator.next();
-        Point pointDP=null;
-        for (Intersection in : intersections) {
+		Iterator<Integer> iterator = idDPs.iterator();
+		iterator.hasNext();
+		int idDP = iterator.next();
+		Point pointDP = null;
+		for (Intersection in : intersections) {
 			if ((in.getId()).equals(idDP)) {
 				pointDP = in.getCoordinates();
 				break;
 			}
 		}
-        Graphics g = this.getGraphics();
-        g.setColor(Color.ORANGE);
-        g.fillOval(((pointDP.x)) / coefficient, ((pointDP.y)) / coefficient, 10, 10);
-		
+		Graphics g = this.getGraphics();
+		g.setColor(Color.ORANGE);
+		g.fillOval(((pointDP.x)) / coefficient, ((pointDP.y)) / coefficient, 10, 10);
+
 	}
 }

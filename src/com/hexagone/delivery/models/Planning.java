@@ -5,9 +5,7 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.Map.Entry;
 
 /**
  * This class models a planning (feuille de route) It is the result of all
@@ -55,25 +53,7 @@ public class Planning {
 			// returns [it1,it2] if no intermediary intersections
 			// ArrayList<Integer> sols = getIntersectionsBetween(it1, it2);
 
-			/* TEST CASE */
 			ArrayList<Integer> sols = new ArrayList<Integer>();
-			if (i == 0) {
-				sols.clear();
-				sols.add(6);
-				sols.add(7);
-				sols.add(12);
-			} else if (i == 1) {
-				sols.clear();
-				sols.add(12);
-				sols.add(13);
-				sols.add(8);
-			} else {
-				sols.clear();
-				sols.add(8);
-				sols.add(7);
-				sols.add(6);
-			}
-			/* END OF TEST CASE */
 
 			ArrayList<Road> roads = new ArrayList<Road>();
 			for (int j = 0; j < sols.size() - 1; j++) {
@@ -142,7 +122,8 @@ public class Planning {
 		int waitingTime = -1;
 		for (Integer it : roads.keySet()) {
 			// Adding road time
-			int roadTime = 0;
+			int roadTime = 10; // Random offset to showcase that "Arrivée" "adds
+								// up time"
 			for (Road r : roads.get(it)) {
 				roadTime += r.getTime();
 			}
@@ -167,7 +148,7 @@ public class Planning {
 						// (if arrival time before startSchedule, wait)
 						if (calStart.before(calTemp)) {
 							waitingMilliSeconds = (calTemp.getTimeInMillis() - calStart.getTimeInMillis()) / 1000;
-							waitingTime = (int) (waitingMilliSeconds / 60); 
+							waitingTime = (int) (waitingMilliSeconds / 60);
 						}
 						calStart = (Calendar) calTemp.clone();
 					}
@@ -181,14 +162,14 @@ public class Planning {
 			res += "\t" + instruction + "\n";
 			res += "\t\tArrivée: " + small.format(calStart.getTime());
 			if (calEnd != null) {
-				res += ". Départ: " + small.format(calEnd.getTime()) + ". ";	
+				res += ". Départ: " + small.format(calEnd.getTime()) + ". ";
 			}
 			res += "Adresse: Intersection " + origin + ".\n";
 			// iterate over roads
 			for (Road r : roads.get(it)) {
 				// get name of road
 				String name = r.getRoadName();
-				res += "\t\t\t" + "Suivre la route" + " " + name + "\n";	
+				res += "\t\t\t" + "Suivre la route" + " " + name + "\n";
 			}
 			if (waitingTime != -1) {
 				res += "\t\t\t" + "Attendre" + waitingTime + " minutes/n.";

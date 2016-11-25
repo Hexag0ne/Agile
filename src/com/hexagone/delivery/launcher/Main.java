@@ -14,12 +14,6 @@ public class Main {
 	 * @throws XMLException
 	 */
 	public static void main(String[] args) throws XMLException {
-		/*DeliveryQuery dq = XMLDeserialiser.loadDeliveryQuery();
-		Map map = XMLDeserialiser.loadMap();
-		Integer[] sols = {6, 12, 8, 6};
-		Planning pl = new Planning(map, dq, sols);
-		pl.generateTxt("export/planning.txt");*/
-
 		MainFrame frame = new MainFrame();
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);

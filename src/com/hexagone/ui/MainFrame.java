@@ -8,8 +8,6 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -25,7 +23,6 @@ import com.hexagone.delivery.algo.CompleteGraphComputer;
 import com.hexagone.delivery.algo.TSPSolverV1;
 import com.hexagone.delivery.models.Delivery;
 import com.hexagone.delivery.models.DeliveryQuery;
-import com.hexagone.delivery.models.Intersection;
 import com.hexagone.delivery.models.Map;
 import com.hexagone.delivery.models.Planning;
 import com.hexagone.delivery.xml.XMLDeserialiser;
@@ -42,15 +39,19 @@ public class MainFrame extends JFrame {
 	// a panel with the map, a scroll bar, a search bar and a zoom button
 	private JPanel mainPanel;
 	private static Map map;
-	private static int coefficient=2;
+	private static int coefficient = 2;
 	private DeliveryQuery deliveryQuery;
 	private Point p;
 	private JButton computeTourButton;
-	private int deliveryPoint=0;
+	private int deliveryPoint = 0;
+	private Integer[] deliveryIntersections;
+
+	public Integer[] getDeliveryIntersections() {
+		return deliveryIntersections;
+	}
 
 	public MainFrame() throws XMLException {
 		super();
-
 
 		// Listener for "Charger Plan" Button
 		ActionListener uploadMap = new ActionListener() {
@@ -61,7 +62,7 @@ public class MainFrame extends JFrame {
 				map = new Map();
 				try {
 					map = XMLDeserialiser.loadMap();
-					mapPanel = new MapFrame(map, null,false,coefficient,null);
+					mapPanel = new MapFrame(map, null, false, coefficient, null);
 					mainPanel.add(mapPanel, BorderLayout.CENTER);
 					mainPanel.validate();
 					mainPanel.repaint();
@@ -84,7 +85,7 @@ public class MainFrame extends JFrame {
 				deliveryQuery = new DeliveryQuery();
 				try {
 					deliveryQuery = XMLDeserialiser.loadDeliveryQuery();
-					deliveryPanel = new MapFrame(map, deliveryQuery,false,coefficient,null);
+					deliveryPanel = new MapFrame(map, deliveryQuery, false, coefficient, null);
 					deliveryPanel.repaint();
 					deliveryPanel.addMouseListener(details);
 					mainPanel.remove(mapPanel);
@@ -105,8 +106,8 @@ public class MainFrame extends JFrame {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				int key = e.getKeyCode();
-				if(key == KeyEvent.VK_D){
-					deliveryPoint +=1;
+				if (key == KeyEvent.VK_D) {
+					deliveryPoint += 1;
 					((MapFrame) tourPanel).startTour(deliveryPoint);
 					tourPanel.revalidate();
 					tourPanel.repaint();
@@ -116,18 +117,20 @@ public class MainFrame extends JFrame {
 			}
 
 			@Override
-			public void keyReleased(KeyEvent e) {}
+			public void keyReleased(KeyEvent e) {
+			}
 
 			@Override
-			public void keyPressed(KeyEvent e) {}
+			public void keyPressed(KeyEvent e) {
+			}
 		};
-		//Listener for calcuateTour button
-		ActionListener calculateTourListener =new ActionListener() {
+		// Listener for calcuateTour button
+		ActionListener calculateTourListener = new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				tourPanel = new MapFrame(map, deliveryQuery,true,coefficient,null);
+				tourPanel = new MapFrame(map, deliveryQuery, true, coefficient, null);
 				tourPanel.repaint();
 				tourPanel.addMouseListener(details);
 				tourPanel.addKeyListener(keyListener);
@@ -148,7 +151,7 @@ public class MainFrame extends JFrame {
 		all.setLayout(new BorderLayout());
 		all.setBackground(Color.WHITE);
 
-		//header components 
+		// header components
 		header = new JPanel();
 		header.setLayout(new GridLayout(1, 5));
 		JButton loadMap = new JButton("Charger Plan");
@@ -161,100 +164,102 @@ public class MainFrame extends JFrame {
 		computeTourButton = new JButton("Calculer Tournée");
 		computeTourButton.addActionListener(new ComputeTourListener());
 		header.add(computeTourButton);
-		
+
 		JButton generatePlanning = new JButton("Générer feuille de route");
 		header.add(generatePlanning);
 		generatePlanning.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Integer[] sols = {6, 12, 8, 6};
-				Planning pl = new Planning(map, deliveryQuery, sols);
-				pl.generateTxt("export/planning.txt");
-				JOptionPane.showMessageDialog(null, pl.toString(), "Feuille de route", JOptionPane.INFORMATION_MESSAGE);
+				Integer[] sols = getDeliveryIntersections();
+				if (sols != null) {
+					Planning pl = new Planning(map, deliveryQuery, sols);
+					pl.generateTxt("export/planning.txt");
+					JOptionPane.showMessageDialog(null, pl.toString(), "Feuille de route",
+							JOptionPane.INFORMATION_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(null, "Veuillez d'abord calculez la tournée.", "Erreur",
+							JOptionPane.ERROR_MESSAGE);
+				}
+
 			}
-			
+
 		});
 
-
-		//mainPanel components
-		mainPanel=new JPanel();
+		// mainPanel components
+		mainPanel = new JPanel();
 		mainPanel.setBackground(Color.WHITE);
 		mainPanel.setLayout(new BorderLayout());
-		//JScrollBar vbar=new JScrollBar(JScrollBar.VERTICAL, 30, 20, 0, 300);
-		//vbar.setUnitIncrement(2);
-		//vbar.setBlockIncrement(1);
-		//mainPanel.add(vbar, BorderLayout.EAST);
+		// JScrollBar vbar=new JScrollBar(JScrollBar.VERTICAL, 30, 20, 0, 300);
+		// vbar.setUnitIncrement(2);
+		// vbar.setBlockIncrement(1);
+		// mainPanel.add(vbar, BorderLayout.EAST);
 
 		all.add(mainPanel);
 		all.add(header, BorderLayout.NORTH);
 
-
 		this.setContentPane(all);
 	}
 
-
 	/**
-	 * This class provides the reaction to be performed upon clicking on 
-	 * the "Calculer Tournée" button
+	 * This class provides the reaction to be performed upon clicking on the
+	 * "Calculer Tournée" button
 	 */
 	private class ComputeTourListener implements ActionListener {
-		
+
 		/**
-		 * Upon clicking on the ComputeTourButton, the button will disable. This will prevent any other disrupting call
-		 * while the path is being computed.The method will then proceed to the computation.
-		 * When it ends, whether successfully or not the button will then unlock itself
+		 * Upon clicking on the ComputeTourButton, the button will disable. This
+		 * will prevent any other disrupting call while the path is being
+		 * computed.The method will then proceed to the computation. When it
+		 * ends, whether successfully or not the button will then unlock itself
 		 */
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			computeTourButton.setEnabled(false);
 			computeTourButton.setText("Calcul en cours ...");
-			
-			
-			//Computation of the adjacency matrix
+
+			// Computation of the adjacency matrix
 			Double[][] costsAdjacencyMatrix = CompleteGraphComputer.getAdjacencyMatrix(map, deliveryQuery);
 
 			Delivery[] deliveries = deliveryQuery.getDeliveries();
 			int lenght = deliveryQuery.getDeliveryPassageIdentifiers().length;
 
 			Integer[] stayingTime = new Integer[lenght];
-			int i=1;
-			for(Delivery d:deliveries){
-				stayingTime[i]=d.getDuration();
+			int i = 1;
+			for (Delivery d : deliveries) {
+				stayingTime[i] = d.getDuration();
 				i++;
 			}
 			TSPSolverV1 tspSolver = new TSPSolverV1(costsAdjacencyMatrix, stayingTime);
 			tspSolver.computeSolution();
-			
-			
+
 			ArrayList<Integer> order = tspSolver.getBestSolution();
-			Integer[] deliveryIntersections = new Integer[lenght+1];
-			
+			deliveryIntersections = new Integer[lenght + 1];
+
 			deliveryIntersections[0] = deliveryQuery.getWarehouse().getIntersection().getId();
 			deliveryIntersections[lenght] = deliveryQuery.getWarehouse().getIntersection().getId();
-			for (int j=1; j<lenght; j++)
-			{
-				deliveryIntersections[j] = deliveries[order.get(j)-1].getIntersection().getId();
+			for (int j = 1; j < lenght; j++) {
+				deliveryIntersections[j] = deliveries[order.get(j) - 1].getIntersection().getId();
 			}
-			
-			//End of the computation
-			
+
+			// End of the computation
+
 			computeTourButton.setText("Calculer Tournée");
 			computeTourButton.setEnabled(true);
-			tourPanel = new MapFrame(map, deliveryQuery,true,coefficient, tspSolver.getBestSolution());
+			tourPanel = new MapFrame(map, deliveryQuery, true, coefficient, tspSolver.getBestSolution());
 			tourPanel.repaint();
 			tourPanel.addMouseListener(details);
 			all.remove(deliveryPanel);
 			all.add(tourPanel, BorderLayout.CENTER);
 			all.validate();
 			all.repaint();
-			
+
 		}
 	};
-	
+
 	/**
-	 * Mouse Listener class
-	 * Helps displaying details about the various delivery points
+	 * Mouse Listener class Helps displaying details about the various delivery
+	 * points
 	 */
 	final MouseListener details = new MouseListener() {
 
@@ -267,10 +272,10 @@ public class MainFrame extends JFrame {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			p = e.getPoint();
-			/** TODO 
-			 * Repair display of delivery points details.
+			/**
+			 * TODO Repair display of delivery points details.
 			 */
-			//Boolean b = MapFrame.checkPoint(p);
+			// Boolean b = MapFrame.checkPoint(p);
 			if (false) {
 				if (detailPanel != null) {
 					all.remove(detailPanel);
@@ -285,12 +290,15 @@ public class MainFrame extends JFrame {
 		}
 
 		@Override
-		public void mouseExited(MouseEvent e) {}
+		public void mouseExited(MouseEvent e) {
+		}
 
 		@Override
-		public void mouseEntered(MouseEvent e) {}
+		public void mouseEntered(MouseEvent e) {
+		}
 
 		@Override
-		public void mouseClicked(MouseEvent e) {}
+		public void mouseClicked(MouseEvent e) {
+		}
 	};
 }

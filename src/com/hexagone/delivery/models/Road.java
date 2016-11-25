@@ -44,7 +44,7 @@ public class Road {
 	 * @return the time as a number of seconds
 	 */
 	public Double getTime() {
-		return new Double((double)length*36) / ((((double)speed)*100));
+		return new Double((double) length * 36) / ((((double) speed) * 100));
 	}
 
 	/**
@@ -64,7 +64,7 @@ public class Road {
 	public Integer getDestination() {
 		return new Integer(destination);
 	}
-	
+
 	public String getRoadName() {
 		return roadName;
 	}

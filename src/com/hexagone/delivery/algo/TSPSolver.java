@@ -9,7 +9,7 @@ import java.util.Iterator;
  */
 public abstract class TSPSolver {
 
-	//private static final long TIMELIMIT = 30000;
+	// private static final long TIMELIMIT = 30000;
 
 	private ArrayList<Integer> bestSolution = new ArrayList<Integer>();
 	private double bestSolutionCost = Double.MAX_VALUE;
@@ -81,22 +81,22 @@ public abstract class TSPSolver {
 		 * The computation has been going on for too long, the algorithm stops
 		 * here
 		 */
-		/*if (System.currentTimeMillis() - tpsDebut > TIMELIMIT) {
-			timeLimitReached = true;
-			return;
-		}*/
+		/*
+		 * if (System.currentTimeMillis() - tpsDebut > TIMELIMIT) {
+		 * timeLimitReached = true; return; }
+		 */
 		if (unseenIntersections.size() == 0) { // All intersections have been
 												// visited
 			// We add the cost to go back to the warehouse
 			coutVus += costs[sommetCrt][0];
-			if (coutVus < bestSolutionCost) { // We found a new better solution !
+			if (coutVus < bestSolutionCost) { // We found a new better solution
+												// !
 				bestSolution.clear();
 				// We store the solution (the order of visiting)
-				for (Integer i : seenIntersections)
-				{
+				for (Integer i : seenIntersections) {
 					bestSolution.add(i);
 				}
-				
+
 				bestSolutionCost = coutVus;
 			}
 		} else if (coutVus + bound(sommetCrt, unseenIntersections, costs, stayTime) < bestSolutionCost) { // If
@@ -119,7 +119,7 @@ public abstract class TSPSolver {
 				seenIntersections.add(prochainSommet);
 				unseenIntersections.remove(prochainSommet);
 
-				/**Recursive call */
+				/** Recursive call */
 				Double costNextIntersection = coutVus + costs[sommetCrt][prochainSommet] + stayTime[prochainSommet];
 				branchAndBound(prochainSommet, costNextIntersection, tpsDebut);
 

@@ -6,11 +6,15 @@ import java.util.Iterator;
 public class TSPSolverV1 extends TSPSolver {
 
 	/**
-	 * Allows to create an instance of TSP solver to solve the Travelling Salesman Problem
-	 * @param costsAdjacencyMatrix the adjacency matrix of the graph. costsAdjacencyMatrix[i][j] represents the cost 
-	 * going from i to j.
-	 * @param stayingTime an array representing the cost of making the delivery (time spent making a delivery at a 
-	 * certain point.
+	 * Allows to create an instance of TSP solver to solve the Travelling
+	 * Salesman Problem
+	 * 
+	 * @param costsAdjacencyMatrix
+	 *            the adjacency matrix of the graph. costsAdjacencyMatrix[i][j]
+	 *            represents the cost going from i to j.
+	 * @param stayingTime
+	 *            an array representing the cost of making the delivery (time
+	 *            spent making a delivery at a certain point.
 	 */
 	public TSPSolverV1(Double[][] costsAdjacencyMatrix, Integer[] stayingTime) {
 		super(costsAdjacencyMatrix, stayingTime);
