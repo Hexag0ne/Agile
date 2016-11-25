@@ -9,7 +9,7 @@ import java.util.Iterator;
  */
 public abstract class TSPSolver {
 
-	private static final long TIMELIMIT = 30000;
+	//private static final long TIMELIMIT = 30000;
 
 	private ArrayList<Integer> bestSolution = new ArrayList<Integer>();
 	private double bestSolutionCost = Double.MAX_VALUE;
