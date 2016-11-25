@@ -12,10 +12,10 @@ public abstract class TSPSolver {
 	private static final long TIMELIMIT = 30000;
 
 	private Integer[] bestSolution;
-	private Integer bestSolutionCost = Integer.MAX_VALUE;
+	private double bestSolutionCost = Double.MAX_VALUE;
 	private Boolean timeLimitReached = false;
 
-	private Integer[][] costs;
+	private Double[][] costs;
 	private Integer[] stayTime;
 
 	private ArrayList<Integer> unseenIntersections;
@@ -76,7 +76,7 @@ public abstract class TSPSolver {
 	 * @param tpsLimite
 	 *            : limite de temps pour la resolution
 	 */
-	private void branchAndBound(int sommetCrt, int coutVus, long tpsDebut) {
+	private void branchAndBound(int sommetCrt, double coutVus, long tpsDebut) {
 		/**
 		 * The computation has been going on for too long, the algorithm stops
 		 * here
@@ -117,7 +117,7 @@ public abstract class TSPSolver {
 				seenIntersections.add(prochainSommet);
 				unseenIntersections.remove(prochainSommet);
 
-				/** Reecursive call */
+				/**Recursive call */
 				branchAndBound(prochainSommet, coutVus + costs[sommetCrt][prochainSommet] + stayTime[prochainSommet],
 						tpsDebut);
 
@@ -147,7 +147,7 @@ public abstract class TSPSolver {
 	 *         sommetCourant, contenant chaque sommet de nonVus exactement une
 	 *         fois et terminant par le sommet 0
 	 */
-	protected abstract int bound(Integer sommetCourant, ArrayList<Integer> nonVus, Integer[][] cout, Integer[] duree);
+	protected abstract int bound(Integer sommetCourant, ArrayList<Integer> nonVus, Double[][] cout, Integer[] duree);
 
 	/**
 	 * Methode devant etre redefinie par les sous-classes de TemplateTSP
@@ -163,7 +163,7 @@ public abstract class TSPSolver {
 	 *            nbSommets
 	 * @return un iterateur permettant d'iterer sur tous les sommets de nonVus
 	 */
-	protected abstract Iterator<Integer> iterator(Integer sommetCrt, ArrayList<Integer> nonVus, Integer[][] cout,
+	protected abstract Iterator<Integer> iterator(Integer sommetCrt, ArrayList<Integer> nonVus, Double[][] cout,
 			Integer[] duree);
 
 	/**
@@ -171,7 +171,7 @@ public abstract class TSPSolver {
 	 * 
 	 * @param costsAdjacencyMatrix
 	 */
-	public TSPSolver(Integer[][] costsAdjacencyMatrix, Integer[] stayingTime) {
+	public TSPSolver(Double[][] costsAdjacencyMatrix, Integer[] stayingTime) {
 		this.costs = costsAdjacencyMatrix;
 		this.stayTime = stayingTime;
 	}

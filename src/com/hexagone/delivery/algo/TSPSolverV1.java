@@ -12,7 +12,7 @@ public class TSPSolverV1 extends TSPSolver {
 	 * @param stayingTime an array representing the cost of making the delivery (time spent making a delivery at a 
 	 * certain point.
 	 */
-	public TSPSolverV1(Integer[][] costsAdjacencyMatrix, Integer[] stayingTime) {
+	public TSPSolverV1(Double[][] costsAdjacencyMatrix, Integer[] stayingTime) {
 		super(costsAdjacencyMatrix, stayingTime);
 	}
 
@@ -23,7 +23,7 @@ public class TSPSolverV1 extends TSPSolver {
 	 * java.util.ArrayList, java.lang.Integer[][], java.lang.Integer[])
 	 */
 	@Override
-	protected int bound(Integer sommetCourant, ArrayList<Integer> nonVus, Integer[][] cout, Integer[] duree) {
+	protected int bound(Integer sommetCourant, ArrayList<Integer> nonVus, Double[][] cout, Integer[] duree) {
 		return 0;
 	}
 
@@ -34,7 +34,7 @@ public class TSPSolverV1 extends TSPSolver {
 	 * java.util.ArrayList, java.lang.Integer[][], java.lang.Integer[])
 	 */
 	@Override
-	protected Iterator<Integer> iterator(Integer sommetCrt, ArrayList<Integer> nonVus, Integer[][] cout,
+	protected Iterator<Integer> iterator(Integer sommetCrt, ArrayList<Integer> nonVus, Double[][] cout,
 			Integer[] duree) {
 		return nonVus.iterator();
 	}

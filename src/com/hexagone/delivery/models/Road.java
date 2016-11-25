@@ -18,12 +18,12 @@ public class Road {
 	 * Length of the road between the two intersections in
 	 * <strong>decimeters</strong>
 	 */
-	private int length;
+	private double length;
 	/**
 	 * Average speed at which cars travel down this road in
 	 * <strong>Km/h</strong>
 	 */
-	private int speed;
+	private double speed;
 	/** Name of the Road */
 	private String roadName;
 	/** Unique identifier of the node from which the road spans */
@@ -36,8 +36,8 @@ public class Road {
 	 * 
 	 * @return the time as a number of seconds
 	 */
-	public Integer getTime() {
-		return new Integer((36 / 100) * (length / speed));
+	public Double getTime() {
+		return new Double((double)length*36) / ((((double)speed)*100));
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class Road {
 		return new Integer(destination);
 	}
 
-	public Road(Integer origin, Integer destination, int length, int speed, String name) {
+	public Road(Integer origin, Integer destination, double length, double speed, String name) {
 		this.origin = origin;
 		this.destination = destination;
 		this.length = length;
