@@ -22,22 +22,22 @@ public class CompleteGraphComputer {
 	 * different passage points given in the deliveryQuery
 	 */
 
-	public static Integer[][] getAdjacencyMatrix(Map map, DeliveryQuery deliveryQuery) {
+	public static Double[][] getAdjacencyMatrix(Map map, DeliveryQuery deliveryQuery) {
 		/** Creation of the adjacency matrix */
 		int nbPassagePoints = deliveryQuery.getPassagePointsNumber();
-		Integer[][] adjacencyMatrix = new Integer[nbPassagePoints][];
+		Double[][] adjacencyMatrix = new Double[nbPassagePoints][];
 
 		Integer[] passageIntersections = deliveryQuery.getDeliveryPassageIdentifiers();
 
 		/** We compute the cost of going to each node from each node */
 		for (int i = 0; i < passageIntersections.length; i++) {
 			int numberOfIntersections = map.getIntersections().size();
-			HashMap<Integer,Integer> cost = new HashMap<Integer,Integer>(numberOfIntersections);
+			HashMap<Integer,Double> cost = new HashMap<Integer,Double>(numberOfIntersections);
 			HashMap<Integer,Integer> previousIntersection = new HashMap<Integer,Integer>(numberOfIntersections);
 						
 			computeCosts(map, passageIntersections[i], previousIntersection, cost);
 			
-			Integer [] adjacencyLine = new Integer [nbPassagePoints];
+			Double [] adjacencyLine = new Double [nbPassagePoints];
 			for (int j = 0; j < nbPassagePoints; j++)
 			{
 				adjacencyLine[j] = cost.get(passageIntersections[j]);
@@ -49,13 +49,23 @@ public class CompleteGraphComputer {
 		return adjacencyMatrix;
 	}
 
-	private static void computeCosts(Map map, Integer intersection, 
-			HashMap<Integer, Integer> previousIntersection, HashMap<Integer,Integer> cost) {
+	/**
+	 * Allows to compute the costs of going from intersection 'Intersection' to all the other points in the map
+	 * The result is stored in the HashMap cost.
+	 * The HashMap previous stores the Intersection from which one needs to come from to go by the shortes path.
+	 * @param map the map in which the problem takes place
+	 * @param intersection the starting intersection identifier
+	 * @param previousIntersection hashMap that will contain for each Intersection the Intersection one needs to come 
+	 * from
+	 * @param cost the hashMap that will contain the costs of going from intersection to each node
+	 */
+	static void computeCosts(Map map, Integer intersection, 
+			HashMap<Integer, Integer> previousIntersection, HashMap<Integer,Double> cost) {
 		/** Set of the non-visited nodes */
 		HashSet<Integer> nonVisitedNodes = map.getAllIntersectionIdentifiers();
 		
 		/** Cost array initialisation */
-		cost.put(intersection, 0);
+		cost.put(intersection, new Double(0));
 		
 		/** Beginning of the computation */
 		while (!nonVisitedNodes.isEmpty()) {
@@ -63,7 +73,7 @@ public class CompleteGraphComputer {
 			 * We select the node with the smallest 'distance' so far. In the
 			 * first iteration, the origin node is selected
 			 */
-			intersection = smallestCost(cost);
+			intersection = smallestCost(cost,nonVisitedNodes);
 
 			/** We visit this intersection */
 			nonVisitedNodes.remove(intersection);
@@ -80,7 +90,7 @@ public class CompleteGraphComputer {
 				 */
 				Integer destination = road.getDestination();
 				if (nonVisitedNodes.contains(destination)) {
-					Integer costToDestination = cost.get(intersection) + road.getTime();
+					Double costToDestination = cost.get(intersection) + road.getTime();
 
 					/**
 					 * If we found a shorter path towards destination, we
@@ -102,14 +112,14 @@ public class CompleteGraphComputer {
 	 *            the array from whih one wants to find the minimum
 	 * @return the index of the minimum element in the array as an int
 	 */
-	static Integer smallestCost(HashMap<Integer,Integer> hashMap) {
-		Iterator<Integer> keySetIterator = hashMap.keySet().iterator();
+	static Integer smallestCost(HashMap<Integer,Double> hashMap, HashSet<Integer> keyCandidates) {
+		Iterator<Integer> keySetIterator = keyCandidates.iterator();
 		Integer key = keySetIterator.next();
-		Integer smallestCost = hashMap.get(key);
+		Double smallestCost = hashMap.get(key);
 		while (keySetIterator.hasNext())
 		{
 			Integer newKey = keySetIterator.next();
-			Integer newCost = hashMap.get(newKey);
+			Double newCost = hashMap.getOrDefault(newKey, Double.MAX_VALUE);
 			if (newCost < smallestCost)
 			{
 				key = newKey;
