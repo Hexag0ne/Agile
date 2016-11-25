@@ -209,6 +209,8 @@ public class MainFrame extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			computeTourButton.setEnabled(false);
 			computeTourButton.setText("Calcul en cours ...");
+			
+			
 			//Computation of the adjacency matrix
 			Double[][] costsAdjacencyMatrix = CompleteGraphComputer.getAdjacencyMatrix(map, deliveryQuery);
 
@@ -221,10 +223,21 @@ public class MainFrame extends JFrame {
 				stayingTime[i]=d.getDuration();
 				i++;
 			}
-
-			
 			TSPSolverV1 tspSolver = new TSPSolverV1(costsAdjacencyMatrix, stayingTime);
 			tspSolver.computeSolution();
+			
+			
+			ArrayList<Integer> order = tspSolver.getBestSolution();
+			Integer[] deliveryIntersections = new Integer[lenght+1];
+			
+			deliveryIntersections[0] = deliveryQuery.getWarehouse().getIntersection().getId();
+			deliveryIntersections[lenght] = deliveryQuery.getWarehouse().getIntersection().getId();
+			for (int j=1; j<lenght; j++)
+			{
+				deliveryIntersections[j] = deliveries[order.get(j)-1].getIntersection().getId();
+			}
+			
+			//End of the computation
 			
 			computeTourButton.setText("Calculer Tournée");
 			computeTourButton.setEnabled(true);
