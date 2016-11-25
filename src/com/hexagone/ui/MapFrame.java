@@ -88,7 +88,7 @@ public class MapFrame extends JPanel {
 		}
 
 		// Draw Delivery
-		if ((this.deliveryQuery) != null) {
+		if ((deliveryQuery) != null) {
 			Warehouse warehouse = deliveryQuery.getWarehouse();
 			Delivery[] deliveries = deliveryQuery.getDelivery();
 
@@ -259,10 +259,5 @@ public class MapFrame extends JPanel {
         g.setColor(Color.ORANGE);
         g.fillOval(((pointDP.x)) / coefficient, ((pointDP.y)) / coefficient, 10, 10);
 		
-	}
-
-	public void setTour(ArrayList<Integer> t)
-	{
-		this.tour = tour;
 	}
 }
