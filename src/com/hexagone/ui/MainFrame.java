@@ -8,8 +8,6 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -17,14 +15,12 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
-
-import org.jcp.xml.dsig.internal.MacOutputStream;
 
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Map;
+import com.hexagone.delivery.models.Planning;
 import com.hexagone.delivery.xml.XMLDeserialiser;
 import com.hexagone.delivery.xml.XMLException;
 
@@ -182,7 +178,7 @@ public class MainFrame extends JFrame {
 
 		//header components 
 		header = new JPanel();
-		header.setLayout(new GridLayout(1, 4));
+		header.setLayout(new GridLayout(1, 5));
 		JButton loadMap = new JButton("Charger Plan");
 		loadMap.addActionListener(uploadMap);
 		header.add(loadMap);
@@ -192,6 +188,19 @@ public class MainFrame extends JFrame {
 		JButton calculateTour = new JButton("Calculer Tournée");
 		calculateTour.addActionListener(calculateTourListener);
 		header.add(calculateTour);
+		JButton generatePlanning = new JButton("Générer feuille de route");
+		header.add(generatePlanning);
+		generatePlanning.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Integer[] sols = {6, 12, 8, 6};
+				Planning pl = new Planning(map, deliveryQuery, sols);
+				pl.generateTxt("export/planning.txt");
+				JOptionPane.showMessageDialog(null, pl.toString(), "Feuille de route", JOptionPane.INFORMATION_MESSAGE);
+			}
+			
+		});
 
 
 		//mainPanel components
