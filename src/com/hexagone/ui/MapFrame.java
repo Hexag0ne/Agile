@@ -76,7 +76,7 @@ public class MapFrame extends JPanel {
 		// Draw Delivery
 		if ((this.deliveryQuery) != null) {
 			Warehouse warehouse = deliveryQuery.getWarehouse();
-			Delivery[] deliveries = deliveryQuery.getDelivery();
+			Delivery[] deliveries = deliveryQuery.getDeliveries();
 
 			Intersection intersectionWarehouse = warehouse.getIntersection();
 			Point pointWarehouse = new Point();
@@ -116,7 +116,7 @@ public class MapFrame extends JPanel {
 		ArrayList<Intersection> intersections = new ArrayList<Intersection>();
 		intersections = map.getIntersections();
 		Warehouse warehouse = deliveryQuery.getWarehouse();
-		Delivery[] deliveries = deliveryQuery.getDelivery();
+		Delivery[] deliveries = deliveryQuery.getDeliveries();
 		for (Delivery d : deliveries) {
 			Intersection i = d.getIntersection();
 			Point pointDelivery = new Point();

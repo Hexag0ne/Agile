@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class DeliveryQuery {
 	private Warehouse warehouse;
 
-	private Delivery[] delivery;
+	private Delivery[] deliveries;
 
 	/**
 	 * Gives the number of different passage points in the delivery query.
@@ -21,7 +21,7 @@ public class DeliveryQuery {
 	 *         the number of deliveries to make.
 	 */
 	public int getPassagePointsNumber() {
-		return 1 + delivery.length;
+		return 1 + deliveries.length;
 	}
 
 	/**
@@ -35,10 +35,14 @@ public class DeliveryQuery {
 		Integer[] tab = new Integer[getPassagePointsNumber()];
 		tab[0] = warehouse.getIntersection().getId();
 		for (int i = 1; i < tab.length; i++) {
-			tab[i] = delivery[i - 1].getIntersection().getId();
+			tab[i] = deliveries[i - 1].getIntersection().getId();
 		}
 
 		return tab;
+	}
+	
+	public Delivery[] getDeliveries() {
+		return deliveries;
 	}
 
 	public Warehouse getWarehouse() {
@@ -50,17 +54,13 @@ public class DeliveryQuery {
 		this.warehouse = warehouse;
 	}
 
-	public Delivery[] getDelivery() {
-		return delivery;
-	}
-
 	@XmlElement(name = "livraison")
-	public void setDelivery(Delivery[] delivery) {
-		this.delivery = delivery;
+	public void setDelivery(Delivery[] deliveries) {
+		this.deliveries = deliveries;
 	}
 
 	@Override
 	public String toString() {
-		return "DeliveryQuery [warehouse=" + warehouse + ", delivery=" + Arrays.toString(delivery) + "]";
+		return "DeliveryQuery [warehouse=" + warehouse + ", delivery=" + Arrays.toString(deliveries) + "]";
 	}
 }

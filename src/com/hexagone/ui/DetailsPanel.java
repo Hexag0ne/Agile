@@ -44,7 +44,7 @@ public class DetailsPanel extends JPanel {
 		ArrayList<Intersection> intersections = new ArrayList<Intersection>();
 		intersections = map.getIntersections();
 		Warehouse warehouse = deliveryQuery.getWarehouse();
-		Delivery[] deliveries = deliveryQuery.getDelivery();
+		Delivery[] deliveries = deliveryQuery.getDeliveries();
 		Point planPoint;
 		int idPoint = 999999999;
 		for (Intersection in : intersections) {
