@@ -90,7 +90,7 @@ public class MapFrame extends JPanel {
 		// Draw Delivery
 		if ((deliveryQuery) != null) {
 			Warehouse warehouse = deliveryQuery.getWarehouse();
-			Delivery[] deliveries = deliveryQuery.getDelivery();
+			Delivery[] deliveries = deliveryQuery.getDeliveries();
 
 			Intersection intersectionWarehouse = warehouse.getIntersection();
 			Point pointWarehouse = new Point();
@@ -123,6 +123,7 @@ public class MapFrame extends JPanel {
 		}
 
 		if(MapFrame.calculateflag == true){
+
 
 			for(int j=0;j < tour.size();j++){
 				for(Intersection in: intersections){

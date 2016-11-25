@@ -32,6 +32,7 @@ public class Road {
 	private double speed;
 	/** Name of the Road */
 	private String roadName;
+
 	/** Unique identifier of the node from which the road spans */
 	private Integer origin;
 	/** Unique identifier of the towards which the road goes */
@@ -62,6 +63,10 @@ public class Road {
 	 */
 	public Integer getDestination() {
 		return new Integer(destination);
+	}
+	
+	public String getRoadName() {
+		return roadName;
 	}
 
 	public Road(Integer origin, Integer destination, double length, double speed, String name) {
