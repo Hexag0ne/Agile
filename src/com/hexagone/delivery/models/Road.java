@@ -14,6 +14,12 @@ package com.hexagone.delivery.models;
  */
 public class Road {
 
+	public Road(Integer origin, Integer destination) {
+		super();
+		this.origin = origin;
+		this.destination = destination;
+	}
+
 	/**
 	 * Length of the road between the two intersections in
 	 * <strong>decimeters</strong>
