@@ -11,7 +11,7 @@ public abstract class TSPSolver {
 
 	private static final long TIMELIMIT = 30000;
 
-	private Integer[] bestSolution;
+	private ArrayList<Integer> bestSolution = new ArrayList<Integer>();
 	private double bestSolutionCost = Double.MAX_VALUE;
 	private Boolean timeLimitReached = false;
 
@@ -27,7 +27,7 @@ public abstract class TSPSolver {
 	 * 
 	 * @return the best solution found so far
 	 */
-	public Integer[] getBestSolution() {
+	public ArrayList<Integer> getBestSolution() {
 		return bestSolution;
 	}
 
@@ -81,20 +81,22 @@ public abstract class TSPSolver {
 		 * The computation has been going on for too long, the algorithm stops
 		 * here
 		 */
-		if (System.currentTimeMillis() - tpsDebut > TIMELIMIT) {
+		/*if (System.currentTimeMillis() - tpsDebut > TIMELIMIT) {
 			timeLimitReached = true;
 			return;
-		}
+		}*/
 		if (unseenIntersections.size() == 0) { // All intersections have been
 												// visited
 			// We add the cost to go back to the warehouse
 			coutVus += costs[sommetCrt][0];
-			if (coutVus < bestSolutionCost) { // We found a new better solution
-												// !
-				seenIntersections.toArray(bestSolution); // We store the
-															// solution (the
-															// order of
-															// visiting)
+			if (coutVus < bestSolutionCost) { // We found a new better solution !
+				bestSolution.clear();
+				// We store the solution (the order of visiting)
+				for (Integer i : seenIntersections)
+				{
+					bestSolution.add(i);
+				}
+				
 				bestSolutionCost = coutVus;
 			}
 		} else if (coutVus + bound(sommetCrt, unseenIntersections, costs, stayTime) < bestSolutionCost) { // If
@@ -118,8 +120,8 @@ public abstract class TSPSolver {
 				unseenIntersections.remove(prochainSommet);
 
 				/**Recursive call */
-				branchAndBound(prochainSommet, coutVus + costs[sommetCrt][prochainSommet] + stayTime[prochainSommet],
-						tpsDebut);
+				Double costNextIntersection = coutVus + costs[sommetCrt][prochainSommet] + stayTime[prochainSommet];
+				branchAndBound(prochainSommet, costNextIntersection, tpsDebut);
 
 				seenIntersections.remove(prochainSommet);
 				unseenIntersections.add(prochainSommet);

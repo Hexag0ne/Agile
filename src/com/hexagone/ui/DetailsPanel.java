@@ -23,7 +23,7 @@ public class DetailsPanel extends JPanel {
 	private static DeliveryQuery deliveryQuery;
 	private static Point p;
 
-	public DetailsPanel(Map map, DeliveryQuery deliveryQuery, Point p) {
+	public DetailsPanel(Map map, DeliveryQuery deliveryQuery, Point p, int coefficient) {
 		// TODO Auto-generated constructor stub
 		super();
 		this.map = map;
@@ -49,9 +49,9 @@ public class DetailsPanel extends JPanel {
 		int idPoint = 999999999;
 		for (Intersection in : intersections) {
 			planPoint = in.getCoordinates();
-			Double dppx = (planPoint.getX()) / 2;
+			Double dppx = (planPoint.getX())/coefficient;
 			Integer ippx = dppx.intValue();
-			Double dppy = (planPoint.getY()) / 2;
+			Double dppy = (planPoint.getY())/coefficient;
 			Integer ippy = dppy.intValue();
 			if ((px < (ippx + 10)) && (px > (ippx - 10)) && (py < (ippy + 10)) && (py > (ippy - 10))) {
 				idPoint = in.getId();
@@ -77,13 +77,16 @@ public class DetailsPanel extends JPanel {
 		if(idPoint == idWarehouse){
 			adresse = idPoint;
 			departureTime= warehouse.getDepartureTime();
-			System.out.println(departureTime);
+			
 		}
 		
-		JLabel titleLabel = new JLabel("Détails:  ");
-		this.add(titleLabel);
-		JLabel adresseLabel = new JLabel("Adresse : " + adresse+"  ");
-		this.add(adresseLabel);
+		if(adresse != 999999999){
+			JLabel titleLabel = new JLabel("Détails:  ");
+			this.add(titleLabel);
+			JLabel adresseLabel = new JLabel("Adresse : " + adresse+"  ");
+			this.add(adresseLabel);
+		}
+		
 		if(duration !=0){
 			JLabel durationLabel = new JLabel("Durée : " + duration+" min");
 			this.add(durationLabel);

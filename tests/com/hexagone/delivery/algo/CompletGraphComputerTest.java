@@ -9,9 +9,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.hexagone.delivery.models.Delivery;
+import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Intersection;
 import com.hexagone.delivery.models.Map;
 import com.hexagone.delivery.models.Road;
+import com.hexagone.delivery.models.Warehouse;
 
 public class CompletGraphComputerTest {
 
@@ -59,6 +62,56 @@ public class CompletGraphComputerTest {
 		assertEquals(new Double(0.36), cost.get(new Integer(1)));
 		assertEquals(new Double(0.72), cost.get(new Integer(2)));
 		assertEquals(new Double(1.08), cost.get(new Integer(3)));
+		
+		map.addRoad(new Road(0, 3, 1, 1, "r3"));
+		map.addRoad(new Road(3, 2, 1, 1, "r2"));
+		
+		prevInter.clear();
+		cost.clear();
+		
+		CompleteGraphComputer.computeCosts(map, 0, prevInter, cost);
+		
+		assertEquals(new Double(0), cost.get(new Integer(0)));
+		assertEquals(new Double(0.36), cost.get(new Integer(1)));
+		assertEquals(new Double(0.72), cost.get(new Integer(2)));
+		assertEquals(new Double(0.36), cost.get(new Integer(3)));
 	}
-
+	
+	/**
+	 * Test of the method getAdjacencyMatrix 
+	 * @throws Exception
+	 * @see {@link CompleteGraphComputer}{@link #testGetAdjacencyMatrix()}
+	 */
+	@Test
+	public void testGetAdjacencyMatrix() throws Exception {
+		Map map = new Map();
+		Intersection startInter = new Intersection(0, 0, 0);
+		map.addIntersection(startInter);
+		map.addIntersection(new Intersection(1, 1, 0));
+		map.addIntersection(new Intersection(2, 1, 1));
+		map.addIntersection(new Intersection(3, 0, 1));
+		
+		map.addRoad(new Road(0, 1, 1, 1, "r0"));
+		map.addRoad(new Road(1, 2, 1, 1, "r1"));
+		map.addRoad(new Road(2, 3, 1, 1, "r2"));
+		map.addRoad(new Road(3, 0, 1, 1, "r3"));
+		
+		DeliveryQuery delivery = new DeliveryQuery();
+		
+		Warehouse w = new Warehouse();
+		w.setIntersection(startInter);
+		Delivery [] deliveryArray = new Delivery [2];
+		deliveryArray [0] = new Delivery();
+		deliveryArray [0].setIntersection(new Intersection(1, 1, 0));
+		deliveryArray [1] = new Delivery();
+		deliveryArray [1].setIntersection(new Intersection(3,0,1));
+		
+		delivery.setWarehouse(w);
+		delivery.setDelivery(deliveryArray);
+		
+		Double [][] adjacencyMatrix = CompleteGraphComputer.getAdjacencyMatrix(map, delivery);
+		
+		assertEquals(adjacencyMatrix[0][0], new Double(0.0));
+		
+	}
 }

@@ -8,6 +8,10 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -15,6 +19,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+
+import org.jcp.xml.dsig.internal.MacOutputStream;
 
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Map;
@@ -28,9 +35,14 @@ public class MainFrame extends JFrame {
 	private JPanel deliveryPanel;
 	private JPanel header;
 	private JPanel detailPanel;
+	private JPanel tourPanel;
+	// a panel with the map, a scroll bar, a search bar and a zoom button
+	private JPanel mainPanel;
 	private static Map map;
+	private static int coefficient=2;
 	private DeliveryQuery deliveryQuery;
 	private Point p;
+	private int deliveryPoint=0;
 
 	public MainFrame() throws XMLException {
 		super();
@@ -47,38 +59,28 @@ public class MainFrame extends JFrame {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				p = e.getPoint();
-				Boolean b = MapFrame.checkPoint(p);
-				if (b) {
-					if (detailPanel != null) {
-						all.remove(detailPanel);
-					}
-					detailPanel = new DetailsPanel(map, deliveryQuery, p);
-					all.add(detailPanel, BorderLayout.EAST);
-					all.validate();
-					all.repaint();
-					validate();
-					repaint();
+
+				if (detailPanel != null) {
+					all.remove(detailPanel);
 				}
+				detailPanel = new DetailsPanel(map, deliveryQuery, p, coefficient);
+				all.add(detailPanel, BorderLayout.EAST);
+				all.validate();
+				all.repaint();
+				validate();
+				repaint();
+
 
 			}
 
 			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
+			public void mouseExited(MouseEvent e) {}
 
 			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
+			public void mouseEntered(MouseEvent e) {}
 
 			@Override
-			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
+			public void mouseClicked(MouseEvent e) {}
 		};
 
 		// Listener for "Charger Plan" Button
@@ -90,8 +92,10 @@ public class MainFrame extends JFrame {
 				map = new Map();
 				try {
 					map = XMLDeserialiser.loadMap();
-					mapPanel = new MapFrame(map, null);
-					all.add(mapPanel, BorderLayout.CENTER);
+					mapPanel = new MapFrame(map, null,false,coefficient);
+					mainPanel.add(mapPanel, BorderLayout.CENTER);
+					mainPanel.validate();
+					mainPanel.repaint();
 					all.validate();
 					all.repaint();
 				} catch (XMLException e1) {
@@ -111,11 +115,13 @@ public class MainFrame extends JFrame {
 				deliveryQuery = new DeliveryQuery();
 				try {
 					deliveryQuery = XMLDeserialiser.loadDeliveryQuery();
-					deliveryPanel = new MapFrame(map, deliveryQuery);
+					deliveryPanel = new MapFrame(map, deliveryQuery,false,coefficient);
 					deliveryPanel.repaint();
 					deliveryPanel.addMouseListener(details);
-					all.remove(mapPanel);
-					all.add(deliveryPanel, BorderLayout.CENTER);
+					mainPanel.remove(mapPanel);
+					mainPanel.add(deliveryPanel, BorderLayout.CENTER);
+					mainPanel.validate();
+					mainPanel.repaint();
 					all.validate();
 					all.repaint();
 				} catch (XMLException e1) {
@@ -124,6 +130,45 @@ public class MainFrame extends JFrame {
 
 			}
 		};
+		KeyListener keyListener = new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				int key = e.getKeyCode();
+				if(key == KeyEvent.VK_D){
+					deliveryPoint +=1;
+					((MapFrame) tourPanel).startTour(deliveryPoint);
+					tourPanel.revalidate();
+					tourPanel.repaint();
+					all.validate();
+					all.repaint();
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {}
+
+			@Override
+			public void keyPressed(KeyEvent e) {}
+		};
+		//Listener for calcuateTour button
+		ActionListener calculateTourListener =new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				tourPanel = new MapFrame(map, deliveryQuery,true,coefficient);
+				tourPanel.repaint();
+				tourPanel.addMouseListener(details);
+				tourPanel.addKeyListener(keyListener);
+				all.remove(deliveryPanel);
+				all.add(tourPanel, BorderLayout.CENTER);
+				all.validate();
+				all.repaint();
+			}
+		};
+
+
 
 		this.setTitle("Delivery App");
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -135,26 +180,35 @@ public class MainFrame extends JFrame {
 		all.setLayout(new BorderLayout());
 		all.setBackground(Color.WHITE);
 
+		//header components 
 		header = new JPanel();
-		header.setLayout(new GridLayout(2, 2));
-		JLabel mapLabel = new JLabel("Plan: ");
-		header.add(mapLabel);
-		JButton loadMap = new JButton("Charger");
+		header.setLayout(new GridLayout(1, 4));
+		JButton loadMap = new JButton("Charger Plan");
 		loadMap.addActionListener(uploadMap);
 		header.add(loadMap);
-		JLabel deliveryLabel = new JLabel("Livraison: ");
-		header.add(deliveryLabel);
-		JButton loadDelivery = new JButton("Charger");
+		JButton loadDelivery = new JButton("Charger Livraison");
 		loadDelivery.addActionListener(uploadDelivery);
 		header.add(loadDelivery);
+		JButton calculateTour = new JButton("Calculer Tournée");
+		calculateTour.addActionListener(calculateTourListener);
+		header.add(calculateTour);
 
-		// detail =new JPanel();
 
+		//mainPanel components
+		mainPanel=new JPanel();
+		mainPanel.setBackground(Color.WHITE);
+		mainPanel.setLayout(new BorderLayout());
+		//JScrollBar vbar=new JScrollBar(JScrollBar.VERTICAL, 30, 20, 0, 300);
+		//vbar.setUnitIncrement(2);
+		//vbar.setBlockIncrement(1);
+		//mainPanel.add(vbar, BorderLayout.EAST);
+
+		all.add(mainPanel);
 		all.add(header, BorderLayout.NORTH);
-		// all.add(mapPanel,BorderLayout.WEST);
-		// all.add(detail, BorderLayout.EAST);
+
 
 		this.setContentPane(all);
 	}
+
 
 }
