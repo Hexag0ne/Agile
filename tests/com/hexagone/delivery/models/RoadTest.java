@@ -30,8 +30,10 @@ public class RoadTest {
 	}
 
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void testGetTime() {
+		Road r = new Road(new Integer(0), new Integer(1), 1.0, 1.0, "v0");
+		
+		assertEquals(new Double(0.36), r.getTime());
 	}
 
 }
