@@ -43,6 +43,8 @@ public class CompleteGraphComputer {
 				adjacencyLine[j] = cost.get(passageIntersections[j]);
 			}
 			adjacencyMatrix[i] = adjacencyLine;
+			cost.clear();
+			previousIntersection.clear();
 		}
 
 		/** Return */
@@ -115,7 +117,7 @@ public class CompleteGraphComputer {
 	static Integer smallestCost(HashMap<Integer,Double> hashMap, HashSet<Integer> keyCandidates) {
 		Iterator<Integer> keySetIterator = keyCandidates.iterator();
 		Integer key = keySetIterator.next();
-		Double smallestCost = hashMap.get(key);
+		Double smallestCost = hashMap.getOrDefault(key, Double.MAX_VALUE);
 		while (keySetIterator.hasNext())
 		{
 			Integer newKey = keySetIterator.next();
