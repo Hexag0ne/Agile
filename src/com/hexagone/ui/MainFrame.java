@@ -194,7 +194,7 @@ public class MainFrame extends JFrame {
 			//Computation of the adjacency matrix
 			Double[][] costsAdjacencyMatrix = CompleteGraphComputer.getAdjacencyMatrix(map, deliveryQuery);
 
-			Delivery[] deliveries = deliveryQuery.getDelivery();
+			Delivery[] deliveries = deliveryQuery.getDeliveries();
 			int lenght = deliveryQuery.getDeliveryPassageIdentifiers().length;
 
 			Integer[] stayingTime = new Integer[lenght];
@@ -251,7 +251,6 @@ public class MainFrame extends JFrame {
 				validate();
 				repaint();
 			}
-
 		}
 
 		@Override
