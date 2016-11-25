@@ -33,15 +33,17 @@ public class MapFrame extends JPanel {
 	private static Map map;
 	private static DeliveryQuery deliveryQuery;
 	private static Boolean calculateflag;
+	private ArrayList<Integer> tour;
 	// Shrink coefficient
 	private static int coefficient=1;
 
-	MapFrame(Map map, DeliveryQuery deliveryQuery,Boolean calculateflag, int coefficient) {
+	MapFrame(Map map, DeliveryQuery deliveryQuery,Boolean calculateflag, int coefficient, ArrayList<Integer> arrayList) {
 		super();
 		this.map = map;
 		this.deliveryQuery = deliveryQuery;
 		this.calculateflag=calculateflag;
 		this.coefficient=coefficient;
+		this.tour = arrayList;
 		FlowLayout fl = new FlowLayout();
 		setLayout(fl);
 		setBackground(Color.WHITE);
@@ -121,24 +123,7 @@ public class MapFrame extends JPanel {
 		}
 
 		if(MapFrame.calculateflag == true){
-            
-			
-			Double[][] costsAdjacencyMatrix = CompleteGraphComputer.getAdjacencyMatrix(map, deliveryQuery);
 
-			Delivery[] deliveries = deliveryQuery.getDelivery();
-			int lenght = deliveries.length;
-
-			Integer[] stayingTime = new Integer[lenght];
-			int i=0;
-			for(Delivery d:deliveries){
-				stayingTime[i]=d.getDuration();
-				i++;
-			}
-
-			/*TSPSolverV1 tspSolver = new TSPSolverV1(costsAdjacencyMatrix, stayingTime);
-			tspSolver.computeSolution();
-			ArrayList<Integer> tour = tspSolver.getBestSolution();
-			
 			for(int j=0;j < tour.size();j++){
 				for(Intersection in: intersections){
 					if((in.getId()).equals(tour.get(j))){
@@ -147,7 +132,8 @@ public class MapFrame extends JPanel {
 						g.drawString(""+j, ((p.x)+10) / coefficient, ((p.y)+10) / coefficient);
 					}
 				}
-			}*/
+			}
+			
 			LinkedHashMap<Integer, ArrayList<Road>> tour = new LinkedHashMap<>();
             ArrayList<Road> road21 = new ArrayList<>();
             road21.add(new Road(21, 16));
@@ -285,4 +271,8 @@ public class MapFrame extends JPanel {
 
 	}
 
+	public void setTour(ArrayList<Integer> t)
+	{
+		this.tour = tour;
+	}
 }
