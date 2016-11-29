@@ -1,25 +1,29 @@
 package com.hexagone.delivery.models;
 
+import java.awt.Point;
 import java.io.File;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import com.hexagone.delivery.algo.DeliveryComputer;
 import com.hexagone.delivery.launcher.Main;
 
 public class Route {
-	
+
 	private LinkedHashMap<Integer, ArrayList<Road>> roads;
-	
+
 	private Map map;
-	
+
 	private DeliveryQuery deliveryQuery;
-	
+
 	private DeliveryComputer deliveryComputer;
-	
+
 	public Route(Map map, DeliveryQuery dq, DeliveryComputer dc) {
 		this.map = map;
 		this.deliveryQuery = dq;
@@ -29,40 +33,41 @@ public class Route {
 	public LinkedHashMap<Integer, ArrayList<Road>> getRoute() {
 		return this.roads;
 	}
-	
+
 	public void generateRoute() {
 		LinkedHashMap<Integer, ArrayList<Road>> final_roads = new LinkedHashMap<Integer, ArrayList<Road>>();
-		//ArrayList<Integer> deliveryPoints = deliveryComputer.getDeliveryPoints();
+		// ArrayList<Integer> deliveryPoints = deliveryComputer.getDeliveryPoints();
 		ArrayList<Integer> deliveryPoints = new ArrayList<Integer>();
-		deliveryPoints.add(6);deliveryPoints.add(12);deliveryPoints.add(8);deliveryPoints.add(6);
-		System.out.println(deliveryPoints);
+		deliveryPoints.add(6);
+		deliveryPoints.add(12);
+		deliveryPoints.add(8);
+		deliveryPoints.add(6);
 		for (int i = 0; i < deliveryPoints.size() - 1; i++) {
 			Integer it1 = deliveryPoints.get(i);
-			Integer it2 = deliveryPoints.get(i+1);
+			Integer it2 = deliveryPoints.get(i + 1);
 			// Calling Djisktra to get intermediary roads
 			// returns [it1,it2] if no intermediary intersections
 			ArrayList<Integer> sols = Main.getIntersectionsBetween(it1, it2);
 
 			ArrayList<Road> roads = new ArrayList<Road>();
 			for (int j = 0; j < sols.size() - 1; j++) {
-				//System.out.println("Current sol (" + sols.get(j) + ")");
+				// System.out.println("Current sol (" + sols.get(j) + ")");
 				for (Road r : this.map.getRoadsStartingFrom(sols.get(j))) {
-					//System.out.println("Destination (" + r.getDestination() +
-					//") ==? " + sols.get(j + 1));
+					// System.out.println("Destination (" + r.getDestination() +
+					// ") ==? " + sols.get(j + 1));
 					if (r.getDestination().equals(sols.get(j + 1))) {
 						roads.add(r);
-						//System.out.println(r + " added.");
+						// System.out.println(r + " added.");
 						break;
 					}
 				}
 			}
-			System.out.println(it2 + " -> " + roads);
 			final_roads.put(it2, roads);
 		}
 		// Setting roads attribute to the calculated roads
 		this.roads = final_roads;
 	}
-	
+
 	public void generateTxt(String pathName) {
 		File outfile = new File(pathName);
 		PrintWriter writer;
@@ -74,7 +79,7 @@ public class Route {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public String generateString() {
 		// Formatting stuff
 		Calendar calStart = Calendar.getInstance();
@@ -140,13 +145,40 @@ public class Route {
 			}
 			res += "Adresse: Intersection " + origin + ".\n";
 			// iterate over roads
+			Road lastRoad = null;
+			int deg = -1;
+			int pos = -1;
+			HashMap<Integer, Intersection> intersections = map.getIntersections();
 			for (Road r : roads.get(it)) {
+				if (lastRoad != null) {
+					Point p1 = intersections.get(lastRoad.getOrigin()).getCoordinates();
+					Point p2 = intersections.get(r.getOrigin()).getCoordinates();
+					Point p3 = intersections.get(r.getDestination()).getCoordinates();
+					deg = getAngle(p1, p2, p3);
+					
+					ArrayList<Road> roads = map.getRoadsStartingFrom(r.getOrigin());
+					Collections.sort(roads, new Comparator<Road>() {
+						@Override
+						public int compare(Road r1, Road r2) {
+							Point pp1 = intersections.get(r1.getDestination()).getCoordinates();
+							Point pp2 = intersections.get(r2.getDestination()).getCoordinates();
+							int angle1 = getAngle(p1, p2, pp1);
+							int angle2 = getAngle(p1, p2, pp2);
+							if (angle1 > angle2) {
+								return 1;
+							} else {
+								return -1;
+							}
+						}
+					});
+					pos = 1 + roads.indexOf(r);
+				} else {
+					deg = 0; // Go straight from warehouse
+				}
 				// get name of road
 				String name = r.getRoadName();
-				int pos = 1; // "troisième" ...
-				int deg = 10;
-				
-				res += "\t\t\t" + "Prendre la " + getPlainPosition(pos) + " à " + getPlainDegree(deg) + " (rue " + name + ")\n";
+				res += "\t\t\t" + "Prendre la " + getPlainPosition(pos) + " " + getPlainDegree(deg) + " (rue " + name + ")\n";
+				lastRoad = r;
 			}
 			if (waitingTime != -1) {
 				res += "\t\t\t" + "Attendre" + waitingTime + " minutes/n.";
@@ -156,28 +188,43 @@ public class Route {
 		// Fin des instructions
 		return res;
 	}
-	
+
 	private String getPlainPosition(int pos) {
-		String dir = "rue"; // default value
-		switch(pos) {
-			case 1:	dir = "première"; break;
-			case 2:	dir = "deuxième"; break;
-			case 3:	dir = "troisième"; break;
-			case 4:	dir = "quatrième"; break;
-			case 5:	dir = "cinquième"; break;
+		String res = "";
+		String num = String.valueOf(pos); // default value
+		if (pos > 1) {
+			res += num;
+			res += "ème ";
 		}
-		return dir;
+		if (pos == 1 ){
+			res += num;
+			res += "ère ";
+		}
+		res += "rue";
+		return res;
 	}
-	
+
 	private String getPlainDegree(int deg) {
 		String dir = "tout droit"; // default value
 		int threshhold = 10;
-		if (deg > threshhold/2 && deg < 90) {
+		if (deg > threshhold / 2 && deg < 90) {
 			dir = "à droite";
 		}
-		if (deg > 90 && deg < (360 - threshhold/2)) {
+		if (deg > 90 && deg < (360 - threshhold / 2)) {
 			dir = "à gauche";
 		}
 		return dir;
+	}
+
+	/*
+	 * Returns angle between three points (marked as p1/p2/p3)
+	 */
+	public int getAngle(Point p0, Point p1, Point p2) {
+		double b = Math.pow(p1.x - p0.x, 2) + Math.pow(p1.y - p0.y, 2);
+		double a = Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2);
+		double c = Math.pow(p2.x - p0.x, 2) + Math.pow(p2.y - p0.y, 2);
+		double res = Math.acos((a + b - c) / Math.sqrt(4 * a * b));
+		res = res * 180 / Math.PI;
+		return (int) res;
 	}
 }

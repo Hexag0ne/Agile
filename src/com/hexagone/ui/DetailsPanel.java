@@ -3,10 +3,10 @@ package com.hexagone.ui;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -40,14 +40,12 @@ public class DetailsPanel extends JPanel {
 		Integer px = dx.intValue();
 		Double dy = p.getY();
 		Integer py = dy.intValue();
-		Point pIntegerCoordinates = new Point(px, py);
-		ArrayList<Intersection> intersections = new ArrayList<Intersection>();
-		intersections = map.getIntersections();
+		HashMap<Integer, Intersection> intersections = map.getIntersections();
 		Warehouse warehouse = deliveryQuery.getWarehouse();
 		Delivery[] deliveries = deliveryQuery.getDeliveries();
 		Point planPoint;
 		int idPoint = 999999999;
-		for (Intersection in : intersections) {
+		for (Intersection in : intersections.values()) {
 			planPoint = in.getCoordinates();
 			Double dppx = (planPoint.getX()) / coefficient;
 			Integer ippx = dppx.intValue();

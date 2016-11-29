@@ -8,7 +8,6 @@ import java.awt.Point;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -45,8 +44,7 @@ public class MapFrame extends JPanel {
 	}
 
 	public void paint(Graphics g) {
-		ArrayList<Intersection> intersections = new ArrayList<Intersection>();
-		intersections = map.getIntersections();
+		ArrayList<Intersection> intersections = (ArrayList<Intersection>) map.getIntersections().values();
 		Set<Integer> roads = new HashSet<Integer>();
 		roads = (map.getRoads()).keySet();
 
