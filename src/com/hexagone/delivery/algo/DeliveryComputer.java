@@ -1,4 +1,4 @@
-package src.com.hexagone.delivery.algo;
+package com.hexagone.delivery.algo;
 
 import java.util.ArrayList;
 
