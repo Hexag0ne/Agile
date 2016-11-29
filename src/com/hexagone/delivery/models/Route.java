@@ -32,7 +32,9 @@ public class Route {
 	
 	public void generateRoute() {
 		LinkedHashMap<Integer, ArrayList<Road>> final_roads = new LinkedHashMap<Integer, ArrayList<Road>>();
-		ArrayList<Integer> deliveryPoints = deliveryComputer.getDeliveryPoints();
+		//ArrayList<Integer> deliveryPoints = deliveryComputer.getDeliveryPoints();
+		ArrayList<Integer> deliveryPoints = new ArrayList<Integer>();
+		deliveryPoints.add(6);deliveryPoints.add(12);deliveryPoints.add(8);deliveryPoints.add(6);
 		System.out.println(deliveryPoints);
 		for (int i = 0; i < deliveryPoints.size() - 1; i++) {
 			Integer it1 = deliveryPoints.get(i);

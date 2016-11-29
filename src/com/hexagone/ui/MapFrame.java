@@ -149,24 +149,4 @@ public class MapFrame extends JPanel {
 
 	}
 
-	public void printTour(LinkedHashMap<Integer, ArrayList<Road>> tour,int deliveryPoint) {
-		ArrayList<Intersection> intersections = new ArrayList<Intersection>();
-		intersections = map.getIntersections();
-		
-		Set<Integer> idDPs = tour.keySet();
-		Iterator<Integer> iterator = idDPs.iterator();
-		iterator.hasNext();
-		int idDP = iterator.next();
-		Point pointDP = null;
-		for (Intersection in : intersections) {
-			if ((in.getId()).equals(idDP)) {
-				pointDP = in.getCoordinates();
-				break;
-			}
-		}
-		Graphics g = getGraphics();
-		g.setColor(Color.ORANGE);
-		g.fillOval(((pointDP.x)) / coefficient, ((pointDP.y)) / coefficient, 10, 10);
-
-	}
 }
