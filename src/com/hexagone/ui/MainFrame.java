@@ -8,16 +8,22 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 import com.hexagone.delivery.algo.CompleteGraphComputer;
 import com.hexagone.delivery.algo.TSPSolverV1;
@@ -25,6 +31,7 @@ import com.hexagone.delivery.models.Delivery;
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Map;
 import com.hexagone.delivery.models.Planning;
+import com.hexagone.delivery.models.Road;
 import com.hexagone.delivery.xml.XMLDeserialiser;
 import com.hexagone.delivery.xml.XMLException;
 import com.hexagone.ui.MapFrame;
@@ -36,7 +43,10 @@ public class MainFrame extends JFrame {
 	private JPanel deliveryPanel;
 	private JPanel header;
 	private JPanel detailPanel;
+	private JPanel navigateTourPanel;
 	private MapFrame tourPanel;
+	private TourPanel tourDetailsPanel; 
+	private MapTour mapTourPanel;
 	// a panel with the map, a scroll bar, a search bar and a zoom button
 	private JPanel mainPanel;
 	private static Map map;
@@ -44,9 +54,9 @@ public class MainFrame extends JFrame {
 	private DeliveryQuery deliveryQuery;
 	private Point p;
 	private JButton computeTourButton;
-	private int deliveryPoint = 0;
+	private static int deliveryPoint = 0;
 	private Integer[] deliveryIntersections;
-
+	private static LinkedHashMap<Integer, ArrayList<Road>> tour;
 	public Integer[] getDeliveryIntersections() {
 		return deliveryIntersections;
 	}
@@ -102,27 +112,64 @@ public class MainFrame extends JFrame {
 			}
 		};
 
-		KeyListener keyListener = new KeyListener() {
+		ActionListener startListenner =new ActionListener() {
 
 			@Override
-			public void keyTyped(KeyEvent e) {
-				int key = e.getKeyCode();
-				if (key == KeyEvent.VK_D) {
-					deliveryPoint += 1;
-					((MapFrame) tourPanel).startTour(deliveryPoint);
-					tourPanel.revalidate();
-					tourPanel.repaint();
+			public void actionPerformed(ActionEvent arg0) {
+				    deliveryPoint=0;
+					mainPanel.remove(tourPanel);
+					mapTourPanel = new MapTour(map, deliveryQuery, coefficient, tour, deliveryPoint);
+					mainPanel.add(mapTourPanel,BorderLayout.CENTER);
+					tourDetailsPanel = new TourPanel(deliveryQuery, deliveryPoint,tour); 
+					mainPanel.add(tourDetailsPanel, BorderLayout.EAST);
+					mainPanel.validate();
+					mainPanel.repaint();
 					all.validate();
-					all.repaint();
+					mainPanel.repaint();
+				
+
+			}
+		};
+		
+		ActionListener nextDPListenner =new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				if(deliveryPoint < tour.size()){
+					deliveryPoint++;
+					mainPanel.remove(mapTourPanel);
+					mapTourPanel = new MapTour(map, deliveryQuery, coefficient, tour, deliveryPoint);
+					mainPanel.add(mapTourPanel,BorderLayout.CENTER);
+					mainPanel.remove(tourDetailsPanel);
+					tourDetailsPanel = new TourPanel(deliveryQuery, deliveryPoint,tour); 
+					mainPanel.add(tourDetailsPanel, BorderLayout.EAST);
+					mainPanel.validate();
+					mainPanel.repaint();
+					all.validate();
+					mainPanel.repaint();
 				}
 			}
+		};
+		
+		ActionListener precedentDPListenner =new ActionListener() {
 
 			@Override
-			public void keyReleased(KeyEvent e) {
-			}
-
-			@Override
-			public void keyPressed(KeyEvent e) {
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				if(deliveryPoint < tour.size()){
+					deliveryPoint--;
+					mainPanel.remove(mapTourPanel);
+					mapTourPanel = new MapTour(map, deliveryQuery, coefficient, tour, deliveryPoint);
+					mainPanel.add(mapTourPanel,BorderLayout.CENTER);
+					mainPanel.remove(tourDetailsPanel);
+					tourDetailsPanel = new TourPanel(deliveryQuery, deliveryPoint,tour); 
+					mainPanel.add(tourDetailsPanel, BorderLayout.EAST);
+					mainPanel.validate();
+					mainPanel.repaint();
+					all.validate();
+					mainPanel.repaint();
+				}
 			}
 		};
 		// Listener for calcuateTour button
@@ -130,13 +177,61 @@ public class MainFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				tourPanel = new MapFrame(map, deliveryQuery, true, coefficient, null);
+				tour = new LinkedHashMap<>();
+				ArrayList<Road> road21 = new ArrayList<>();
+				road21.add(new Road(21, 16));
+				road21.add(new Road(16, 11));
+				road21.add(new Road(11, 12));
+				road21.add(new Road(12, 13));
+				tour.put(21, road21);
+
+				ArrayList<Road> road13 = new ArrayList<>();
+				road13.add(new Road(13, 8));
+				road13.add(new Road(8, 7));
+				road13.add(new Road(7, 2));
+				road13.add(new Road(2, 3));
+				road13.add(new Road(3, 4));
+				road13.add(new Road(4, 9));
+				tour.put(13, road13);
+
+				ArrayList<Road> road9 = new ArrayList<>();
+				road9.add(new Road(9, 4));
+				road9.add(new Road(4, 3));
+				tour.put(9, road9);
+
+				ArrayList<Road> road3 = new ArrayList<>();
+				road3.add(new Road(3, 2));
+				road3.add(new Road(2, 1));
+				tour.put(3, road3);
+
+				ArrayList<Road> road1 = new ArrayList<>();
+				road1.add(new Road(1, 0));
+				road1.add(new Road(0, 5));
+				road1.add(new Road(5, 10));
+				road1.add(new Road(10, 11));
+				road1.add(new Road(11, 16));
+				road1.add(new Road(16, 21));
+				tour.put(1, road1);
+
+				tourPanel = new MapFrame(map, deliveryQuery, true, coefficient, tour);
 				tourPanel.repaint();
-				tourPanel.addMouseListener(details);
-				tourPanel.addKeyListener(keyListener);
-				all.remove(deliveryPanel);
-				all.add(tourPanel, BorderLayout.CENTER);
+				mainPanel.remove(deliveryPanel);
+				mainPanel.add(tourPanel, BorderLayout.CENTER);
+				navigateTourPanel = new JPanel();
+				GridLayout fl = new GridLayout(10, 1);
+				navigateTourPanel.setLayout(fl);
+				JButton startButton = new JButton("Commencer la tournée");
+				startButton.addActionListener(startListenner );
+				navigateTourPanel.add(startButton);
+				JButton nextButton = new JButton("Point de livraison suivant");
+				nextButton.addActionListener(nextDPListenner);
+				navigateTourPanel.add(nextButton);
+				JButton precedentButton = new JButton("Point de livraison précédent");
+				precedentButton.addActionListener(precedentDPListenner);
+				navigateTourPanel.add(precedentButton);
+				mainPanel.add(navigateTourPanel, BorderLayout.WEST);
+				mainPanel.validate();
+				mainPanel.repaint();
 				all.validate();
 				all.repaint();
 			}
@@ -163,7 +258,7 @@ public class MainFrame extends JFrame {
 
 		header.add(loadDelivery);
 		computeTourButton = new JButton("Calculer Tournée");
-		computeTourButton.addActionListener(new ComputeTourListener());
+		computeTourButton.addActionListener(calculateTourListener);
 		header.add(computeTourButton);
 
 		JButton generatePlanning = new JButton("Générer feuille de route");
@@ -191,6 +286,7 @@ public class MainFrame extends JFrame {
 		mainPanel = new JPanel();
 		mainPanel.setBackground(Color.WHITE);
 		mainPanel.setLayout(new BorderLayout());
+		mainPanel.addMouseListener(details);
 		// JScrollBar vbar=new JScrollBar(JScrollBar.VERTICAL, 30, 20, 0, 300);
 		// vbar.setUnitIncrement(2);
 		// vbar.setBlockIncrement(1);
@@ -199,6 +295,8 @@ public class MainFrame extends JFrame {
 		all.add(mainPanel);
 		all.add(header, BorderLayout.NORTH);
 
+
+		setFocusable(true);
 		this.setContentPane(all);
 	}
 
@@ -253,7 +351,7 @@ public class MainFrame extends JFrame {
 			 * TODO Repair display of delivery points details.
 			 */
 			// Boolean b = MapFrame.checkPoint(p);
-			if (false) {
+			if (true) {
 				if (detailPanel != null) {
 					all.remove(detailPanel);
 				}
