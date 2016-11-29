@@ -97,6 +97,7 @@ public class TSPv1Test {
 		deliveryArray [1].setEndSchedule(df.parse("11/29/15 8:30 AM, PDT"));
 		
 		
+		// Checking how the Calendar works
 		Calendar calendar = GregorianCalendar.getInstance();
 		calendar.setTime(deliveryArray[0].getStartSchedule());
 		
@@ -105,6 +106,11 @@ public class TSPv1Test {
 		calendar.add(Calendar.MINUTE, 40);
 		assertEquals(9, calendar.get(Calendar.HOUR_OF_DAY));
 		assertEquals(10, calendar.get(Calendar.MINUTE));
+		
+		calendar.setTime(deliveryArray[0].getStartSchedule());
+		assertEquals(8, calendar.get(Calendar.HOUR_OF_DAY));
+		assertEquals(30, calendar.get(Calendar.MINUTE));
+		// End of calendar Checking
 		
 		/**
 		 * With this combination of time constraints, the only passage possible is to go to the second delivery point
