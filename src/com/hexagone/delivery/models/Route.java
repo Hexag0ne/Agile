@@ -23,10 +23,10 @@ public class Route {
 	}
 
 	public LinkedHashMap<Integer, ArrayList<Road>> getRoute() {
-		return this.generateRoute();
+		return this.roads;
 	}
 	
-	public LinkedHashMap<Integer, ArrayList<Road>> generateRoute() {
+	public void generateRoute() {
 		LinkedHashMap<Integer, ArrayList<Road>> final_roads = new LinkedHashMap<Integer, ArrayList<Road>>();
 		Integer[] deliveryPoints = Main.getDeliveryPoints();
 		for (int i = 0; i < deliveryPoints.length - 1; i++) {
@@ -38,13 +38,13 @@ public class Route {
 
 			ArrayList<Road> roads = new ArrayList<Road>();
 			for (int j = 0; j < sols.size() - 1; j++) {
-				// System.out.println("Current sol (" + sols.get(j) + ")");
+				//System.out.println("Current sol (" + sols.get(j) + ")");
 				for (Road r : this.map.getRoadsStartingFrom(sols.get(j))) {
-					// System.out.println("Destination (" + r.getDestination() +
-					// ") ==? " + sols.get(j + 1));
+					//System.out.println("Destination (" + r.getDestination() +
+					//") ==? " + sols.get(j + 1));
 					if (r.getDestination().equals(sols.get(j + 1))) {
 						roads.add(r);
-						// System.out.println(r + " added.");
+						//System.out.println(r + " added.");
 						break;
 					}
 				}
@@ -52,7 +52,8 @@ public class Route {
 			System.out.println(it2 + " -> " + roads);
 			final_roads.put(it2, roads);
 		}
-		return final_roads;
+		// Setting roads attribute to the calculated roads
+		this.roads = final_roads;
 	}
 	
 	public void generateTxt(String pathName) {
@@ -80,24 +81,23 @@ public class Route {
 		Delivery[] deliveries = deliveryQuery.getDeliveries();
 		// Displaying title
 		String planningDate = full.format(calStart.getTime());
+		planningDate = planningDate.substring(0, 6) + planningDate.substring(10, planningDate.length());
 		res += "Mon planning (" + planningDate + ")\n";
 		res += "\tDépart de l'entrepôt. Départ: " + small.format(calStart.getTime()) + ".\n";
-		// Iterate over each delivery point (with last being warehouse)
-		Integer origin = null;
-		String instruction = null;
-		Calendar calEnd = null;
+		String instruction = "";
+		boolean deliveryFound = false;
 		int waitingTime = -1;
+		Integer origin = -1;
+		Calendar calEnd = null;
 		for (Integer it : roads.keySet()) {
 			// Adding road time
-			int roadTime = 10; // Random offset to showcase that "Arrivée" "adds
-								// up time"
+			int roadTime = 0;
 			for (Road r : roads.get(it)) {
 				roadTime += r.getTime();
 			}
 			calStart.add(Calendar.SECOND, roadTime);
 			instruction = "Livraison";
-			// Searching for deliveries if delivery point
-			boolean deliveryFound = false;
+			// Iterating over deliveries
 			for (int i = 0; i < deliveries.length; i++) {
 				Delivery d = deliveries[i];
 				if (d.getIntersection().getId().equals(it)) {
@@ -136,7 +136,7 @@ public class Route {
 			for (Road r : roads.get(it)) {
 				// get name of road
 				String name = r.getRoadName();
-				res += "\t\t\t" + "Suivre la route" + " " + name + "\n";
+				res += "\t\t\t" + "Suivre la route" + " " + name + " (inter. " + r.getOrigin() + ")\n";
 			}
 			if (waitingTime != -1) {
 				res += "\t\t\t" + "Attendre" + waitingTime + " minutes/n.";
