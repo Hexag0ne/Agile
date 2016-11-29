@@ -26,11 +26,13 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import com.hexagone.delivery.algo.CompleteGraphComputer;
+import com.hexagone.delivery.algo.DeliveryComputer;
 import com.hexagone.delivery.algo.TSPSolverV1;
 import com.hexagone.delivery.models.Delivery;
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Map;
 import com.hexagone.delivery.models.Road;
+import com.hexagone.delivery.models.Route;
 import com.hexagone.delivery.xml.XMLDeserialiser;
 import com.hexagone.delivery.xml.XMLException;
 import com.hexagone.ui.MapFrame;
@@ -177,7 +179,7 @@ public class MainFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				tour = new LinkedHashMap<>();
-				ArrayList<Road> road21 = new ArrayList<>();
+				/*ArrayList<Road> road21 = new ArrayList<>();
 				road21.add(new Road(21, 16));
 				road21.add(new Road(16, 11));
 				road21.add(new Road(11, 12));
@@ -210,8 +212,13 @@ public class MainFrame extends JFrame {
 				road1.add(new Road(10, 11));
 				road1.add(new Road(11, 16));
 				road1.add(new Road(16, 21));
-				tour.put(1, road1);
+				tour.put(1, road1);*/
 
+				DeliveryComputer dc = new DeliveryComputer(map, deliveryQuery);
+				Route r = new Route(map, deliveryQuery, dc);
+				r.generateRoute();
+				tour= r.getRoute();
+				
 				tourPanel = new MapFrame(map, deliveryQuery, true, coefficient, tour);
 				tourPanel.repaint();
 				mainPanel.remove(deliveryPanel);
