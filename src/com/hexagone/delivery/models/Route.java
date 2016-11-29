@@ -141,7 +141,10 @@ public class Route {
 			for (Road r : roads.get(it)) {
 				// get name of road
 				String name = r.getRoadName();
-				res += "\t\t\t" + "Suivre la route" + " " + name + " (inter. " + r.getOrigin() + ")\n";
+				int pos = 1; // "troisième" ...
+				int deg = 10;
+				
+				res += "\t\t\t" + "Prendre la " + getPlainPosition(pos) + " à " + getPlainDegree(deg) + " (rue " + name + ")\n";
 			}
 			if (waitingTime != -1) {
 				res += "\t\t\t" + "Attendre" + waitingTime + " minutes/n.";
@@ -150,5 +153,29 @@ public class Route {
 		System.out.println(res);
 		// Fin des instructions
 		return res;
+	}
+	
+	private String getPlainPosition(int pos) {
+		String dir = "rue"; // default value
+		switch(pos) {
+			case 1:	dir = "première"; break;
+			case 2:	dir = "deuxième"; break;
+			case 3:	dir = "troisième"; break;
+			case 4:	dir = "quatrième"; break;
+			case 5:	dir = "cinquième"; break;
+		}
+		return dir;
+	}
+	
+	private String getPlainDegree(int deg) {
+		String dir = "tout droit"; // default value
+		int threshhold = 10;
+		if (deg > threshhold/2 && deg < 90) {
+			dir = "à droite";
+		}
+		if (deg > 90 && deg < (360 - threshhold/2)) {
+			dir = "à gauche";
+		}
+		return dir;
 	}
 }
