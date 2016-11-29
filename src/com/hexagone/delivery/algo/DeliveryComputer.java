@@ -13,12 +13,11 @@ public class DeliveryComputer {
 	private Map map;
 	private DeliveryQuery deliveryQuery;
 	private ArrayList<Integer> deliveryIntersections;
-	private boolean executed;
 
 	public DeliveryComputer(Map map, DeliveryQuery deliveryQuery) {
 		this.map = map;
 		this.deliveryQuery = deliveryQuery;
-		this.executed = false;
+		this.deliveryIntersections = new ArrayList<Integer>();
 	}
 
 	/**
@@ -34,15 +33,14 @@ public class DeliveryComputer {
 	 * 
 	 * 
 	 */
-	public ArrayList<Integer> getDeliveryPoints(Map map, DeliveryQuery deliveryQuery,
-			ArrayList<Integer> deliveryIntersections) {
-		if (executed) {
+	public ArrayList<Integer> getDeliveryPoints() {
+		if (deliveryIntersections.isEmpty()) {
 			Double[][] costsAdjacencyMatrix = CompleteGraphComputer.getAdjacencyMatrix(map, deliveryQuery);
 
 			Delivery[] deliveries = deliveryQuery.getDeliveries();
-			int lenght = deliveryQuery.getDeliveryPassageIdentifiers().length;
+			int length = deliveryQuery.getDeliveryPassageIdentifiers().length;
 
-			Integer[] stayingTime = new Integer[lenght];
+			Integer[] stayingTime = new Integer[length];
 			int i = 1;
 			for (Delivery d : deliveries) {
 				stayingTime[i] = d.getDuration();
@@ -53,14 +51,12 @@ public class DeliveryComputer {
 
 			ArrayList<Integer> order = tspSolver.getBestSolution();
 			deliveryIntersections = new ArrayList<Integer>();
-
-			deliveryIntersections.set(0, deliveryQuery.getWarehouse().getIntersection().getId());
-			deliveryIntersections.set(lenght, deliveryQuery.getWarehouse().getIntersection().getId());
-			for (int j = 1; j < lenght; j++) {
-				deliveryIntersections.set(j, deliveries[order.get(j) - 1].getIntersection().getId());
-
+			
+			deliveryIntersections.add(deliveryQuery.getWarehouse().getIntersection().getId());
+			for (int j = 1; j < length; j++) {
+				deliveryIntersections.add(deliveries[order.get(j) - 1].getIntersection().getId());
 			}
-			executed = true;
+			deliveryIntersections.add(deliveryQuery.getWarehouse().getIntersection().getId());
 		}
 		return deliveryIntersections;
 	}

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 
+import com.hexagone.delivery.algo.DeliveryComputer;
 import com.hexagone.delivery.launcher.Main;
 
 public class Route {
@@ -17,9 +18,12 @@ public class Route {
 	
 	private DeliveryQuery deliveryQuery;
 	
-	public Route(Map map, DeliveryQuery dq) {
+	private DeliveryComputer deliveryComputer;
+	
+	public Route(Map map, DeliveryQuery dq, DeliveryComputer dc) {
 		this.map = map;
 		this.deliveryQuery = dq;
+		this.deliveryComputer = dc;
 	}
 
 	public LinkedHashMap<Integer, ArrayList<Road>> getRoute() {
@@ -28,10 +32,11 @@ public class Route {
 	
 	public void generateRoute() {
 		LinkedHashMap<Integer, ArrayList<Road>> final_roads = new LinkedHashMap<Integer, ArrayList<Road>>();
-		Integer[] deliveryPoints = Main.getDeliveryPoints();
-		for (int i = 0; i < deliveryPoints.length - 1; i++) {
-			Integer it1 = deliveryPoints[i];
-			Integer it2 = deliveryPoints[i + 1];
+		ArrayList<Integer> deliveryPoints = deliveryComputer.getDeliveryPoints();
+		System.out.println(deliveryPoints);
+		for (int i = 0; i < deliveryPoints.size() - 1; i++) {
+			Integer it1 = deliveryPoints.get(i);
+			Integer it2 = deliveryPoints.get(i+1);
 			// Calling Djisktra to get intermediary roads
 			// returns [it1,it2] if no intermediary intersections
 			ArrayList<Integer> sols = Main.getIntersectionsBetween(it1, it2);
