@@ -3,6 +3,9 @@ package com.hexagone.delivery.algo;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.hexagone.delivery.models.Delivery;
+import com.hexagone.delivery.models.DeliveryQuery;
+
 /**
  * This class provides the basic interface and implementation for the Travelling
  * Salesman Problem faced in this software
@@ -15,6 +18,7 @@ public abstract class TSPSolver {
 	private double bestSolutionCost = Double.MAX_VALUE;
 	private Boolean timeLimitReached = false;
 
+	private DeliveryQuery deliveryQuery;
 	private Double[][] costs;
 	private Integer[] stayTime;
 
@@ -173,9 +177,20 @@ public abstract class TSPSolver {
 	 * 
 	 * @param costsAdjacencyMatrix
 	 */
-	public TSPSolver(Double[][] costsAdjacencyMatrix, Integer[] stayingTime) {
-		this.costs = costsAdjacencyMatrix;
-		this.stayTime = stayingTime;
+	public TSPSolver(Double[][] costsAdjacencyMatrix, DeliveryQuery deliveryQuery) {
+		costs = costsAdjacencyMatrix;
+		
+		this.deliveryQuery = deliveryQuery;
+		
+		Delivery[] deliveries = deliveryQuery.getDeliveries();
+		int lenght = deliveryQuery.getDeliveryPassageIdentifiers().length;
+
+		stayTime = new Integer[lenght];
+		int i = 1;
+		for (Delivery d : deliveries) {
+			stayTime[i] = d.getDuration();
+			i++;
+		}
 	}
 
 }
