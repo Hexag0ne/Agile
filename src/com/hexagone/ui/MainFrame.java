@@ -27,6 +27,7 @@ import com.hexagone.delivery.models.Map;
 import com.hexagone.delivery.models.Planning;
 import com.hexagone.delivery.xml.XMLDeserialiser;
 import com.hexagone.delivery.xml.XMLException;
+import com.hexagone.ui.MapFrame;
 
 public class MainFrame extends JFrame {
 
@@ -218,31 +219,7 @@ public class MainFrame extends JFrame {
 			computeTourButton.setEnabled(false);
 			computeTourButton.setText("Calcul en cours ...");
 
-			// Computation of the adjacency matrix
-			Double[][] costsAdjacencyMatrix = CompleteGraphComputer.getAdjacencyMatrix(map, deliveryQuery);
-
-			Delivery[] deliveries = deliveryQuery.getDeliveries();
-			int lenght = deliveryQuery.getDeliveryPassageIdentifiers().length;
-
-			Integer[] stayingTime = new Integer[lenght];
-			int i = 1;
-			for (Delivery d : deliveries) {
-				stayingTime[i] = d.getDuration();
-				i++;
-			}
-			TSPSolverV1 tspSolver = new TSPSolverV1(costsAdjacencyMatrix, stayingTime);
-			tspSolver.computeSolution();
-
-			ArrayList<Integer> order = tspSolver.getBestSolution();
-			deliveryIntersections = new Integer[lenght + 1];
-
-			deliveryIntersections[0] = deliveryQuery.getWarehouse().getIntersection().getId();
-			deliveryIntersections[lenght] = deliveryQuery.getWarehouse().getIntersection().getId();
-			for (int j = 1; j < lenght; j++) {
-				deliveryIntersections[j] = deliveries[order.get(j) - 1].getIntersection().getId();
-			}
-
-			// End of the computation
+			CompleteGraphComputer.computeAdjacencyMatrix(map, deliveryQuery);
 
 			computeTourButton.setText("Calculer Tournée");
 			computeTourButton.setEnabled(true);
