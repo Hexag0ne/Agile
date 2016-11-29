@@ -7,63 +7,44 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 
-/**
- * This class models a planning (feuille de route) It is the result of all
- * calculations made from a map and a delivery query to provide a planning for a
- * delivery person
- */
-public class Planning {
+import com.hexagone.delivery.launcher.Main;
 
-	private Integer[] intersections;
-
-	/*
-	 * List of roads traveled by for solution
-	 */
+public class Route {
+	
 	private LinkedHashMap<Integer, ArrayList<Road>> roads;
-
-	private DeliveryQuery deliveryQuery;
-
+	
 	private Map map;
-
-	/*
-	 * Returns the total time a planning will take for delivery man
-	 */
-	public int getTotalTime() {
-		int totalTime = 0;
-		for (ArrayList<Road> road_list : roads.values()) {
-			for (Road r : road_list) {
-				totalTime += r.getTime();
-			}
-		}
-		return totalTime;
-	}
-
-	public Planning(Map map, DeliveryQuery dq, Integer[] intersections) {
+	
+	private DeliveryQuery deliveryQuery;
+	
+	public Route(Map map, DeliveryQuery dq) {
 		this.map = map;
 		this.deliveryQuery = dq;
-		this.intersections = intersections;
 	}
 
-	private LinkedHashMap<Integer, ArrayList<Road>> calculateRoads() {
+	public LinkedHashMap<Integer, ArrayList<Road>> getRoute() {
+		return this.roads;
+	}
+	
+	public void generateRoute() {
 		LinkedHashMap<Integer, ArrayList<Road>> final_roads = new LinkedHashMap<Integer, ArrayList<Road>>();
-		for (int i = 0; i < intersections.length - 1; i++) {
-			Integer it1 = intersections[i];
-			Integer it2 = intersections[i + 1];
+		Integer[] deliveryPoints = Main.getDeliveryPoints();
+		for (int i = 0; i < deliveryPoints.length - 1; i++) {
+			Integer it1 = deliveryPoints[i];
+			Integer it2 = deliveryPoints[i + 1];
 			// Calling Djisktra to get intermediary roads
 			// returns [it1,it2] if no intermediary intersections
-			// ArrayList<Integer> sols = getIntersectionsBetween(it1, it2);
-
-			ArrayList<Integer> sols = new ArrayList<Integer>();
+			ArrayList<Integer> sols = Main.getIntersectionsBetween(it1, it2);
 
 			ArrayList<Road> roads = new ArrayList<Road>();
 			for (int j = 0; j < sols.size() - 1; j++) {
-				// System.out.println("Current sol (" + sols.get(j) + ")");
-				for (Road r : map.getRoadsStartingFrom(sols.get(j))) {
-					// System.out.println("Destination (" + r.getDestination() +
-					// ") ==? " + sols.get(j + 1));
+				//System.out.println("Current sol (" + sols.get(j) + ")");
+				for (Road r : this.map.getRoadsStartingFrom(sols.get(j))) {
+					//System.out.println("Destination (" + r.getDestination() +
+					//") ==? " + sols.get(j + 1));
 					if (r.getDestination().equals(sols.get(j + 1))) {
 						roads.add(r);
-						// System.out.println(r + " added.");
+						//System.out.println(r + " added.");
 						break;
 					}
 				}
@@ -71,34 +52,23 @@ public class Planning {
 			System.out.println(it2 + " -> " + roads);
 			final_roads.put(it2, roads);
 		}
-		return final_roads;
+		// Setting roads attribute to the calculated roads
+		this.roads = final_roads;
 	}
-
+	
 	public void generateTxt(String pathName) {
 		File outfile = new File(pathName);
 		PrintWriter writer;
 		try {
 			writer = new PrintWriter(outfile, "UTF-8");
-			writer.println(this);
+			writer.println(this.generateString());
 			writer.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
-	/*
-	 * String representation of a planning Example: Mon planning (22 Nov. 2016)
-	 * Entrepôt 1 Arrivée: 14h00. Départ: 14h10. Adresse: Intersection 2.
-	 * Itinéraire: Prendre l'intersection 1 Suivre la route h0 Aller à
-	 * l'intersection 2 Livraison A: Arrivée: 14h20. Départ: 14h40. Adresse:
-	 * Intersection 3. Itinéraire: Aller à l'intersection 1 Aller à
-	 * l'intersection 2 Suivre la route v2 Livraison B: Arrivée: 15h20. Départ:
-	 * 15h40. Adresse: Intersection 6. Itinéraire: Aller à l'intersection 5
-	 * Suivre la route v0 Aller à l'intersection 6 Entrepôt ABC: 15h40 N.B: The
-	 * structured representation was flattened by Eclipse formatting.
-	 */
-	@Override
-	public String toString() {
+	
+	public String generateString() {
 		// Formatting stuff
 		Calendar calStart = Calendar.getInstance();
 		// set hour, minutes, seconds and millis at departure
@@ -108,29 +78,26 @@ public class Planning {
 		SimpleDateFormat small = new SimpleDateFormat("HH:mm");
 		String res = "";
 		// Getting necessary objects
-		LinkedHashMap<Integer, ArrayList<Road>> roads = calculateRoads();
 		Delivery[] deliveries = deliveryQuery.getDeliveries();
 		// Displaying title
 		String planningDate = full.format(calStart.getTime());
+		planningDate = planningDate.substring(0, 6) + planningDate.substring(10, planningDate.length());
 		res += "Mon planning (" + planningDate + ")\n";
 		res += "\tDépart de l'entrepôt. Départ: " + small.format(calStart.getTime()) + ".\n";
-		// Iterate over each delivery point (with last being warehouse)
-		int inc = 0;
-		Integer origin = null;
-		String instruction = null;
-		Calendar calEnd = null;
+		String instruction = "";
+		boolean deliveryFound = false;
 		int waitingTime = -1;
+		Integer origin = -1;
+		Calendar calEnd = null;
 		for (Integer it : roads.keySet()) {
 			// Adding road time
-			int roadTime = 10; // Random offset to showcase that "Arrivée" "adds
-								// up time"
+			int roadTime = 0;
 			for (Road r : roads.get(it)) {
 				roadTime += r.getTime();
 			}
 			calStart.add(Calendar.SECOND, roadTime);
 			instruction = "Livraison";
-			// Searching for deliveries if delivery point
-			boolean deliveryFound = false;
+			// Iterating over deliveries
 			for (int i = 0; i < deliveries.length; i++) {
 				Delivery d = deliveries[i];
 				if (d.getIntersection().getId().equals(it)) {
@@ -169,7 +136,7 @@ public class Planning {
 			for (Road r : roads.get(it)) {
 				// get name of road
 				String name = r.getRoadName();
-				res += "\t\t\t" + "Suivre la route" + " " + name + "\n";
+				res += "\t\t\t" + "Suivre la route" + " " + name + " (inter. " + r.getOrigin() + ")\n";
 			}
 			if (waitingTime != -1) {
 				res += "\t\t\t" + "Attendre" + waitingTime + " minutes/n.";
