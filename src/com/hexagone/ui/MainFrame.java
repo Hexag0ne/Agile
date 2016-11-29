@@ -30,7 +30,6 @@ import com.hexagone.delivery.algo.TSPSolverV1;
 import com.hexagone.delivery.models.Delivery;
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Map;
-import com.hexagone.delivery.models.Planning;
 import com.hexagone.delivery.models.Road;
 import com.hexagone.delivery.xml.XMLDeserialiser;
 import com.hexagone.delivery.xml.XMLException;
@@ -263,24 +262,7 @@ public class MainFrame extends JFrame {
 
 		JButton generatePlanning = new JButton("Générer feuille de route");
 		header.add(generatePlanning);
-		generatePlanning.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Integer[] sols = getDeliveryIntersections();
-				if (sols != null) {
-					Planning pl = new Planning(map, deliveryQuery, sols);
-					pl.generateTxt("export/planning.txt");
-					JOptionPane.showMessageDialog(null, pl.toString(), "Feuille de route",
-							JOptionPane.INFORMATION_MESSAGE);
-				} else {
-					JOptionPane.showMessageDialog(null, "Veuillez d'abord calculez la tournée.", "Erreur",
-							JOptionPane.ERROR_MESSAGE);
-				}
-
-			}
-
-		});
+		
 
 		// mainPanel components
 		mainPanel = new JPanel();
@@ -304,33 +286,7 @@ public class MainFrame extends JFrame {
 	 * This class provides the reaction to be performed upon clicking on the
 	 * "Calculer Tournée" button
 	 */
-	private class ComputeTourListener implements ActionListener {
-
-		/**
-		 * Upon clicking on the ComputeTourButton, the button will disable. This
-		 * will prevent any other disrupting call while the path is being
-		 * computed.The method will then proceed to the computation. When it
-		 * ends, whether successfully or not the button will then unlock itself
-		 */
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			computeTourButton.setEnabled(false);
-			computeTourButton.setText("Calcul en cours ...");
-
-			CompleteGraphComputer.computeAdjacencyMatrix(map, deliveryQuery);
-
-			computeTourButton.setText("Calculer Tournée");
-			computeTourButton.setEnabled(true);
-			tourPanel = new MapFrame(map, deliveryQuery, true, coefficient, tspSolver.getBestSolution());
-			tourPanel.repaint();
-			tourPanel.addMouseListener(details);
-			all.remove(deliveryPanel);
-			all.add(tourPanel, BorderLayout.CENTER);
-			all.validate();
-			all.repaint();
-
-		}
-	};
+	
 
 	/**
 	 * Mouse Listener class Helps displaying details about the various delivery
