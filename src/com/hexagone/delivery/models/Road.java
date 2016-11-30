@@ -79,7 +79,6 @@ public class Road {
 
 	@Override
 	public String toString() {
-		return "Road [length=" + length + ", speed=" + speed + ", roadName=" + roadName + ", origin=" + origin
-				+ ", destination=" + destination + "]";
+		return "Road[\"" + roadName + "\", " + origin + "->" + destination + "]";
 	}
 }

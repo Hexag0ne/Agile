@@ -6,7 +6,7 @@ import java.util.HashSet;
 
 public class Map {
 
-	private ArrayList<Intersection> intersections;
+	private HashMap<Integer, Intersection> intersections;
 	private HashMap<Integer, ArrayList<Road>> roads;
 
 	public HashMap<Integer, ArrayList<Road>> getRoads() {
@@ -45,7 +45,7 @@ public class Map {
 	 * Default constructor. No intersection or road exists in the map yet.
 	 */
 	public Map() {
-		this.setIntersections(new ArrayList<Intersection>());
+		this.intersections = new HashMap<Integer, Intersection>();
 		this.roads = new HashMap<Integer, ArrayList<Road>>();
 	}
 
@@ -60,7 +60,7 @@ public class Map {
 	 *            part of the map, no intersection share the same identifier.
 	 */
 	public void addIntersection(Intersection intersection) {
-		getIntersections().add(intersection);
+		intersections.put(intersection.getId(), intersection);
 	}
 
 	/**
@@ -86,11 +86,11 @@ public class Map {
 		return "Map [intersections = " + getIntersections() + ", roads = " + roads + "]";
 	}
 
-	public ArrayList<Intersection> getIntersections() {
+	public HashMap<Integer, Intersection> getIntersections() {
 		return intersections;
 	}
 
-	public void setIntersections(ArrayList<Intersection> intersections) {
+	public void setIntersections(HashMap<Integer, Intersection> intersections) {
 		this.intersections = intersections;
 	}
 }

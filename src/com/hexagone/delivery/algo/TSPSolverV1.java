@@ -3,6 +3,8 @@ package com.hexagone.delivery.algo;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.hexagone.delivery.models.DeliveryQuery;
+
 public class TSPSolverV1 extends TSPSolver {
 
 	/**
@@ -16,8 +18,8 @@ public class TSPSolverV1 extends TSPSolver {
 	 *            an array representing the cost of making the delivery (time
 	 *            spent making a delivery at a certain point.
 	 */
-	public TSPSolverV1(Double[][] costsAdjacencyMatrix, Integer[] stayingTime) {
-		super(costsAdjacencyMatrix, stayingTime);
+	public TSPSolverV1(Double[][] costsAdjacencyMatrix, DeliveryQuery deliveryQuery) {
+		super(costsAdjacencyMatrix, deliveryQuery);
 	}
 
 	/*
