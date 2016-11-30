@@ -41,6 +41,10 @@ public class DeliveryQuery {
 		return tab;
 	}
 
+	/**
+	 * Gives back the arrayList containing all the deliveries to make.
+	 * @return the arrayList containing all the deliveries to make
+	 */
 	public Delivery[] getDeliveries() {
 		return deliveries;
 	}
