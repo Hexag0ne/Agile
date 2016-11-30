@@ -31,7 +31,7 @@ public class TSPv1Test {
 	}
 
 	@Test
-	public void testComputationNoTimeFrame() {
+	public void testComputationNoTimeFrame() throws ParseException {
 		Double[][] costs = new Double [3][3];
 		costs[0][0] = 0.0;
 		costs[0][1] = 1.0;
@@ -47,6 +47,7 @@ public class TSPv1Test {
 		
 		Warehouse w = new Warehouse();
 		w.setIntersection(new Intersection(42,0,0));
+		w.setDepartureTime(df.parse("11/29/15 8:0 AM, PDT"));
 		Delivery [] deliveryArray = new Delivery [2];
 		deliveryArray [0] = new Delivery();
 		deliveryArray [0].setIntersection(new Intersection(1, 1, 0));
@@ -92,9 +93,11 @@ public class TSPv1Test {
 		deliveryArray [0] = new Delivery();
 		deliveryArray [0].setIntersection(new Intersection(1, 1, 0));
 		deliveryArray [0].setStartSchedule(df.parse("11/29/15 8:30 AM, PDT"));
+		deliveryArray [0].setDuration(5);
 		deliveryArray [1] = new Delivery();
 		deliveryArray [1].setIntersection(new Intersection(3,0,1));
 		deliveryArray [1].setEndSchedule(df.parse("11/29/15 8:30 AM, PDT"));
+		deliveryArray [1].setDuration(5);
 		
 		
 		// Checking how the Calendar works
@@ -120,7 +123,7 @@ public class TSPv1Test {
 		deliv.setWarehouse(w);
 		deliv.setDelivery(deliveryArray);
 		
-		/*
+		
 		TSPSolverV1 solver = new TSPSolverV1(costs, deliv);
 		
 		solver.computeSolution();
@@ -131,7 +134,7 @@ public class TSPv1Test {
 		assertEquals(new Integer(0), bestPath.get(0));
 		assertEquals(new Integer(2), bestPath.get(1));
 		assertEquals(new Integer(1), bestPath.get(2));
-		*/
+		
 	}
 
 }
