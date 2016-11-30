@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import com.hexagone.delivery.models.Delivery;
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Map;
-import com.hexagone.delivery.algo.TSPSolver;
-import com.hexagone.delivery.algo.CompleteGraphComputer;
 
 public class DeliveryComputer {
 
@@ -51,7 +49,7 @@ public class DeliveryComputer {
 
 			ArrayList<Integer> order = tspSolver.getBestSolution();
 			deliveryIntersections = new ArrayList<Integer>();
-			
+
 			deliveryIntersections.add(deliveryQuery.getWarehouse().getIntersection().getId());
 			for (int j = 1; j < length; j++) {
 				deliveryIntersections.add(deliveries[order.get(j) - 1].getIntersection().getId());
