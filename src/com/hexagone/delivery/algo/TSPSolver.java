@@ -13,7 +13,7 @@ import com.hexagone.delivery.models.DeliveryQuery;
  * This class provides the basic interface and implementation for the Travelling
  * Salesman Problem faced in this software
  */
-public abstract class TSPSolver {
+abstract class TSPSolver {
 
 	private static final long TIMELIMIT = 30000;
 

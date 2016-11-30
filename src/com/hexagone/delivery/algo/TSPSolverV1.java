@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 import com.hexagone.delivery.models.DeliveryQuery;
 
-public class TSPSolverV1 extends TSPSolver {
+class TSPSolverV1 extends TSPSolver {
 
 	/**
 	 * Allows to create an instance of TSP solver to solve the Travelling

@@ -16,7 +16,7 @@ import com.hexagone.delivery.models.Road;
  * as an adjacency matrix (2D array in our case) It does not perform any check
  * on the validity of the input parameters.
  */
-public class CompleteGraphComputer {
+class CompleteGraphComputer {
 	/**
 	 * The main goal of this class is to apply the Dijkstra alogrithm to obtain
 	 * an adjacent matrix to then compute the most tume efficient way around the
