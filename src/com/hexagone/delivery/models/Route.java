@@ -35,7 +35,6 @@ public class Route {
 		//ArrayList<Integer> deliveryPoints = deliveryComputer.getDeliveryPoints();
 		ArrayList<Integer> deliveryPoints = new ArrayList<Integer>();
 		deliveryPoints.add(6);deliveryPoints.add(12);deliveryPoints.add(8);deliveryPoints.add(6);
-		System.out.println(deliveryPoints);
 		for (int i = 0; i < deliveryPoints.size() - 1; i++) {
 			Integer it1 = deliveryPoints.get(i);
 			Integer it2 = deliveryPoints.get(i+1);
