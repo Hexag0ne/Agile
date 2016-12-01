@@ -56,7 +56,9 @@ public class CompletGraphComputerTest {
 		HashMap<Integer,Integer> prevInter = new HashMap<Integer,Integer>();
 		HashMap<Integer,Double> cost = new HashMap<Integer,Double>();
 		
-		CompleteGraphComputer.computeCosts(map, new Integer(0), prevInter, cost);
+		CompleteGraphComputer graphComputer = new CompleteGraphComputer(map, null);
+		
+		graphComputer.computeCosts(new Integer(0), prevInter, cost);
 		
 		// Checking the times needed to go to each intersections
 		assertEquals(new Double(0), cost.get(new Integer(0)));
@@ -75,7 +77,8 @@ public class CompletGraphComputerTest {
 		prevInter.clear();
 		cost.clear();
 		
-		CompleteGraphComputer.computeCosts(map, 0, prevInter, cost);
+		graphComputer = new CompleteGraphComputer(map, null);
+		graphComputer.computeCosts(0, prevInter, cost);
 		
 		assertEquals(new Double(0), cost.get(new Integer(0)));
 		assertEquals(new Double(0.36), cost.get(new Integer(1)));
@@ -124,7 +127,8 @@ public class CompletGraphComputerTest {
 		delivery.setWarehouse(w);
 		delivery.setDelivery(deliveryArray);
 		
-		Double [][] adjacencyMatrix = CompleteGraphComputer.getAdjacencyMatrix(map, delivery);
+		CompleteGraphComputer computer = new CompleteGraphComputer(map, delivery);
+		Double [][] adjacencyMatrix = computer.getAdjacencyMatrix();
 		
 		assertEquals(adjacencyMatrix[0][0], new Double(0.0));
 		
