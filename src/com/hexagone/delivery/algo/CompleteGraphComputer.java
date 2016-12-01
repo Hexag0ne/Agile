@@ -47,12 +47,12 @@ class CompleteGraphComputer {
 		
 		HashMap<Integer, Integer> prev = previousIntersection.get(origin);
 		
-		Integer currentIntersection;
-		do {
-			currentIntersection = prev.get(destination);
+		Integer currentIntersection = prev.get(destination);
+		while (!currentIntersection.equals(origin)) {
 			intersections.add(0, currentIntersection);
-		} while (!currentIntersection.equals(origin));
-		
+			currentIntersection = prev.get(currentIntersection);
+		}
+		intersections.add(0, currentIntersection);
 		
 		return intersections;
 	}
@@ -81,12 +81,11 @@ class CompleteGraphComputer {
 		for (int i = 0; i < passageIntersections.length; i++) {
 			int numberOfIntersections = map.getIntersections().size();
 			HashMap<Integer, Double> cost = new HashMap<Integer, Double>(numberOfIntersections);
-			HashMap<Integer, Integer> prevIntersection = new HashMap<Integer, Integer>(numberOfIntersections);
+			previousIntersection.put(passageIntersections[i], new HashMap<Integer,Integer>(numberOfIntersections));
 
-			computeCosts(passageIntersections[i], prevIntersection, cost);
+			computeCosts(passageIntersections[i], previousIntersection.get(passageIntersections[i]), cost);
 
 			/** We store the previous node information for later use */
-			previousIntersection.put(passageIntersections[i], prevIntersection);
 			
 			Double[] adjacencyLine = new Double[nbPassagePoints];
 			for (int j = 0; j < nbPassagePoints; j++) {
@@ -94,7 +93,6 @@ class CompleteGraphComputer {
 			}
 			adjacencyMatrix[i] = adjacencyLine;
 			cost.clear();
-			previousIntersection.clear();
 		}
 
 		/** Return */
