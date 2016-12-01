@@ -44,7 +44,7 @@ public class MapFrame extends JPanel {
 	}
 
 	public void paint(Graphics g) {
-		ArrayList<Intersection> intersections = (ArrayList<Intersection>) map.getIntersections().values();
+		ArrayList<Intersection> intersections = new ArrayList<Intersection>(map.getIntersections().values());
 		Set<Integer> roads = new HashSet<Integer>();
 		roads = (map.getRoads()).keySet();
 
