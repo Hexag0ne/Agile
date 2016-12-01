@@ -25,21 +25,69 @@ class CompleteGraphComputer {
 	private Map map;
 	private DeliveryQuery deliveryQuery;
 
+	private Double[][] adjacencyMatrix;
+	private HashMap<Integer, HashMap<Integer, Integer>> previousIntersection;
+	
+	
+	/**
+	 * Gives back an arrayList of the intersections that one needs to follow to get the shortest path between origin and
+	 * destination.
+	 * Method getAdjacency matrix has to be called at least once before calling this method. 
+	 * The origin and destination parameters have to be identifiers of intersections present in the deliveryQuery this
+	 * was constructed with
+	 * @param origin the origin intersection where one starts its journey
+	 * @param destination the destination where one wants to go
+	 * @return an arrayList of integers containing in the correct order : origin, [other intersections,] destination
+	 */
+	public ArrayList<Integer> getIntersectionPath(Integer origin, Integer destination)
+	{
+		ArrayList<Integer> intersections = new ArrayList<Integer>();
+		
+		intersections.add(0, destination);
+		
+		HashMap<Integer, Integer> prev = previousIntersection.get(origin);
+		
+		Integer currentIntersection;
+		do {
+			currentIntersection = prev.get(destination);
+			intersections.add(0, currentIntersection);
+		} while (!currentIntersection.equals(origin));
+		
+		
+		return intersections;
+	}
+	
+	
+	
+	/**
+	 * Gives back the adjacency matrix of the Map / Delivery query combination given in the constructor of the game
+	 * @return the adjacency matrix as a 2D array of Double.
+	 */
 	public Double[][] getAdjacencyMatrix() {
+		if (adjacencyMatrix != null)
+		{
+			return adjacencyMatrix;
+		}
+		
 		/** Creation of the adjacency matrix */
 		int nbPassagePoints = deliveryQuery.getPassagePointsNumber();
-		Double[][] adjacencyMatrix = new Double[nbPassagePoints][];
-
+		adjacencyMatrix = new Double[nbPassagePoints][];
+		previousIntersection = new HashMap<>();
+		
+		
 		Integer[] passageIntersections = deliveryQuery.getDeliveryPassageIdentifiers();
 
 		/** We compute the cost of going to each node from each node */
 		for (int i = 0; i < passageIntersections.length; i++) {
 			int numberOfIntersections = map.getIntersections().size();
 			HashMap<Integer, Double> cost = new HashMap<Integer, Double>(numberOfIntersections);
-			HashMap<Integer, Integer> previousIntersection = new HashMap<Integer, Integer>(numberOfIntersections);
+			HashMap<Integer, Integer> prevIntersection = new HashMap<Integer, Integer>(numberOfIntersections);
 
-			computeCosts(passageIntersections[i], previousIntersection, cost);
+			computeCosts(passageIntersections[i], prevIntersection, cost);
 
+			/** We store the previous node information for later use */
+			previousIntersection.put(passageIntersections[i], prevIntersection);
+			
 			Double[] adjacencyLine = new Double[nbPassagePoints];
 			for (int j = 0; j < nbPassagePoints; j++) {
 				adjacencyLine[j] = cost.get(passageIntersections[j]);
