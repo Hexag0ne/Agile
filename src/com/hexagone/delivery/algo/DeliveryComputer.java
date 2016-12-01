@@ -34,22 +34,16 @@ public class DeliveryComputer {
 	public ArrayList<Integer> getDeliveryPoints() {
 		if (deliveryIntersections.isEmpty()) {
 			Double[][] costsAdjacencyMatrix = CompleteGraphComputer.getAdjacencyMatrix(map, deliveryQuery);
-
-			Delivery[] deliveries = deliveryQuery.getDeliveries();
-			int length = deliveryQuery.getDeliveryPassageIdentifiers().length;
-
-			Integer[] stayingTime = new Integer[length];
-			int i = 1;
-			for (Delivery d : deliveries) {
-				stayingTime[i] = d.getDuration();
-				i++;
-			}
-			TSPSolverV1 tspSolver = new TSPSolverV1(costsAdjacencyMatrix, stayingTime);
+			
+			TSPSolverV1 tspSolver = new TSPSolverV1(costsAdjacencyMatrix, deliveryQuery);
 			tspSolver.computeSolution();
 
 			ArrayList<Integer> order = tspSolver.getBestSolution();
+			
+			Delivery[] deliveries = deliveryQuery.getDeliveries();
+			int length = deliveryQuery.getDeliveryPassageIdentifiers().length;
+			
 			deliveryIntersections = new ArrayList<Integer>();
-
 			deliveryIntersections.add(deliveryQuery.getWarehouse().getIntersection().getId());
 			for (int j = 1; j < length; j++) {
 				deliveryIntersections.add(deliveries[order.get(j) - 1].getIntersection().getId());
