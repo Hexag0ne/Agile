@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import com.hexagone.delivery.models.Delivery;
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Map;
 import com.hexagone.delivery.models.Road;
@@ -22,8 +21,11 @@ class CompleteGraphComputer {
 	 * an adjacent matrix to then compute the most tume efficient way around the
 	 * different passage points given in the deliveryQuery
 	 */
+	
+	private Map map;
+	private DeliveryQuery deliveryQuery;
 
-	public static Double[][] getAdjacencyMatrix(Map map, DeliveryQuery deliveryQuery) {
+	public Double[][] getAdjacencyMatrix() {
 		/** Creation of the adjacency matrix */
 		int nbPassagePoints = deliveryQuery.getPassagePointsNumber();
 		Double[][] adjacencyMatrix = new Double[nbPassagePoints][];
@@ -36,7 +38,7 @@ class CompleteGraphComputer {
 			HashMap<Integer, Double> cost = new HashMap<Integer, Double>(numberOfIntersections);
 			HashMap<Integer, Integer> previousIntersection = new HashMap<Integer, Integer>(numberOfIntersections);
 
-			computeCosts(map, passageIntersections[i], previousIntersection, cost);
+			computeCosts(passageIntersections[i], previousIntersection, cost);
 
 			Double[] adjacencyLine = new Double[nbPassagePoints];
 			for (int j = 0; j < nbPassagePoints; j++) {
@@ -68,7 +70,7 @@ class CompleteGraphComputer {
 	 *            the hashMap that will contain the costs of going from
 	 *            intersection to each node
 	 */
-	static void computeCosts(Map map, Integer intersection, HashMap<Integer, Integer> previousIntersection,
+	void computeCosts(Integer intersection, HashMap<Integer, Integer> previousIntersection,
 			HashMap<Integer, Double> cost) {
 		/** Set of the non-visited nodes */
 		HashSet<Integer> nonVisitedNodes = map.getAllIntersectionIdentifiers();
@@ -134,6 +136,16 @@ class CompleteGraphComputer {
 			}
 		}
 		return key;
+	}
+	
+	/**
+	 * Constructor for the CompleteGraphComputer
+	 * @param map the map on which the deliveries are going to take place
+	 * @param deliveryQuery the deliveryQuery to make on the map
+	 */
+	public CompleteGraphComputer(Map map, DeliveryQuery deliveryQuery) {
+		this.map = map;
+		this.deliveryQuery = deliveryQuery;
 	}
 
 }

@@ -8,15 +8,11 @@ import com.hexagone.delivery.models.Map;
 
 public class DeliveryComputer {
 
-	private Map map;
 	private DeliveryQuery deliveryQuery;
 	private ArrayList<Integer> deliveryIntersections;
-
-	public DeliveryComputer(Map map, DeliveryQuery deliveryQuery) {
-		this.map = map;
-		this.deliveryQuery = deliveryQuery;
-		this.deliveryIntersections = new ArrayList<Integer>();
-	}
+	
+	private CompleteGraphComputer graphComputer;
+	private TSPSolver tspSolver;
 
 	/**
 	 * 
@@ -33,9 +29,9 @@ public class DeliveryComputer {
 	 */
 	public ArrayList<Integer> getDeliveryPoints() {
 		if (deliveryIntersections.isEmpty()) {
-			Double[][] costsAdjacencyMatrix = CompleteGraphComputer.getAdjacencyMatrix(map, deliveryQuery);
+			Double[][] costsAdjacencyMatrix = graphComputer.getAdjacencyMatrix();
 			
-			TSPSolverV1 tspSolver = new TSPSolverV1(costsAdjacencyMatrix, deliveryQuery);
+			tspSolver = new TSPSolverV1(costsAdjacencyMatrix, deliveryQuery);
 			tspSolver.computeSolution();
 
 			ArrayList<Integer> order = tspSolver.getBestSolution();
@@ -51,5 +47,17 @@ public class DeliveryComputer {
 			deliveryIntersections.add(deliveryQuery.getWarehouse().getIntersection().getId());
 		}
 		return deliveryIntersections;
+	}
+	
+	/**
+	 * Constructor of the DeliveryComputer
+	 * @param map the map of the problem
+	 * @param deliveryQuery the deliveryQuery to make on the 
+	 */
+	public DeliveryComputer(Map map, DeliveryQuery deliveryQuery) {
+		this.deliveryQuery = deliveryQuery;
+		this.deliveryIntersections = new ArrayList<Integer>();
+		
+		this.graphComputer = new CompleteGraphComputer(map, deliveryQuery);
 	}
 }
