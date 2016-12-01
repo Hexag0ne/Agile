@@ -58,11 +58,17 @@ public class CompletGraphComputerTest {
 		
 		CompleteGraphComputer.computeCosts(map, new Integer(0), prevInter, cost);
 		
+		// Checking the times needed to go to each intersections
 		assertEquals(new Double(0), cost.get(new Integer(0)));
 		assertEquals(new Double(0.36), cost.get(new Integer(1)));
 		assertEquals(new Double(0.72), cost.get(new Integer(2)));
 		assertEquals(new Double(1.08), cost.get(new Integer(3)));
+		// Checking the path to go to the various intersecitons
+		assertEquals(new Integer(0), prevInter.get(new Integer(1))); //To go to 1, come from 0
+		assertEquals(new Integer(1), prevInter.get(new Integer(2)));
+		assertEquals(new Integer(2), prevInter.get(new Integer(3)));
 		
+		// Map modification to expect different resulsts
 		map.addRoad(new Road(0, 3, 1, 1, "r3"));
 		map.addRoad(new Road(3, 2, 1, 1, "r2"));
 		
@@ -75,6 +81,15 @@ public class CompletGraphComputerTest {
 		assertEquals(new Double(0.36), cost.get(new Integer(1)));
 		assertEquals(new Double(0.72), cost.get(new Integer(2)));
 		assertEquals(new Double(0.36), cost.get(new Integer(3)));
+		
+		assertEquals(new Integer(0), prevInter.get(new Integer(1)));
+		assertEquals(new Integer(0), prevInter.get(new Integer(3)));
+		
+		// Draw situation : coming from 1 or 3 yields the same cost.
+		// The 
+		assertTrue(prevInter.get(new Integer(2)).equals(new Integer(1)) || 
+				prevInter.get(new Integer(2)).equals(new Integer(3)));
+				
 	}
 	
 	/**

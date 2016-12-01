@@ -3,7 +3,9 @@ package com.hexagone.delivery.algo;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class TSPSolverV1 extends TSPSolver {
+import com.hexagone.delivery.models.DeliveryQuery;
+
+class TSPSolverV1 extends TSPSolver {
 
 	/**
 	 * Allows to create an instance of TSP solver to solve the Travelling
@@ -12,12 +14,10 @@ public class TSPSolverV1 extends TSPSolver {
 	 * @param costsAdjacencyMatrix
 	 *            the adjacency matrix of the graph. costsAdjacencyMatrix[i][j]
 	 *            represents the cost going from i to j.
-	 * @param stayingTime
-	 *            an array representing the cost of making the delivery (time
-	 *            spent making a delivery at a certain point.
+	 * @param deliveryQuery the deliveries to make.
 	 */
-	public TSPSolverV1(Double[][] costsAdjacencyMatrix, Integer[] stayingTime) {
-		super(costsAdjacencyMatrix, stayingTime);
+	public TSPSolverV1(Double[][] costsAdjacencyMatrix, DeliveryQuery deliveryQuery) {
+		super(costsAdjacencyMatrix, deliveryQuery);
 	}
 
 	/*
