@@ -2,6 +2,7 @@ package com.hexagone.delivery.algo;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -26,6 +27,47 @@ public class CompletGraphComputerTest {
 	public void tearDown() throws Exception {
 	}
 
+	@Test
+	public void testGetShortPath() {
+		Map map = new Map();
+		map.addIntersection(new Intersection(0, 0, 0));
+		map.addIntersection(new Intersection(1, 1, 0));
+		map.addIntersection(new Intersection(2, 1, 1));
+		map.addIntersection(new Intersection(3, 0, 1));
+		
+		map.addRoad(new Road(0, 1, 1, 1, "r0")); //time cost is 0.36 for each road
+		map.addRoad(new Road(1, 2, 1, 1, "r1"));
+		map.addRoad(new Road(2, 3, 1, 1, "r2"));
+		map.addRoad(new Road(3, 0, 1, 1, "r3"));
+		
+		DeliveryQuery delivery = new DeliveryQuery();
+		
+		Warehouse w = new Warehouse();
+		w.setIntersection(new Intersection(0,0,0));
+		Delivery [] deliveryArray = new Delivery [2];
+		deliveryArray [0] = new Delivery();
+		deliveryArray [0].setIntersection(new Intersection(1, 1, 0));
+		deliveryArray [1] = new Delivery();
+		deliveryArray [1].setIntersection(new Intersection(3,0,1));
+		
+		delivery.setWarehouse(w);
+		delivery.setDelivery(deliveryArray);
+		
+		CompleteGraphComputer computer = new CompleteGraphComputer(map, delivery);
+		computer.getAdjacencyMatrix();
+		
+		ArrayList<Integer> pathFromWarehouseToFirstDelivery = computer.getIntersectionPath(new Integer(0), new Integer(1));
+		
+		assertEquals(new Integer(0),pathFromWarehouseToFirstDelivery.get(0));
+		assertEquals(new Integer(1),pathFromWarehouseToFirstDelivery.get(1));
+		
+		ArrayList<Integer> pathFromDeliv1ToDeliv2 = computer.getIntersectionPath(new Integer(1), new Integer(3));
+		
+		assertEquals(new Integer(1),pathFromDeliv1ToDeliv2.get(0));
+		assertEquals(new Integer(2),pathFromDeliv1ToDeliv2.get(1));
+		assertEquals(new Integer(3),pathFromDeliv1ToDeliv2.get(2));
+	}
+	
 	@Test
 	public void testSmallestCost() throws Exception {
 		HashMap<Integer,Double> map = new HashMap<Integer,Double>(2);
@@ -103,13 +145,12 @@ public class CompletGraphComputerTest {
 	@Test
 	public void testGetAdjacencyMatrix() throws Exception {
 		Map map = new Map();
-		Intersection startInter = new Intersection(0, 0, 0);
-		map.addIntersection(startInter);
+		map.addIntersection(new Intersection(0, 0, 0));
 		map.addIntersection(new Intersection(1, 1, 0));
 		map.addIntersection(new Intersection(2, 1, 1));
 		map.addIntersection(new Intersection(3, 0, 1));
 		
-		map.addRoad(new Road(0, 1, 1, 1, "r0"));
+		map.addRoad(new Road(0, 1, 1, 1, "r0")); //time cost is 0.36 for each road
 		map.addRoad(new Road(1, 2, 1, 1, "r1"));
 		map.addRoad(new Road(2, 3, 1, 1, "r2"));
 		map.addRoad(new Road(3, 0, 1, 1, "r3"));
@@ -117,7 +158,7 @@ public class CompletGraphComputerTest {
 		DeliveryQuery delivery = new DeliveryQuery();
 		
 		Warehouse w = new Warehouse();
-		w.setIntersection(startInter);
+		w.setIntersection(new Intersection(0,0,0));
 		Delivery [] deliveryArray = new Delivery [2];
 		deliveryArray [0] = new Delivery();
 		deliveryArray [0].setIntersection(new Intersection(1, 1, 0));
@@ -130,7 +171,13 @@ public class CompletGraphComputerTest {
 		CompleteGraphComputer computer = new CompleteGraphComputer(map, delivery);
 		Double [][] adjacencyMatrix = computer.getAdjacencyMatrix();
 		
-		assertEquals(adjacencyMatrix[0][0], new Double(0.0));
+		assertEquals(new Double(0.0),adjacencyMatrix[0][0]);
+		assertEquals(new Double(0.0),adjacencyMatrix[1][1]);
+		assertEquals(new Double(0.0),adjacencyMatrix[2][2]);
+		assertEquals(new Double(0.36),adjacencyMatrix[0][1]);
+		assertEquals(new Double(1.08),adjacencyMatrix[0][2]);
+		assertEquals(new Double(0.72),adjacencyMatrix[1][2]);
+		assertEquals(new Double(0.72),adjacencyMatrix[2][1]);
 		
 	}
 }
