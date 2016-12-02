@@ -14,6 +14,15 @@ import com.hexagone.delivery.xml.IntersectionAdapter;
  */
 @XmlRootElement(name = "livraison")
 public class Delivery {
+	
+	public Delivery(Intersection intersection) {
+		this.intersection = intersection;
+	}
+	
+	public Delivery() {
+		
+	}
+
 	private Intersection intersection;
 
 	private Date endSchedule;
@@ -21,6 +30,18 @@ public class Delivery {
 	private int duration;
 
 	private Date startSchedule;
+	
+	private Date departureTime;
+	
+	private Date arrivalTime;
+	
+	private int waitingTime = 0;
+	
+	public void setTimes(Date departure, Date arrival, int waiting) {
+		this.setDepartureTime(departure);
+		this.setArrivalTime(arrival);
+		this.setWaitingTime(waiting);
+	}
 
 	public Intersection getIntersection() {
 		return intersection;
@@ -65,5 +86,29 @@ public class Delivery {
 	public String toString() {
 		return "Delivery [intersection = " + intersection + ", endSchedule = " + endSchedule + ", duration = "
 				+ duration + ", startSchedule = " + startSchedule + "]";
+	}
+
+	public Date getDepartureTime() {
+		return departureTime;
+	}
+
+	public void setDepartureTime(Date departureTime) {
+		this.departureTime = departureTime;
+	}
+
+	public Date getArrivalTime() {
+		return arrivalTime;
+	}
+
+	public void setArrivalTime(Date arrivalTime) {
+		this.arrivalTime = arrivalTime;
+	}
+
+	public int getWaitingTime() {
+		return waitingTime;
+	}
+
+	public void setWaitingTime(int waitingTime) {
+		this.waitingTime = waitingTime;
 	}
 }
