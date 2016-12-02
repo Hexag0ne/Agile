@@ -15,6 +15,8 @@ import org.junit.Test;
 import com.hexagone.delivery.models.Delivery;
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Intersection;
+import com.hexagone.delivery.models.Map;
+import com.hexagone.delivery.models.Road;
 import com.hexagone.delivery.models.Warehouse;
 
 public class TSPv1Test {
@@ -140,16 +142,16 @@ public class TSPv1Test {
 	@Test
 	public void testCheckTimeout() throws ParseException
 	{
-		Double[][] costs = new Double [3][3];
-		costs[0][0] = 0.0;
-		costs[0][1] = 1.0;
-		costs[0][2] = 2.0;
-		costs[1][0] = 2.0;
-		costs[1][1] = 0.0;
-		costs[1][2] = 1.0;
-		costs[2][0] = 1.0;
-		costs[2][1] = 2.0;
-		costs[2][2] = 0.0;
+		Map map = new Map();
+		map.addIntersection(new Intersection(0, 0, 0));
+		map.addIntersection(new Intersection(1, 1, 0));
+		map.addIntersection(new Intersection(2, 1, 1));
+		map.addIntersection(new Intersection(3, 0, 1));
+		
+		map.addRoad(new Road(0, 1, 1, 1, "r0")); //time cost is 0.36 for each road
+		map.addRoad(new Road(1, 2, 1, 1, "r1"));
+		map.addRoad(new Road(2, 3, 1, 1, "r2"));
+		map.addRoad(new Road(3, 0, 1, 1, "r3"));
 		
 		DeliveryQuery deliv = new DeliveryQuery();
 		
@@ -166,7 +168,6 @@ public class TSPv1Test {
 		deliveryArray [1].setEndSchedule(df.parse("11/29/15 8:00 AM, PDT"));
 		deliveryArray [1].setDuration(5);
 		
-		
 		/**
 		 * As the start schedule time is after the end schedule time, it should create a timeout. 
 		 */
@@ -174,27 +175,26 @@ public class TSPv1Test {
 		deliv.setWarehouse(w);
 		deliv.setDelivery(deliveryArray);
 		
-		
-		TSPSolverV1 solver = new TSPSolverV1(costs, deliv);
-		solver.computeSolution();
+		DeliveryComputer deliveryComputer = new DeliveryComputer(map, deliv);
+		deliveryComputer.getDeliveryPoints();
 			
 		//Expected checkTimeout() is true
-		assertTrue(checkTimeout());
+		assertTrue(deliveryComputer.checkTimeout());
 		
 	}
 	
 	@Test
 	public void testNotEmptySolution() throws ParseException {
-		Double[][] costs = new Double [3][3];
-		costs[0][0] = 0.0;
-		costs[0][1] = 1.0;
-		costs[0][2] = 2.0;
-		costs[1][0] = 2.0;
-		costs[1][1] = 0.0;
-		costs[1][2] = 1.0;
-		costs[2][0] = 1.0;
-		costs[2][1] = 2.0;
-		costs[2][2] = 0.0;
+		Map map = new Map();
+		map.addIntersection(new Intersection(0, 0, 0));
+		map.addIntersection(new Intersection(1, 1, 0));
+		map.addIntersection(new Intersection(2, 1, 1));
+		map.addIntersection(new Intersection(3, 0, 1));
+		
+		map.addRoad(new Road(0, 1, 1, 1, "r0")); //time cost is 0.36 for each road
+		map.addRoad(new Road(1, 2, 1, 1, "r1"));
+		map.addRoad(new Road(2, 3, 1, 1, "r2"));
+		map.addRoad(new Road(3, 0, 1, 1, "r3"));
 		
 		DeliveryQuery deliv = new DeliveryQuery();
 		
@@ -209,16 +209,12 @@ public class TSPv1Test {
 		
 		deliv.setWarehouse(w);
 		deliv.setDelivery(deliveryArray);
-		
-		
-		TSPSolverV1 solver = new TSPSolverV1(costs, deliv);
-		
-		solver.computeSolution();
-		
-		ArrayList<Integer> bestPath = solver.getBestSolution();
+
+		DeliveryComputer deliveryComputer = new DeliveryComputer(map, deliv);
+		deliveryComputer.getDeliveryPoints();
 		
 		// NotEmptySolution should return false, because a path has been calculated
-		assertFalse(checkNotEmptySolution());
+		assertFalse(deliveryComputer.checkNotEmptySolution());
 	}
 
 }
