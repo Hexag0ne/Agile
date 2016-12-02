@@ -38,10 +38,7 @@ public class Route {
 		LinkedHashMap<Integer, ArrayList<Road>> final_roads = new LinkedHashMap<Integer, ArrayList<Road>>();
 		// ArrayList<Integer> deliveryPoints = deliveryComputer.getDeliveryPoints();
 		ArrayList<Integer> deliveryPoints = new ArrayList<Integer>();
-		deliveryPoints.add(6);
-		deliveryPoints.add(12);
-		deliveryPoints.add(8);
-		deliveryPoints.add(6);
+
 		for (int i = 0; i < deliveryPoints.size() - 1; i++) {
 			Integer it1 = deliveryPoints.get(i);
 			Integer it2 = deliveryPoints.get(i + 1);
