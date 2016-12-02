@@ -8,6 +8,7 @@ import com.hexagone.delivery.models.Map;
 import com.hexagone.delivery.models.Route;
 import com.hexagone.delivery.xml.XMLDeserialiser;
 import com.hexagone.delivery.xml.XMLException;
+import com.hexagone.ui.MainFrame;
 
 /**
  * Classe qui gère le lancement de l'application. Point d'entrée de l'éxécutable
@@ -20,19 +21,9 @@ public class Main {
 	 * @throws XMLException
 	 */
 	public static void main(String[] args) throws XMLException {
-		DeliveryQuery dq = XMLDeserialiser.loadDeliveryQuery();
-		Map map = XMLDeserialiser.loadMap();
-
-		DeliveryComputer dc = new DeliveryComputer(map, dq);
-		Route r = new Route(map, dq, dc);
-
-		r.generateRoute();
-		r.generateTxt("export/planning.txt");
-
-		/*
-		 * MainFrame frame = new MainFrame(); frame.setVisible(true);
-		 * frame.setLocationRelativeTo(null);
-		 */
+		MainFrame frame = new MainFrame();
+		frame.setVisible(true);
+		frame.setLocationRelativeTo(null);
 	}
 
 	public static ArrayList<Integer> getIntersectionsBetween(Integer i1, Integer i2) {
