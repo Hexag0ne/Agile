@@ -1,6 +1,6 @@
 package com.hexagone.delivery.algo;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -156,7 +156,7 @@ public class TSPv1Test {
 		DeliveryQuery deliv = new DeliveryQuery();
 		
 		Warehouse w = new Warehouse();
-		w.setIntersection(new Intersection(42,0,0));
+		w.setIntersection(new Intersection(0,0,0));
 		w.setDepartureTime(df.parse("11/29/15 8:00 AM, PDT"));
 		Delivery [] deliveryArray = new Delivery [2];
 		deliveryArray [0] = new Delivery();
@@ -199,7 +199,7 @@ public class TSPv1Test {
 		DeliveryQuery deliv = new DeliveryQuery();
 		
 		Warehouse w = new Warehouse();
-		w.setIntersection(new Intersection(42,0,0));
+		w.setIntersection(new Intersection(0,0,0));
 		w.setDepartureTime(df.parse("11/29/15 8:0 AM, PDT"));
 		Delivery [] deliveryArray = new Delivery [2];
 		deliveryArray [0] = new Delivery();
