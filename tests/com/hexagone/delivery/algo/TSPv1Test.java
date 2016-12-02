@@ -15,6 +15,8 @@ import org.junit.Test;
 import com.hexagone.delivery.models.Delivery;
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Intersection;
+import com.hexagone.delivery.models.Map;
+import com.hexagone.delivery.models.Road;
 import com.hexagone.delivery.models.Warehouse;
 
 public class TSPv1Test {
@@ -135,6 +137,84 @@ public class TSPv1Test {
 		assertEquals(new Integer(2), bestPath.get(1));
 		assertEquals(new Integer(1), bestPath.get(2));
 		
+	}
+	
+	@Test
+	public void testCheckTimeout() throws ParseException
+	{
+		Map map = new Map();
+		map.addIntersection(new Intersection(0, 0, 0));
+		map.addIntersection(new Intersection(1, 1, 0));
+		map.addIntersection(new Intersection(2, 1, 1));
+		map.addIntersection(new Intersection(3, 0, 1));
+		
+		map.addRoad(new Road(0, 1, 1, 1, "r0")); //time cost is 0.36 for each road
+		map.addRoad(new Road(1, 2, 1, 1, "r1"));
+		map.addRoad(new Road(2, 3, 1, 1, "r2"));
+		map.addRoad(new Road(3, 0, 1, 1, "r3"));
+		
+		DeliveryQuery deliv = new DeliveryQuery();
+		
+		Warehouse w = new Warehouse();
+		w.setIntersection(new Intersection(42,0,0));
+		w.setDepartureTime(df.parse("11/29/15 8:00 AM, PDT"));
+		Delivery [] deliveryArray = new Delivery [2];
+		deliveryArray [0] = new Delivery();
+		deliveryArray [0].setIntersection(new Intersection(1, 1, 0));
+		deliveryArray [0].setStartSchedule(df.parse("11/29/15 8:05 AM, PDT"));
+		deliveryArray [0].setDuration(5);
+		deliveryArray [1] = new Delivery();
+		deliveryArray [1].setIntersection(new Intersection(3,0,1));
+		deliveryArray [1].setEndSchedule(df.parse("11/29/15 8:00 AM, PDT"));
+		deliveryArray [1].setDuration(5);
+		
+		/**
+		 * As the start schedule time is after the end schedule time, it should create a timeout. 
+		 */
+		
+		deliv.setWarehouse(w);
+		deliv.setDelivery(deliveryArray);
+		
+		DeliveryComputer deliveryComputer = new DeliveryComputer(map, deliv);
+		deliveryComputer.getDeliveryPoints();
+			
+		//Expected checkTimeout() is true
+		assertTrue(deliveryComputer.checkTimeout());
+		
+	}
+	
+	@Test
+	public void testNotEmptySolution() throws ParseException {
+		Map map = new Map();
+		map.addIntersection(new Intersection(0, 0, 0));
+		map.addIntersection(new Intersection(1, 1, 0));
+		map.addIntersection(new Intersection(2, 1, 1));
+		map.addIntersection(new Intersection(3, 0, 1));
+		
+		map.addRoad(new Road(0, 1, 1, 1, "r0")); //time cost is 0.36 for each road
+		map.addRoad(new Road(1, 2, 1, 1, "r1"));
+		map.addRoad(new Road(2, 3, 1, 1, "r2"));
+		map.addRoad(new Road(3, 0, 1, 1, "r3"));
+		
+		DeliveryQuery deliv = new DeliveryQuery();
+		
+		Warehouse w = new Warehouse();
+		w.setIntersection(new Intersection(42,0,0));
+		w.setDepartureTime(df.parse("11/29/15 8:0 AM, PDT"));
+		Delivery [] deliveryArray = new Delivery [2];
+		deliveryArray [0] = new Delivery();
+		deliveryArray [0].setIntersection(new Intersection(1, 1, 0));
+		deliveryArray [1] = new Delivery();
+		deliveryArray [1].setIntersection(new Intersection(3,0,1));
+		
+		deliv.setWarehouse(w);
+		deliv.setDelivery(deliveryArray);
+
+		DeliveryComputer deliveryComputer = new DeliveryComputer(map, deliv);
+		deliveryComputer.getDeliveryPoints();
+		
+		// NotEmptySolution should return false, because a path has been calculated
+		assertFalse(deliveryComputer.checkNotEmptySolution());
 	}
 
 }
