@@ -1,3 +1,6 @@
+/**
+ * Package containing all the classes that deal with loading and parsing XML files into object of our model
+ */
 package com.hexagone.delivery.xml;
 
 import java.io.File;
@@ -24,6 +27,15 @@ import com.hexagone.delivery.models.Road;
  * @see com.hexagone.delivery.models
  */
 public class XMLDeserialiser {
+	
+	/**
+	 * This method allows the user to select an XML file on the file system and convert it to a Map object the 
+	 * application is going to use afterwards. 
+	 * Note that if the file selected by the user isn't that of a Map, this method will yield an XMLException.
+	 * @return a properly formed Map object
+	 * @throws XMLException in case of a parsing problem or if the user cancels the file selection
+	 * @see com.hexagone.delivery.models.Map
+	 */
 	public static Map loadMap() throws XMLException {
 		// File xml = XMLFileOpener.getInstance().open();
 		File xml = new File("/Users/mehdib/Downloads/archivePLD2016/plan5x5.xml");
@@ -38,6 +50,15 @@ public class XMLDeserialiser {
 		}
 	}
 
+	/**
+	 * This method allows the user to select a XML file on the file system and convert it to a DeliveryQuery that will
+	 * then be used in the application.
+	 * In case the user cancels the file selection or selects an improperly formated file, this method will throw an 
+	 * XMLException.
+	 * @return a properly formated DeliveryQuery
+	 * @throws XMLException
+	 * @see DeliveryQuery
+	 */
 	public static DeliveryQuery loadDeliveryQuery() throws XMLException {
 		// File xml = XMLFileOpener.getInstance().open();
 		// File xml = new File("../../../../../export/livraisons5x5-4.xml");
