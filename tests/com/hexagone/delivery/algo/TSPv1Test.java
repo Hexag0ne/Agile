@@ -178,8 +178,8 @@ public class TSPv1Test {
 		TSPSolverV1 solver = new TSPSolverV1(costs, deliv);
 		solver.computeSolution();
 			
-		//Expected getTimeout() is true
-		assertEquals(getTimeout(), true);
+		//Expected checkTimeout() is true
+		assertTrue(checkTimeout());
 		
 	}
 	
@@ -218,7 +218,7 @@ public class TSPv1Test {
 		ArrayList<Integer> bestPath = solver.getBestSolution();
 		
 		// NotEmptySolution should return false, because a path has been calculated
-		assertEquals(NotEmptySolution(), false);
+		assertFalse(checkNotEmptySolution());
 	}
 
 }
