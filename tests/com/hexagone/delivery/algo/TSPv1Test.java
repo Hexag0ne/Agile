@@ -136,5 +136,89 @@ public class TSPv1Test {
 		assertEquals(new Integer(1), bestPath.get(2));
 		
 	}
+	
+	@Test
+	public void testCheckTimeout() throws ParseException
+	{
+		Double[][] costs = new Double [3][3];
+		costs[0][0] = 0.0;
+		costs[0][1] = 1.0;
+		costs[0][2] = 2.0;
+		costs[1][0] = 2.0;
+		costs[1][1] = 0.0;
+		costs[1][2] = 1.0;
+		costs[2][0] = 1.0;
+		costs[2][1] = 2.0;
+		costs[2][2] = 0.0;
+		
+		DeliveryQuery deliv = new DeliveryQuery();
+		
+		Warehouse w = new Warehouse();
+		w.setIntersection(new Intersection(42,0,0));
+		w.setDepartureTime(df.parse("11/29/15 8:00 AM, PDT"));
+		Delivery [] deliveryArray = new Delivery [2];
+		deliveryArray [0] = new Delivery();
+		deliveryArray [0].setIntersection(new Intersection(1, 1, 0));
+		deliveryArray [0].setStartSchedule(df.parse("11/29/15 8:05 AM, PDT"));
+		deliveryArray [0].setDuration(5);
+		deliveryArray [1] = new Delivery();
+		deliveryArray [1].setIntersection(new Intersection(3,0,1));
+		deliveryArray [1].setEndSchedule(df.parse("11/29/15 8:00 AM, PDT"));
+		deliveryArray [1].setDuration(5);
+		
+		
+		/**
+		 * As the start schedule time is after the end schedule time, it should create a timeout. 
+		 */
+		
+		deliv.setWarehouse(w);
+		deliv.setDelivery(deliveryArray);
+		
+		
+		TSPSolverV1 solver = new TSPSolverV1(costs, deliv);
+		solver.computeSolution();
+			
+		//Expected getTimeout() is true
+		assertEquals(getTimeout(), true);
+		
+	}
+	
+	@Test
+	public void testNotEmptySolution() throws ParseException {
+		Double[][] costs = new Double [3][3];
+		costs[0][0] = 0.0;
+		costs[0][1] = 1.0;
+		costs[0][2] = 2.0;
+		costs[1][0] = 2.0;
+		costs[1][1] = 0.0;
+		costs[1][2] = 1.0;
+		costs[2][0] = 1.0;
+		costs[2][1] = 2.0;
+		costs[2][2] = 0.0;
+		
+		DeliveryQuery deliv = new DeliveryQuery();
+		
+		Warehouse w = new Warehouse();
+		w.setIntersection(new Intersection(42,0,0));
+		w.setDepartureTime(df.parse("11/29/15 8:0 AM, PDT"));
+		Delivery [] deliveryArray = new Delivery [2];
+		deliveryArray [0] = new Delivery();
+		deliveryArray [0].setIntersection(new Intersection(1, 1, 0));
+		deliveryArray [1] = new Delivery();
+		deliveryArray [1].setIntersection(new Intersection(3,0,1));
+		
+		deliv.setWarehouse(w);
+		deliv.setDelivery(deliveryArray);
+		
+		
+		TSPSolverV1 solver = new TSPSolverV1(costs, deliv);
+		
+		solver.computeSolution();
+		
+		ArrayList<Integer> bestPath = solver.getBestSolution();
+		
+		// NotEmptySolution should return false, because a path has been calculated
+		assertEquals(NotEmptySolution(), false);
+	}
 
 }
