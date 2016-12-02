@@ -75,4 +75,26 @@ public class DeliveryComputer {
 		
 		this.graphComputer = new CompleteGraphComputer(map, deliveryQuery);
 	}
+	
+	
+	/**
+	 * 
+	 * Check if the path has been calculated (ie. if bestSolution is not empty)
+	 * @return True if bestSolution is not empty
+	 * 
+	 **/
+	public boolean checkNotEmptySolution(){
+		return !tspSolver.getBestSolution().isEmpty();
+	}
+	
+	/**
+	 * 
+	 * Check if the time limit has been reached
+	 * @return True if there is a time out (ie. the time limit has been reached)
+	 * 
+	 **/
+	public boolean checkTimeout(){
+		return tspSolver.timeLimitReached();
+	}
+	 
 }
