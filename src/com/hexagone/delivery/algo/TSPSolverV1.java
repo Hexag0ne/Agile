@@ -40,7 +40,8 @@ class TSPSolverV1 extends TSPSolver {
 	@Override
 	protected Iterator<Integer> iterator(Integer sommetCrt, ArrayList<Integer> nonVus, Double[][] cout,
 			Integer[] duree) {
-		return ((ArrayList<Integer>) nonVus.clone()).iterator();
+		ArrayList<Integer> arrayList = (ArrayList<Integer>) nonVus.clone();
+		return arrayList.iterator();
 	}
 
 }
