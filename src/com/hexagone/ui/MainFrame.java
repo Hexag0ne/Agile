@@ -330,27 +330,22 @@ public class MainFrame extends JFrame {
 		// header components
 		header = new JPanel();
 		header.setLayout(new GridLayout(1, 5));
+
 		JButton loadMap = new JButton("Charger Plan");
 		loadMap.addActionListener(uploadMap);
 		header.add(loadMap);
+
 		JButton loadDelivery = new JButton("Charger Livraison");
 		loadDelivery.addActionListener(uploadDelivery);
-
 		header.add(loadDelivery);
+
 		computeTourButton = new JButton("Calculer Tournée");
 		computeTourButton.addActionListener(calculateTourListener);
 		header.add(computeTourButton);
 
 		JButton generatePlanning = new JButton("Générer feuille de route");
+		generatePlanning.addActionListener(generateTourListener);
 		header.add(generatePlanning);
-		generatePlanning.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-			}
-
-		});
 
 		// mainPanel components
 		mainPanel = new JPanel();
