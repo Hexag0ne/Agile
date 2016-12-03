@@ -15,6 +15,7 @@ import java.util.LinkedHashMap;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.hexagone.delivery.algo.DeliveryComputer;
@@ -45,6 +46,7 @@ public class MainFrame extends JFrame {
 	private JButton computeTourButton;
 	private static int deliveryPoint = 0;
 	private Integer[] deliveryIntersections;
+	private DeliveryComputer dc;
 	private static LinkedHashMap<Integer, ArrayList<Road>> tour;
 
 	public Integer[] getDeliveryIntersections() {
@@ -145,7 +147,6 @@ public class MainFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				if (deliveryPoint < tour.size()) {
 					deliveryPoint--;
 					mainPanel.remove(mapTourPanel);
@@ -161,6 +162,7 @@ public class MainFrame extends JFrame {
 				}
 			}
 		};
+		
 		// Listener for calcuateTour button
 		ActionListener calculateTourListener = new ActionListener() {
 
@@ -191,10 +193,10 @@ public class MainFrame extends JFrame {
 				 * 16)); road1.add(new Road(16, 21)); tour.put(1, road1);
 				 */
 
-				DeliveryComputer dc = new DeliveryComputer(map, deliveryQuery);
+				dc = new DeliveryComputer(map, deliveryQuery);
 				Route r = new Route(map, deliveryQuery, dc);
 				r.generateRoute();
-				tour = r.getRoute();
+				//tour = r.getRoute();
 
 				tourPanel = new MapFrame(map, deliveryQuery, true, coefficient, tour);
 				tourPanel.repaint();
@@ -217,6 +219,21 @@ public class MainFrame extends JFrame {
 				mainPanel.repaint();
 				all.validate();
 				all.repaint();
+			}
+		};
+		
+		ActionListener generateTourListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (tourPanel != null) {
+					Route r = new Route(map, deliveryQuery, dc);
+					r.generateRoute();
+					r.generateTxt("export/planning.txt");
+					JOptionPane.showMessageDialog(null, r.generateString(), "Feuille de route généré !", JOptionPane.INFORMATION_MESSAGE);
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Veuillez calculez la tournée.", "Erreur", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		};
 
@@ -246,6 +263,7 @@ public class MainFrame extends JFrame {
 
 		JButton generatePlanning = new JButton("Générer feuille de route");
 		header.add(generatePlanning);
+		generatePlanning.addActionListener(generateTourListener);
 
 		// mainPanel components
 		mainPanel = new JPanel();
