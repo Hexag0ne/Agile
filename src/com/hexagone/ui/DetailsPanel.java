@@ -23,7 +23,7 @@ public class DetailsPanel extends JPanel {
 	private static DeliveryQuery deliveryQuery;
 	private static Point p;
 
-	public DetailsPanel(Map map, DeliveryQuery deliveryQuery, Point p, int coefficient) {
+	public DetailsPanel(Map map, DeliveryQuery deliveryQuery, Point p, float coefficient) {
 		// TODO Auto-generated constructor stub
 		super();
 		this.map = map;

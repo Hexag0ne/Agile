@@ -1,104 +1,135 @@
 package com.hexagone.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Vector;
+import java.util.Map.Entry;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
+import com.hexagone.delivery.models.ArrivalPoint;
 import com.hexagone.delivery.models.Delivery;
 import com.hexagone.delivery.models.DeliveryQuery;
+import com.hexagone.delivery.models.Intersection;
 import com.hexagone.delivery.models.Road;
+import com.hexagone.delivery.models.Warehouse;
 
 public class TourPanel extends JPanel {
 
 	private DeliveryQuery deliveryQuery;
 	private int deliveryPoint;
-	private LinkedHashMap<Integer, ArrayList<Road>> tour;
-
-	public TourPanel(DeliveryQuery deliveyQuery, int deliveryPoint, LinkedHashMap<Integer, ArrayList<Road>> tour) {
+	private LinkedHashMap<Integer, ArrivalPoint> tour;
+	private static Vector<Delivery> data;
+	private static JTable table;
+	public TourPanel(DeliveryQuery deliveyQuery, int deliveryPoint,LinkedHashMap<Integer, ArrivalPoint> tour){
 
 		super();
-		this.deliveryQuery = deliveyQuery;
-		this.deliveryPoint = deliveryPoint;
-		this.tour = tour;
+		this.deliveryQuery=deliveyQuery;
+		this.deliveryPoint=deliveryPoint;
+		this.tour=tour;
 
-		GridLayout fl = new GridLayout(8, 1);
-		setLayout(fl);
-		setBackground(Color.WHITE);
+		
+		data= new Vector<Delivery>();
+		
+		Set<Entry<Integer, ArrivalPoint>> entrySet= tour.entrySet();
+		Iterator<Entry<Integer, ArrivalPoint>> iterator= entrySet.iterator();
+		Entry<Integer, ArrivalPoint> entry=null;
+		
+		while(iterator.hasNext()){
+			entry=iterator.next();
+			data.addElement(entry.getValue().getDelivery());
+			break;
 
-		int adresse = 999999999, duration = 0;
-		Date startSchedule = null, endSchedule = null, departureTimeWarehouse = null, arrivalTime = null,
-				departureTime = null, waitingTime = null;
+        }
+		if(table == null){
+			table = new JTable(new TableModel(data));
+			table.setFillsViewportHeight(true);
+			table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+			table.getColumnModel().getColumn(0).setPreferredWidth(27);
+			table.getColumnModel().getColumn(1).setPreferredWidth(40);
+			table.getColumnModel().getColumn(2).setPreferredWidth(100);
+			table.getColumnModel().getColumn(3).setPreferredWidth(100);
+			table.getColumnModel().getColumn(4).setPreferredWidth(100);
+			table.getColumnModel().getColumn(5).setPreferredWidth(100);
+		}
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		if(deliveryPoint<table.getRowCount()){
+			table.setRowSelectionInterval(deliveryPoint,deliveryPoint);
+		}
+		setLayout(new BorderLayout());
+		add(table.getTableHeader(), BorderLayout.PAGE_START);
+		add(table, BorderLayout.CENTER);
+		
+		
+		
+	}
+	
+	public TourPanel(DeliveryQuery deliveyQuery,LinkedHashMap<Integer, ArrivalPoint> tour, int searchDP){
 
-		int i = 0;
-		Boolean founded = false;
+		super();
+		this.deliveryQuery=deliveyQuery;
+		this.tour=tour;
+
+		// number of the row of the delivery point searched
+		int rowNumber=0;
+		data= new Vector<Delivery>();
+		
 		Delivery[] deliveries = deliveryQuery.getDeliveries();
+		
+		Set<Entry<Integer, ArrivalPoint>> entrySet= tour.entrySet();
+		Iterator<Entry<Integer, ArrivalPoint>> iterator= entrySet.iterator();
+		Entry<Integer, ArrivalPoint> entry=null;
+		int i=0;
+		while(iterator.hasNext()){
+			entry=iterator.next();
+			for(Delivery d: deliveries){
+				if((d.getIntersection().getId()).equals(entry.getKey())){
+				    i++;
+					data.addElement(entry.getValue().getDelivery());
+					if((d.getIntersection().getId()).equals(searchDP)){
+						rowNumber=i-1;
+					}
+					break;
 
-		Set<Entry<Integer, ArrayList<Road>>> entrySet = tour.entrySet();
-		Iterator<Entry<Integer, ArrayList<Road>>> iterator = entrySet.iterator();
-		Entry<Integer, ArrayList<Road>> entry = null;
-		while (i < deliveryPoint + 1 && iterator.hasNext()) {
-			entry = iterator.next();
-			i++;
-		}
-
-		for (Delivery d : deliveries) {
-			if ((d.getIntersection().getId()).equals(entry.getKey())) {
-				adresse = d.getIntersection().getId();
-				duration = d.getDuration();
-				startSchedule = d.getStartSchedule();
-				endSchedule = d.getEndSchedule();
-				founded = true;
-				break;
-
+				}
 			}
+        }
+		if(table == null){
+			table = new JTable(new TableModel(data));
+			table.setFillsViewportHeight(true);
+			table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+			table.getColumnModel().getColumn(0).setPreferredWidth(27);
+			table.getColumnModel().getColumn(1).setPreferredWidth(40);
+			table.getColumnModel().getColumn(2).setPreferredWidth(100);
+			table.getColumnModel().getColumn(3).setPreferredWidth(100);
+			table.getColumnModel().getColumn(4).setPreferredWidth(100);
+			table.getColumnModel().getColumn(5).setPreferredWidth(100);
 		}
-		if (founded == false) {
-			if ((deliveyQuery.getWarehouse().getIntersection().getId()).equals(entry.getKey())) {
-				adresse = deliveyQuery.getWarehouse().getIntersection().getId();
-				departureTimeWarehouse = deliveyQuery.getWarehouse().getDepartureTime();
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		if(deliveryPoint<table.getRowCount()){
+			if(rowNumber !=0 ){
+				table.setRowSelectionInterval(rowNumber,rowNumber);
 			}
+			
 		}
-
-		JLabel adresseLabel = new JLabel("Adresse: " + adresse);
-		add(adresseLabel);
-		if (duration != 0) {
-			JLabel durationLabel = new JLabel("Durée: " + duration + " min");
-			add(durationLabel);
-		}
-
-		if (departureTimeWarehouse != null) {
-			Calendar departureTimeWarehouseCalendar = GregorianCalendar.getInstance();
-			departureTimeWarehouseCalendar.setTime(departureTimeWarehouse);
-			JLabel departureTimeWarehouseLabel = new JLabel(
-					"Heure du départ de l'entrepôt: " + departureTimeWarehouseCalendar.get(Calendar.HOUR_OF_DAY) + "h"
-							+ departureTimeWarehouseCalendar.get(Calendar.MINUTE) + "min");
-			add(departureTimeWarehouseLabel);
-		}
-		if (startSchedule != null) {
-			Calendar startScheduleCalendar = GregorianCalendar.getInstance();
-			startScheduleCalendar.setTime(startSchedule);
-			Calendar endScheduleCalendar = GregorianCalendar.getInstance();
-			endScheduleCalendar.setTime(endSchedule);
-			JLabel timeslotDelivery = new JLabel("Plage horaire: " + startScheduleCalendar.get(Calendar.HOUR_OF_DAY)
-					+ "h" + "-" + endScheduleCalendar.get(Calendar.HOUR_OF_DAY) + "h");
-			add(timeslotDelivery);
-			JLabel arrivalTimeLabel = new JLabel("Temps d'arrivée: ");
-			add(arrivalTimeLabel);
-			JLabel departureTimeLabel = new JLabel("Temps de départ: ");
-			add(departureTimeLabel);
-			JLabel waitingTimeLabel = new JLabel("Temps d'attente: ");
-			add(waitingTimeLabel);
-		}
-
+		setLayout(new BorderLayout());
+		add(table.getTableHeader(), BorderLayout.PAGE_START);
+		add(table, BorderLayout.CENTER);
+		
+		
 	}
 }

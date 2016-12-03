@@ -3,21 +3,24 @@
  */
 package com.hexagone.delivery.models;
 
-
-import com.hexagone.delivery.xml.DateAdapter;
-import com.hexagone.delivery.xml.IntersectionAdapter;
-
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import com.hexagone.delivery.xml.DateAdapter;
+import com.hexagone.delivery.xml.IntersectionAdapter;
 
 /**
  * This class models a delivery in a delivery query
  */
 @XmlRootElement(name = "livraison")
 public class Delivery {
+
+	
 	/** The intersection where the delivery takes place */
 	private Intersection intersection;
 
@@ -29,6 +32,18 @@ public class Delivery {
 
 	/** The time from which the delivery may take place */
 	private Date startSchedule;
+	
+	private Date departureTime;
+	
+	private Date arrivalTime;
+	
+	private int waitingTime = 0;
+	
+	public void setTimes(Date departure, Date arrival, int waiting) {
+		this.setDepartureTime(departure);
+		this.setArrivalTime(arrival);
+		this.setWaitingTime(waiting);
+	}
 
 	/**
 	 * Gives back the intersection object at which the delivery takes place.
@@ -111,5 +126,48 @@ public class Delivery {
 	public String toString() {
 		return "Delivery [intersection = " + intersection + ", endSchedule = " + endSchedule + ", duration = "
 				+ duration + ", startSchedule = " + startSchedule + "]";
+	}
+
+	public Date getDepartureTime() {
+		return departureTime;
+	}
+
+	public void setDepartureTime(Date departureTime) {
+		this.departureTime = departureTime;
+	}
+
+	public Date getArrivalTime() {
+		return arrivalTime;
+	}
+
+	public void setArrivalTime(Date arrivalTime) {
+		this.arrivalTime = arrivalTime;
+	}
+
+	public int getWaitingTime() {
+		return waitingTime;
+	}
+
+	public void setWaitingTime(int waitingTime) {
+		this.waitingTime = waitingTime;
+	}
+	
+	public String getTimeslotDelivery() {
+		if(this.getStartSchedule() != null){
+			Calendar startScheduleCalendar = GregorianCalendar.getInstance();
+			startScheduleCalendar.setTime(this.getStartSchedule());
+			Calendar endScheduleCalendar = GregorianCalendar.getInstance();
+			endScheduleCalendar.setTime(this.getEndSchedule());
+			String timeslotDelivery = (""+startScheduleCalendar.get(Calendar.HOUR_OF_DAY)+"h"+"-"+endScheduleCalendar.get(Calendar.HOUR_OF_DAY)+"h");
+			return timeslotDelivery;
+		}
+		else return null;
+	}
+	
+	public Delivery(Intersection intersection) {
+		this.intersection = intersection;
+	}
+	
+	public Delivery() {	
 	}
 }

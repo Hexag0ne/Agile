@@ -5,18 +5,21 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 
 import com.hexagone.delivery.algo.DeliveryComputer;
 import com.hexagone.delivery.launcher.Main;
 
 public class Route {
 
-	private LinkedHashMap<Integer, ArrayList<Road>> roads;
+	private LinkedHashMap<Integer, ArrivalPoint> route;
 
 	private Map map;
 
@@ -30,39 +33,107 @@ public class Route {
 		this.deliveryComputer = dc;
 	}
 
-	public LinkedHashMap<Integer, ArrayList<Road>> getRoute() {
-		return this.roads;
+	public LinkedHashMap<Integer, ArrivalPoint> getRoute() {
+		return this.route;
 	}
 
 	public void generateRoute() {
-		LinkedHashMap<Integer, ArrayList<Road>> final_roads = new LinkedHashMap<Integer, ArrayList<Road>>();
-		// ArrayList<Integer> deliveryPoints = deliveryComputer.getDeliveryPoints();
-		ArrayList<Integer> deliveryPoints = new ArrayList<Integer>();
+		LinkedHashMap<Integer, ArrivalPoint> route = new LinkedHashMap<Integer, ArrivalPoint>();
+		HashMap<Integer, Intersection> intersections = map.getIntersections();
+		
+		//ArrayList<Integer> deliveryPoints = deliveryComputer.getDeliveryPoints();
+		Integer[] its = {0, 8, 12, 22, 5, 0}; ArrayList<Integer> deliveryPoints = new ArrayList<Integer>(); deliveryPoints.addAll(Arrays.asList(its));
 
-		for (int i = 0; i < deliveryPoints.size() - 1; i++) {
+		Calendar calArrival = Calendar.getInstance();
+		calArrival.setTime(deliveryQuery.getWarehouse().getDepartureTime());
+		for (int i = 1; i < deliveryPoints.size(); i++) {
 			Integer it1 = deliveryPoints.get(i);
-			Integer it2 = deliveryPoints.get(i + 1);
-			// Calling Djisktra to get intermediary roads
-			// returns [it1,it2] if no intermediary intersections
-			ArrayList<Integer> sols = Main.getIntersectionsBetween(it1, it2);
-
-			ArrayList<Road> roads = new ArrayList<Road>();
-			for (int j = 0; j < sols.size() - 1; j++) {
-				// System.out.println("Current sol (" + sols.get(j) + ")");
-				for (Road r : this.map.getRoadsStartingFrom(sols.get(j))) {
-					// System.out.println("Destination (" + r.getDestination() +
-					// ") ==? " + sols.get(j + 1));
-					if (r.getDestination().equals(sols.get(j + 1))) {
-						roads.add(r);
-						// System.out.println(r + " added.");
-						break;
-					}
+			Integer it2 = deliveryPoints.get(i - 1);
+			Intersection is = intersections.get(it1);
+			
+			Delivery delivery;
+			ArrayList<Road> roads = getRoadsbetweenIntersections(it1, it2);
+			if (i == deliveryPoints.size() - 1) {
+				delivery = completeWarehouse(calArrival, is, roads);
+			}
+			else {
+				Delivery d = findDelivery(it1);
+				if (d != null) {
+					delivery = completeDelivery(calArrival, d, roads);
+				}
+				else {
+					delivery = null;
 				}
 			}
-			final_roads.put(it2, roads);
+			System.out.println(""+i+""+delivery);
+			route.put(it1, new ArrivalPoint(roads, delivery));
 		}
-		// Setting roads attribute to the calculated roads
-		this.roads = final_roads;
+		this.route = route;
+	}
+	
+	private Delivery completeWarehouse(Calendar calArrival, Intersection is, ArrayList<Road> roads) {
+		Delivery d = new Delivery(is);
+		int roadTime = getTotalTime(roads);
+		calArrival.add(Calendar.SECOND, roadTime);
+		d.setArrivalTime(calArrival.getTime());
+		return d;
+	}
+
+	private int getTotalTime(ArrayList<Road> roads) {
+		int roadTime = 0;
+		for (Road r : roads) {
+			roadTime += r.getTime();
+		}
+		return roadTime;
+	}
+
+	private Delivery completeDelivery(Calendar calArrival, Delivery d, ArrayList<Road> roads) {
+		int roadTime = getTotalTime(roads);
+		calArrival.add(Calendar.SECOND, roadTime);
+		int duration = d.getDuration();
+		Calendar calDeparture = (Calendar) calArrival.clone();
+		calDeparture.add(Calendar.SECOND, duration);
+		
+		long waitingMilliSeconds;
+		int waitingTime = 0;
+		if (d.getStartSchedule() != null) {
+			Calendar calTemp = Calendar.getInstance();
+			calTemp.setTime(d.getStartSchedule());
+			// (if arrival time before startSchedule, wait)
+			if (calArrival.before(calTemp)) {
+				waitingMilliSeconds = (calTemp.getTimeInMillis() - calArrival.getTimeInMillis()) / 1000;
+				waitingTime = (int) (waitingMilliSeconds);
+			}
+		}
+		d.setTimes(calDeparture.getTime(), calArrival.getTime(), waitingTime);
+		return d;
+	}
+
+	private ArrayList<Road> getRoadsbetweenIntersections(Integer it1, Integer it2) {
+		ArrayList<Road> roads = new ArrayList<Road>();
+		ArrayList<Integer> sols = Main.getIntersectionsBetween(it1, it2);
+		
+		for (int j = 0; j < sols.size() - 1; j++) {
+			for (Road r : this.map.getRoadsStartingFrom(sols.get(j))) {
+				if (r.getDestination().equals(sols.get(j + 1))) {
+					roads.add(r);
+					break;
+				}
+			}
+		}
+		return roads;
+	}
+
+	private Delivery findDelivery(Integer it) {
+		Delivery[] deliveries = deliveryQuery.getDeliveries();
+		Delivery d;
+		for (int i = 0; i < deliveries.length; i++) {
+			d = deliveries[i];
+			if (d.getIntersection().getId().equals(it)) {
+				return d;
+			}
+		}
+		return null;
 	}
 
 	public void generateTxt(String pathName) {
@@ -78,82 +149,62 @@ public class Route {
 	}
 
 	public String generateString() {
-		// Formatting stuff
-		Calendar calStart = Calendar.getInstance();
-		// set hour, minutes, seconds and millis at departure
-		calStart.setTime(deliveryQuery.getWarehouse().getDepartureTime());
 		// Setting formats
-		SimpleDateFormat full = new SimpleDateFormat("dd MMMM. yyyy");
-		SimpleDateFormat small = new SimpleDateFormat("HH:mm");
+		SimpleDateFormat full = new SimpleDateFormat("dd MMMM. yyyy", Locale.FRENCH);
+		SimpleDateFormat small = new SimpleDateFormat("HH:mm", Locale.FRENCH);
 		String res = "";
-		// Getting necessary objects
-		Delivery[] deliveries = deliveryQuery.getDeliveries();
 		// Displaying title
-		String planningDate = full.format(calStart.getTime());
-		planningDate = planningDate.substring(0, 6) + planningDate.substring(10, planningDate.length());
-		res += "Mon planning (" + planningDate + ")\n";
-		res += "\tDépart de l'entrepôt. Départ: " + small.format(calStart.getTime()) + ".\n";
-		String instruction = "";
-		boolean deliveryFound = false;
-		int waitingTime = -1;
-		Integer origin = -1;
-		Calendar calEnd = null;
-		for (Integer it : roads.keySet()) {
-			// Adding road time
-			int roadTime = 0;
-			for (Road r : roads.get(it)) {
-				roadTime += r.getTime();
+		Date departureTime = deliveryQuery.getWarehouse().getDepartureTime();
+		String planningDate = full.format(departureTime);
+		res += "Mon planning (" + planningDate + ")\n\n";
+		res += "\tDépart de l'entrepôt à " + small.format(departureTime) + ". ";
+		// Record for longest java call ?
+		res += "Rejoindre l'intersection " + route.entrySet().iterator().next().getValue().getRoads().get(0).getOrigin() + "\n.";
+		
+		// Iterating over arrival points
+		int deliveryCounter = 0;
+		int waitingTime = 0;
+		Integer origin;
+		Date arrivalTime;
+		for (Integer it : route.keySet()) {
+			origin = route.get(it).getDelivery().getIntersection().getId();
+			waitingTime = route.get(it).getDelivery().getWaitingTime();
+			arrivalTime = route.get(it).getDelivery().getArrivalTime();
+			
+			if (deliveryCounter > 0) {
+				res += "\tDépart du point de livraison à " + small.format(departureTime) + ".\n";
 			}
-			calStart.add(Calendar.SECOND, roadTime);
-			instruction = "Livraison";
-			// Iterating over deliveries
-			for (int i = 0; i < deliveries.length; i++) {
-				Delivery d = deliveries[i];
-				if (d.getIntersection().getId().equals(it)) {
-					deliveryFound = true;
-					origin = d.getIntersection().getId();
-					// adding duration
-					int duration = d.getDuration();
-					calEnd = (Calendar) calStart.clone();
-					calEnd.add(Calendar.SECOND, duration);
-					// (if startSchedule not null)
-					long waitingMilliSeconds;
-					if (d.getStartSchedule() != null) {
-						Calendar calTemp = Calendar.getInstance();
-						calTemp.setTime(d.getStartSchedule());
-						// (if arrival time before startSchedule, wait)
-						if (calStart.before(calTemp)) {
-							waitingMilliSeconds = (calTemp.getTimeInMillis() - calStart.getTimeInMillis()) / 1000;
-							waitingTime = (int) (waitingMilliSeconds / 60);
-						}
-						calStart = (Calendar) calTemp.clone();
-					}
-				}
-			}
-			// Else, it's a warehouse
-			if (!deliveryFound) {
-				origin = it;
-				instruction = "Retour à l'entrepôt";
-			}
-			res += "\t" + instruction + "\n";
-			res += "\t\tArrivée: " + small.format(calStart.getTime());
-			if (calEnd != null) {
-				res += ". Départ: " + small.format(calEnd.getTime()) + ". ";
-			}
-			res += "Adresse: Intersection " + origin + ".\n";
-			// iterate over roads
+			
 			Road lastRoad = null;
-			int deg = -1;
-			int pos = -1;
+			int deg = 0;
+			int pos = 0;
 			HashMap<Integer, Intersection> intersections = map.getIntersections();
-			for (Road r : roads.get(it)) {
+			int index = 1;
+			for (Road r : route.get(it).getRoads()) {
 				if (lastRoad != null) {
 					Point p1 = intersections.get(lastRoad.getOrigin()).getCoordinates();
 					Point p2 = intersections.get(r.getOrigin()).getCoordinates();
 					Point p3 = intersections.get(r.getDestination()).getCoordinates();
 					deg = getAngle(p1, p2, p3);
 					
-					ArrayList<Road> roads = map.getRoadsStartingFrom(r.getOrigin());
+					// TODO
+					ArrayList<Road> roads = new ArrayList<Road>();
+					for (Road rr : map.getRoadsStartingFrom(r.getOrigin())) {
+						int threshhold = 10;
+						Point p4 = intersections.get(rr.getDestination()).getCoordinates();
+						int new_angle = getAngle(p1, p2, p4);
+						if (deg > threshhold / 2 && deg < 90) {
+							if (new_angle > threshhold / 2 && new_angle < 90) {
+								roads.add(rr);
+							}
+						}
+						if (deg > 90 && deg < (360 - threshhold / 2)) {
+							if (new_angle > 90 && new_angle < (360 - threshhold / 2)) {
+								roads.add(rr);
+							}
+						}
+					}
+					// Filter those NOT left or not right ok ?
 					Collections.sort(roads, new Comparator<Road>() {
 						@Override
 						public int compare(Road r1, Road r2) {
@@ -169,17 +220,23 @@ public class Route {
 						}
 					});
 					pos = 1 + roads.indexOf(r);
-				} else {
-					deg = 0; // Go straight from warehouse
 				}
-				// get name of road
-				String name = r.getRoadName();
-				res += "\t\t\t" + "Prendre la " + getPlainPosition(pos) + " " + getPlainDegree(deg) + " (rue " + name + ")\n";
+				res += "\t\t" + index + "- Prendre la " + getPlainPosition(pos) + " " + getPlainDegree(deg) + " jusqu'à l'intersection " + r.getDestination() + "\n";
 				lastRoad = r;
+				index++;
 			}
-			if (waitingTime != -1) {
-				res += "\t\t\t" + "Attendre" + waitingTime + " minutes/n.";
+			if (deliveryCounter != route.values().size() - 1) {
+				res += "\tLivraison du point " + origin + ". Arrivée: " + small.format(arrivalTime) + ".\n";	
 			}
+			else {
+				res += "\tFin de la tournée à " + small.format(arrivalTime);
+			}
+			if (waitingTime != 0) {
+				res += "\tAttendre " + waitingTime + " minutes puis procéder à la livraison.\n";
+			}
+			res += "\n";
+			deliveryCounter++;
+			departureTime = route.get(it).getDelivery().getDepartureTime();
 		}
 		System.out.println(res);
 		// Fin des instructions
