@@ -1,6 +1,8 @@
 package com.hexagone.delivery.models;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -8,6 +10,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.hexagone.delivery.xml.DateAdapter;
 import com.hexagone.delivery.xml.IntersectionAdapter;
+import com.sun.xml.internal.ws.streaming.TidyXMLStreamReader;
 
 /**
  * This class models a delivery in a delivery query
@@ -110,5 +113,17 @@ public class Delivery {
 
 	public void setWaitingTime(int waitingTime) {
 		this.waitingTime = waitingTime;
+	}
+	
+	public String getTimeslotDelivery() {
+		if(this.getStartSchedule() != null){
+			Calendar startScheduleCalendar = GregorianCalendar.getInstance();
+			startScheduleCalendar.setTime(this.getStartSchedule());
+			Calendar endScheduleCalendar = GregorianCalendar.getInstance();
+			endScheduleCalendar.setTime(this.getEndSchedule());
+			String timeslotDelivery = (""+startScheduleCalendar.get(Calendar.HOUR_OF_DAY)+"h"+"-"+endScheduleCalendar.get(Calendar.HOUR_OF_DAY)+"h");
+			return timeslotDelivery;
+		}
+		else return null;
 	}
 }
