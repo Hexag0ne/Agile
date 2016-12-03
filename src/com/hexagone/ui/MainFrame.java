@@ -9,8 +9,12 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
@@ -78,7 +82,7 @@ public class MainFrame extends JFrame {
 					mainPanel.repaint();
 					all.validate();
 					all.repaint();
-					
+
 				} catch (XMLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -98,7 +102,6 @@ public class MainFrame extends JFrame {
 					deliveryQuery = XMLDeserialiser.loadDeliveryQuery();
 					deliveryPanel = new MapFrame(map, deliveryQuery, false, coefficient, null);
 					deliveryPanel.repaint();
-					deliveryPanel.addMouseListener(details);
 					mainPanel.remove(mapPanel);
 					mainPanel.add(deliveryPanel, BorderLayout.CENTER);
 					mainPanel.validate();
@@ -116,30 +119,30 @@ public class MainFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				    deliveryPoint=0;
-					mainPanel.remove(tourPanel);
-					mapTourPanel = new MapTour(map, deliveryQuery, coefficient, tour, deliveryPoint);
-					mainPanel.add(mapTourPanel,BorderLayout.CENTER);
-					if(tourDetailsPanel != null){
-						mainPanel.remove(tourDetailsPanel);
-					}
-					tourDetailsPanel = new TourPanel(deliveryQuery, deliveryPoint,tour); 
-					mainPanel.add(tourDetailsPanel, BorderLayout.EAST);
-					mainPanel.validate();
-					mainPanel.repaint();
-					all.validate();
-					mainPanel.repaint();
-				
+				deliveryPoint=0;
+				mainPanel.remove(tourPanel);
+				mapTourPanel = new MapTour(map, deliveryQuery, coefficient, tour, deliveryPoint);
+				mainPanel.add(mapTourPanel,BorderLayout.CENTER);
+				if(tourDetailsPanel != null){
+					mainPanel.remove(tourDetailsPanel);
+				}
+				tourDetailsPanel = new TourPanel(deliveryQuery, deliveryPoint,tour); 
+				mainPanel.add(tourDetailsPanel, BorderLayout.EAST);
+				mainPanel.validate();
+				mainPanel.repaint();
+				all.validate();
+				mainPanel.repaint();
+
 
 			}
 		};
-		
+
 		ActionListener nextDPListenner =new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 				if(deliveryPoint < tour.size()){
 					deliveryPoint++;
 					mainPanel.remove(mapTourPanel);
@@ -155,7 +158,7 @@ public class MainFrame extends JFrame {
 				}
 			}
 		};
-		
+
 		ActionListener precedentDPListenner =new ActionListener() {
 
 			@Override
@@ -176,7 +179,7 @@ public class MainFrame extends JFrame {
 				}
 			}
 		};
-		
+
 		// Listener for searchButton
 		ActionListener searchListener = new ActionListener(){
 
@@ -190,9 +193,9 @@ public class MainFrame extends JFrame {
 				mainPanel.repaint();
 				all.validate();
 				mainPanel.repaint();
-				
+
 			}
-			
+
 		};
 		// Listener for calcuateTour button
 		ActionListener calculateTourListener = new ActionListener() {
@@ -248,8 +251,56 @@ public class MainFrame extends JFrame {
 				all.repaint();
 			}
 		};
-		
-		
+
+		KeyListener keyListener = new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {}
+
+			@Override
+			public void keyReleased(KeyEvent e) {}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				int keyCode = e.getKeyCode();
+				if((mapTourPanel !=null) && (tourDetailsPanel!= null) ){
+					if( (keyCode == KeyEvent.VK_UP) || (keyCode == KeyEvent.VK_LEFT) ){
+						System.out.println("Yassine");
+						if(deliveryPoint > 0){
+							deliveryPoint--;
+							mainPanel.remove(mapTourPanel);
+							mapTourPanel = new MapTour(map, deliveryQuery, coefficient, tour, deliveryPoint);
+							mainPanel.add(mapTourPanel,BorderLayout.CENTER);
+							mainPanel.remove(tourDetailsPanel);
+							tourDetailsPanel = new TourPanel(deliveryQuery, deliveryPoint,tour); 
+							mainPanel.add(tourDetailsPanel, BorderLayout.EAST);
+							mainPanel.validate();
+							mainPanel.repaint();
+							all.validate();
+							mainPanel.repaint();
+						}
+					}
+					if( (keyCode == KeyEvent.VK_DOWN) || (keyCode == KeyEvent.VK_RIGHT) ){
+						if(deliveryPoint < tour.size()){
+							deliveryPoint++;
+							mainPanel.remove(mapTourPanel);
+							mapTourPanel = new MapTour(map, deliveryQuery, coefficient, tour, deliveryPoint);
+							mainPanel.add(mapTourPanel,BorderLayout.CENTER);
+							mainPanel.remove(tourDetailsPanel);
+							tourDetailsPanel = new TourPanel(deliveryQuery, deliveryPoint,tour); 
+							mainPanel.add(tourDetailsPanel, BorderLayout.EAST);
+							mainPanel.validate();
+							mainPanel.repaint();
+							all.validate();
+							mainPanel.repaint();
+						}
+					}
+				}
+
+			}
+		};
+
+
 
 		this.setTitle("Delivery App");
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -259,7 +310,7 @@ public class MainFrame extends JFrame {
 
 		all = new JPanel();
 		all.setLayout(new BorderLayout());
-		
+
 
 		// header components
 		header = new JPanel();
@@ -281,7 +332,7 @@ public class MainFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			
+
 			}
 
 		});
@@ -289,56 +340,18 @@ public class MainFrame extends JFrame {
 		// mainPanel components
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
-		mainPanel.addMouseListener(details);
+		mainPanel.addKeyListener(keyListener);
 		all.add(mainPanel,BorderLayout.CENTER);
 		all.add(header, BorderLayout.NORTH);
+		this.addWindowFocusListener(new WindowAdapter() {
+			public void windowGainedFocus(WindowEvent e) {
+				mainPanel.requestFocusInWindow();
+			}
+		});
 
 		setFocusable(true);
 		this.setContentPane(all);
 	}
 
-	/**
-	 * Mouse Listener class Helps displaying details about the various delivery
-	 * points
-	 */
-	final MouseListener details = new MouseListener() {
 
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-			p = e.getPoint();
-			/**
-			 * TODO Repair display of delivery points details.
-			 */
-			
-			if (true) {
-				if (detailPanel != null) {
-					all.remove(detailPanel);
-				}
-				detailPanel = new DetailsPanel(map, deliveryQuery, p, coefficient);
-				all.add(detailPanel, BorderLayout.EAST);
-				all.validate();
-				all.repaint();
-				validate();
-				repaint();
-			}
-		}
-
-		@Override
-		public void mouseExited(MouseEvent e) {
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent e) {
-		}
-
-		@Override
-		public void mouseClicked(MouseEvent e) {
-		}
-	};
 }
