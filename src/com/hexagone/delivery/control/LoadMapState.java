@@ -43,7 +43,7 @@ public class LoadMapState implements ControllerActions {
 	 * In the loadMap state, the map isn't present. Therefore this method doesn't draw anything
 	 */
 	@Override
-	public void DrawMap(Graphics g, float scale, Map m, DeliveryQuery delivery) {
+	public void DrawMap(Graphics g, float scale, Map m, DeliveryQuery delivery, Route route) {
 		//No action
 	}
 

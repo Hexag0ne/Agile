@@ -56,7 +56,7 @@ public class ComputeState implements ControllerActions {
 	 * on top of it
 	 */
 	@Override
-	public void DrawMap(Graphics g, float scale, Map map, DeliveryQuery deliveryQuery) {
+	public void DrawMap(Graphics g, float scale, Map map, DeliveryQuery deliveryQuery, Route route) {
 		
 		//Painting the map
 		//Painting the roads first

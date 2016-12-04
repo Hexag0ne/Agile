@@ -50,7 +50,7 @@ public class LoadDeliveryState implements ControllerActions {
 	 * In the LoadDeliveryState, the map has been loaded. We draw the roads and intersections of this map
 	 */
 	@Override
-	public void DrawMap(Graphics g, float scale, Map map, DeliveryQuery delivery) {
+	public void DrawMap(Graphics g, float scale, Map map, DeliveryQuery delivery, Route route) {
 		ArrayList<Intersection> intersections = new ArrayList<Intersection>(map.getIntersections().values());
 		Set<Integer> roads = new HashSet<Integer>();
 		roads = (map.getRoads()).keySet();

@@ -32,6 +32,7 @@ public class Controller implements UserActions, MapPainter {
 		mainFrame = new MainFrame(this, this);
 		currentState = nextState();
 		
+		mainFrame.setSidePanelsVisible(false);
 		mainFrame.setVisible(true);
 	}
 
@@ -45,12 +46,15 @@ public class Controller implements UserActions, MapPainter {
 
 	@Override
 	public void loadMapButtonClick() {
+		deliveryQuery = null; //Change of map -> we discard the deliveryQuery
+		route = null;
 		this.map = currentState.loadMap();
 		this.currentState = nextState();
 	}
 
 	@Override
 	public void loadDeliveryQueryButtonClick() {
+		route = null;
 		this.deliveryQuery = currentState.loadDeliveryQuery();
 		this.currentState = nextState();
 	}
@@ -77,13 +81,16 @@ public class Controller implements UserActions, MapPainter {
 		if (map != null)
 		{
 			nextState = LOADDELIVERY_STATE;
+			mainFrame.setSidePanelsVisible(false);
 		}
 		if (deliveryQuery != null && map != null)
 		{
 			nextState = COMPUTE_STATE;
+			mainFrame.setSidePanelsVisible(false);
 		}
 		if (deliveryQuery != null && map != null && route != null) {
 			nextState = ROUTEVIEW_STATE;
+			mainFrame.setSidePanelsVisible(true);
 		}
 		
 		mainFrame.repaint();
@@ -93,6 +100,6 @@ public class Controller implements UserActions, MapPainter {
 
 	@Override
 	public void draw(Graphics g, float scale) {
-		currentState.DrawMap(g, scale, map, deliveryQuery);
+		currentState.DrawMap(g, scale, map, deliveryQuery, route);
 	}
 }
