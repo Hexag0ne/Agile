@@ -34,10 +34,13 @@ public class Route {
 	}
 
 	public LinkedHashMap<Integer, ArrivalPoint> getRoute() {
-		return this.route;
+		if (route == null) {
+			generateRoute();
+		}
+		return route;
 	}
 
-	public void generateRoute() {
+	private void generateRoute() {
 		LinkedHashMap<Integer, ArrivalPoint> route = new LinkedHashMap<Integer, ArrivalPoint>();
 		HashMap<Integer, Intersection> intersections = map.getIntersections();
 		
