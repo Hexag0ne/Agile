@@ -17,8 +17,6 @@ public class TourNavigationPanel extends JPanel {
 	private JButton previousDeliveryButton;
 	
 	private JPanel searchPanel;
-	private JLabel searchLabel;
-	private JTextField searchTextField;
 	private JTextField searchZone;
 	
 	

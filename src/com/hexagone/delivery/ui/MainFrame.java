@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,6 +14,7 @@ import javax.swing.JPanel;
 
 import com.hexagone.delivery.control.MapPainter;
 import com.hexagone.delivery.control.UserActions;
+import com.hexagone.delivery.models.Delivery;
 
 public class MainFrame extends JFrame {
 
@@ -27,6 +29,8 @@ public class MainFrame extends JFrame {
 	private JPanel mapPanel;
 	/** JPanel on the left of the screen with buttons to navigate */
 	private JPanel tourNavigationPanel;
+	/** JPanel on the right side of the window */
+	private TourTablePanel tourTablePanel;
 	
 	private JPanel centerPanel;
 	
@@ -88,6 +92,9 @@ public class MainFrame extends JFrame {
 		tourNavigationPanel = new TourNavigationPanel();
 		centerPanel.add(tourNavigationPanel, BorderLayout.WEST);
 		
+		tourTablePanel = new TourTablePanel();
+		centerPanel.add(tourTablePanel, BorderLayout.EAST);
+		
 		allPanel.add(centerPanel, BorderLayout.CENTER);
 		
 		this.add(allPanel);
@@ -96,7 +103,11 @@ public class MainFrame extends JFrame {
 	
 	public void setSidePanelsVisible(boolean visible){
 		tourNavigationPanel.setVisible(visible);
-		//TODO
+		tourTablePanel.setVisible(visible);
+	}
+	
+	public void setTableData(Vector<Delivery> data) {
+		tourTablePanel.setTableData(data);
 	}
 	
 	/**

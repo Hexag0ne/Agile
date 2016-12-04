@@ -1,7 +1,10 @@
 package com.hexagone.delivery.control;
 
 import java.awt.Graphics;
+import java.util.Arrays;
+import java.util.Vector;
 
+import com.hexagone.delivery.models.Delivery;
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Map;
 import com.hexagone.delivery.models.Route;
@@ -90,6 +93,7 @@ public class Controller implements UserActions, MapPainter {
 		}
 		if (deliveryQuery != null && map != null && route != null) {
 			nextState = ROUTEVIEW_STATE;
+			mainFrame.setTableData(new Vector<Delivery>(Arrays.asList(deliveryQuery.getDeliveries())));
 			mainFrame.setSidePanelsVisible(true);
 		}
 		
