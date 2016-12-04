@@ -251,6 +251,22 @@ public class MainFrame extends JFrame {
 				all.repaint();
 			}
 		};
+		
+		ActionListener generateTourListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (tourPanel != null) {
+					DeliveryComputer dc = new DeliveryComputer(map, deliveryQuery);
+					Route r = new Route(map, deliveryQuery, dc);
+					r.generateRoute();
+					r.generateTxt("export/planning.txt");
+					JOptionPane.showMessageDialog(null, r.generateString(), "Feuille de route généré !", JOptionPane.INFORMATION_MESSAGE);
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Veuillez calculez la tournée.", "Erreur", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		};
 
 		KeyListener keyListener = new KeyListener() {
 
@@ -265,7 +281,7 @@ public class MainFrame extends JFrame {
 				int keyCode = e.getKeyCode();
 				if((mapTourPanel !=null) && (tourDetailsPanel!= null) ){
 					if( (keyCode == KeyEvent.VK_UP) || (keyCode == KeyEvent.VK_LEFT) ){
-						System.out.println("Yassine");
+						
 						if(deliveryPoint > 0){
 							deliveryPoint--;
 							mainPanel.remove(mapTourPanel);
@@ -315,27 +331,22 @@ public class MainFrame extends JFrame {
 		// header components
 		header = new JPanel();
 		header.setLayout(new GridLayout(1, 5));
+
 		JButton loadMap = new JButton("Charger Plan");
 		loadMap.addActionListener(uploadMap);
 		header.add(loadMap);
+
 		JButton loadDelivery = new JButton("Charger Livraison");
 		loadDelivery.addActionListener(uploadDelivery);
-
 		header.add(loadDelivery);
+
 		computeTourButton = new JButton("Calculer Tournée");
 		computeTourButton.addActionListener(calculateTourListener);
 		header.add(computeTourButton);
 
 		JButton generatePlanning = new JButton("Générer feuille de route");
+		generatePlanning.addActionListener(generateTourListener);
 		header.add(generatePlanning);
-		generatePlanning.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-			}
-
-		});
 
 		// mainPanel components
 		mainPanel = new JPanel();
