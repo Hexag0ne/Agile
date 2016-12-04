@@ -1,11 +1,13 @@
 package com.hexagone.delivery.control;
 
+import java.awt.Graphics;
+
 import com.hexagone.delivery.algo.DeliveryComputer;
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Map;
 import com.hexagone.delivery.ui.MainFrame;
 
-public class Controller implements UserActions {
+public class Controller implements UserActions, MapPainter {
 
 	/** Element of model Map loaded by the user */
 	private Map map;
@@ -26,7 +28,7 @@ public class Controller implements UserActions {
 	private static final ControllerActions COMPUTE_STATE = new ComputeState();
 	
 	public Controller(){
-		mainFrame = new MainFrame(this);
+		mainFrame = new MainFrame(this, this);
 		currentState = nextState();
 		
 		mainFrame.setVisible(true);
@@ -66,6 +68,7 @@ public class Controller implements UserActions {
 	
 	/**
 	 * This method updates the state of the application depending on the state of the model variables
+	 * As the state changes, the display may vary a lot. This method also calls for a repaint of the mainFrame.
 	 */
 	private ControllerActions nextState() {
 		ControllerActions nextState = LOADMAP_STATE;
@@ -79,6 +82,13 @@ public class Controller implements UserActions {
 			nextState = COMPUTE_STATE;
 		}
 		
+		mainFrame.repaint();
+		
 		return nextState;
+	}
+
+	@Override
+	public void draw(Graphics g, float scale) {
+		currentState.DrawMap(g, scale, map, deliveryQuery);
 	}
 }

@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.hexagone.delivery.control.MapPainter;
 import com.hexagone.delivery.control.UserActions;
 
 public class MainFrame extends JFrame {
@@ -22,6 +23,10 @@ public class MainFrame extends JFrame {
 	private JPanel allPanel;
 	/** JPanel containing the top row of buttons */
 	private JPanel headerPanel;
+	/** JPanel containing the map drawing */
+	private JPanel mapPanel;
+	
+	private JPanel centerPanel;
 	
 	private JButton loadMapButton;
 	private JButton loadDeliveryButton;
@@ -32,7 +37,7 @@ public class MainFrame extends JFrame {
 	 * Constructor for the main frame
 	 * @param controller the controller implementing the UserActions to be performed when an event occurs
 	 */
-	public MainFrame(UserActions controller)
+	public MainFrame(UserActions controller, MapPainter painter)
 	{
 		this.controller = controller;
 		
@@ -69,6 +74,16 @@ public class MainFrame extends JFrame {
 		headerPanel.add(generatePlanning);
 		
 		allPanel.add(headerPanel, BorderLayout.NORTH);
+		
+		//Other components
+		centerPanel = new JPanel();
+		centerPanel.setLayout(new BorderLayout());
+		
+		// map panel
+		mapPanel = new MapPanel(painter);
+		centerPanel.add(mapPanel);
+		
+		allPanel.add(centerPanel, BorderLayout.CENTER);
 		
 		this.add(allPanel);
 	}

@@ -1,5 +1,7 @@
 package com.hexagone.delivery.control;
 
+import java.awt.Graphics;
+
 import com.hexagone.delivery.algo.DeliveryComputer;
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Map;
@@ -35,6 +37,14 @@ public class LoadMapState implements ControllerActions {
 	@Override
 	public DeliveryComputer computeDelivery(Map map, DeliveryQuery delivery) {
 		return null;
+	}
+
+	/**
+	 * In the loadMap state, the map isn't present. Therefore this method doesn't draw anything
+	 */
+	@Override
+	public void DrawMap(Graphics g, float scale, Map m, DeliveryQuery delivery) {
+		//No action
 	}
 
 }
