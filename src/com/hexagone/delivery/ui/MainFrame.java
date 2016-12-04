@@ -25,6 +25,8 @@ public class MainFrame extends JFrame {
 	private JPanel headerPanel;
 	/** JPanel containing the map drawing */
 	private JPanel mapPanel;
+	/** JPanel on the left of the screen with buttons to navigate */
+	private JPanel tourNavigationPanel;
 	
 	private JPanel centerPanel;
 	
@@ -83,9 +85,18 @@ public class MainFrame extends JFrame {
 		mapPanel = new MapPanel(painter);
 		centerPanel.add(mapPanel);
 		
+		tourNavigationPanel = new TourNavigationPanel();
+		centerPanel.add(tourNavigationPanel, BorderLayout.WEST);
+		
 		allPanel.add(centerPanel, BorderLayout.CENTER);
 		
 		this.add(allPanel);
+	}
+	
+	
+	public void setSidePanelsVisible(boolean visible){
+		tourNavigationPanel.setVisible(visible);
+		//TODO
 	}
 	
 	/**
