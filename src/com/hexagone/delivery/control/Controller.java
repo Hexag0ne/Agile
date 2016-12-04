@@ -2,9 +2,9 @@ package com.hexagone.delivery.control;
 
 import java.awt.Graphics;
 
-import com.hexagone.delivery.algo.DeliveryComputer;
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Map;
+import com.hexagone.delivery.models.Route;
 import com.hexagone.delivery.ui.MainFrame;
 
 public class Controller implements UserActions, MapPainter {
@@ -13,8 +13,8 @@ public class Controller implements UserActions, MapPainter {
 	private Map map;
 	/** Deliveries chosen by the user */
 	private DeliveryQuery deliveryQuery;
-	/** Problem solver */
-	private DeliveryComputer computer;
+	/** Problem solution */
+	private Route route;
 	
 	/** Elements of the interface */
 	private MainFrame mainFrame;
@@ -26,6 +26,7 @@ public class Controller implements UserActions, MapPainter {
 	private static final ControllerActions LOADMAP_STATE = new LoadMapState();
 	private static final ControllerActions LOADDELIVERY_STATE = new LoadDeliveryState();
 	private static final ControllerActions COMPUTE_STATE = new ComputeState();
+	private static final ControllerActions ROUTEVIEW_STATE = new RouteViewState();
 	
 	public Controller(){
 		mainFrame = new MainFrame(this, this);
@@ -56,7 +57,7 @@ public class Controller implements UserActions, MapPainter {
 
 	@Override
 	public void computeRouteButtonClick() {
-		this.computer = currentState.computeDelivery(map, deliveryQuery);
+		this.route = currentState.computeDelivery(map, deliveryQuery);
 		this.currentState = nextState();
 	}
 
@@ -77,9 +78,12 @@ public class Controller implements UserActions, MapPainter {
 		{
 			nextState = LOADDELIVERY_STATE;
 		}
-		if (deliveryQuery != null)
+		if (deliveryQuery != null && map != null)
 		{
 			nextState = COMPUTE_STATE;
+		}
+		if (deliveryQuery != null && map != null && route != null) {
+			nextState = ROUTEVIEW_STATE;
 		}
 		
 		mainFrame.repaint();

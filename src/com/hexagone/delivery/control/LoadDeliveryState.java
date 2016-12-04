@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.hexagone.delivery.algo.DeliveryComputer;
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Intersection;
 import com.hexagone.delivery.models.Map;
 import com.hexagone.delivery.models.Road;
+import com.hexagone.delivery.models.Route;
 import com.hexagone.delivery.xml.XMLDeserialiser;
 import com.hexagone.delivery.xml.XMLException;
 
@@ -41,7 +41,7 @@ public class LoadDeliveryState implements ControllerActions {
 	}
 
 	@Override
-	public DeliveryComputer computeDelivery(Map map, DeliveryQuery delivery) {
+	public Route computeDelivery(Map map, DeliveryQuery delivery) {
 		// TODO Auto-generated method stub
 		return null;
 	}
