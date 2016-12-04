@@ -68,7 +68,7 @@ public class Route {
 					delivery = null;
 				}
 			}
-			System.out.println(""+i+""+delivery);
+			
 			route.put(it1, new ArrivalPoint(roads, delivery));
 		}
 		this.route = route;

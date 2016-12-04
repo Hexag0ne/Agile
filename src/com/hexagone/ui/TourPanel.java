@@ -35,10 +35,9 @@ public class TourPanel extends JPanel {
 	private LinkedHashMap<Integer, ArrivalPoint> tour;
 	private static Vector<Delivery> data;
 	private static JTable table;
-	public TourPanel(DeliveryQuery deliveyQuery, int deliveryPoint,LinkedHashMap<Integer, ArrivalPoint> tour){
+	public TourPanel(int deliveryPoint,LinkedHashMap<Integer, ArrivalPoint> tour){
 
-		super();
-		this.deliveryQuery=deliveyQuery;
+		
 		this.deliveryPoint=deliveryPoint;
 		this.tour=tour;
 

@@ -11,15 +11,15 @@ import com.hexagone.delivery.models.Delivery;
 public class TourTablePanel extends JPanel {
 
 	private JTable table;
-	
-	
+	private TableModel tableModel;
+
 	public void setTableData(Vector<Delivery> data){
-		this.remove(table.getTableHeader());
-		this.remove(table);
+	
+		if(tableModel == null){
+			tableModel = new TableModel(data);
+		}
 		
-		table = new JTable();
-		
-		table.setModel(new TableModel(data));
+		table.setModel(tableModel);
 		table.setFillsViewportHeight(true);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.getColumnModel().getColumn(0).setPreferredWidth(27);
@@ -28,18 +28,18 @@ public class TourTablePanel extends JPanel {
 		table.getColumnModel().getColumn(3).setPreferredWidth(100);
 		table.getColumnModel().getColumn(4).setPreferredWidth(100);
 		table.getColumnModel().getColumn(5).setPreferredWidth(100);
-		
+
 		add(table.getTableHeader(), BorderLayout.PAGE_START);
 		add(table, BorderLayout.CENTER);
 	}
-	
-	
+
+
 	public TourTablePanel() {
 		super();
 		table = new JTable();
-		
+
 		setLayout(new BorderLayout());
-		
+
 		add(table.getTableHeader(), BorderLayout.PAGE_START);
 		add(table, BorderLayout.CENTER);
 	}
