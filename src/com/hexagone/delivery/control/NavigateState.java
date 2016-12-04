@@ -218,7 +218,6 @@ public class NavigateState implements ControllerActions {
 	
 	public NavigateState(MainFrame frame){
 		this.frame = frame;
-		step = 0;
 	}
 
 }

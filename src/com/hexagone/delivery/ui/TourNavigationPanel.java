@@ -44,7 +44,7 @@ public class TourNavigationPanel extends JPanel {
 		this.add(previousDeliveryButton);
 		
 		nextDeliveryButton = new JButton("Point de livraison suivant");
-		previousDeliveryButton.addActionListener(new actionNextDeliveryListener());
+		nextDeliveryButton.addActionListener(new actionNextDeliveryListener());
 		this.add(nextDeliveryButton);
 		
 		searchPanel = new JPanel(new FlowLayout());
