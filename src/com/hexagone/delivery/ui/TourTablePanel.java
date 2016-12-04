@@ -14,6 +14,11 @@ public class TourTablePanel extends JPanel {
 	
 	
 	public void setTableData(Vector<Delivery> data){
+		this.remove(table.getTableHeader());
+		this.remove(table);
+		
+		table = new JTable();
+		
 		table.setModel(new TableModel(data));
 		table.setFillsViewportHeight(true);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -23,6 +28,9 @@ public class TourTablePanel extends JPanel {
 		table.getColumnModel().getColumn(3).setPreferredWidth(100);
 		table.getColumnModel().getColumn(4).setPreferredWidth(100);
 		table.getColumnModel().getColumn(5).setPreferredWidth(100);
+		
+		add(table.getTableHeader(), BorderLayout.PAGE_START);
+		add(table, BorderLayout.CENTER);
 	}
 	
 	
