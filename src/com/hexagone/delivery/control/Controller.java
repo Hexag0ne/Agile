@@ -26,16 +26,23 @@ public class Controller implements UserActions, MapPainter {
 	private ControllerActions currentState;
 	
 	/** An instance of each of the State the application can be in */
-	private static final ControllerActions LOADMAP_STATE = new LoadMapState();
-	private static final ControllerActions LOADDELIVERY_STATE = new LoadDeliveryState();
-	private static final ControllerActions COMPUTE_STATE = new ComputeState();
-	private static final ControllerActions ROUTEVIEW_STATE = new RouteViewState();
+	private ControllerActions LOADMAP_STATE;
+	private ControllerActions LOADDELIVERY_STATE;
+	private ControllerActions COMPUTE_STATE;
+	private ControllerActions ROUTEVIEW_STATE;
+	private NavigateState NAVIGATE_STATE;
 	
 	public Controller(){
-		mainFrame = new MainFrame(this, this);
-		currentState = nextState();
+		LOADMAP_STATE = new LoadMapState();
+		LOADDELIVERY_STATE = new LoadDeliveryState();
+		COMPUTE_STATE = new ComputeState();
+		ROUTEVIEW_STATE = new RouteViewState();
 		
+		mainFrame = new MainFrame(this, this);
+		NAVIGATE_STATE = new NavigateState(mainFrame);
+		currentState = nextState();
 		mainFrame.setSidePanelsVisible(false);
+		
 		mainFrame.setVisible(true);
 	}
 
@@ -74,6 +81,26 @@ public class Controller implements UserActions, MapPainter {
 		
 	}
 	
+	@Override
+	public void startNavigationButtonClick() {
+		this.currentState = NAVIGATE_STATE;
+		NAVIGATE_STATE.startTour();
+	}
+	
+	@Override
+	public void nextDelivery() {
+		this.currentState = NAVIGATE_STATE;
+		NAVIGATE_STATE.nextDelivery(route.getRoute().size());
+		
+	}
+
+	@Override
+	public void previousDelivery() {
+		this.currentState = NAVIGATE_STATE;
+		NAVIGATE_STATE.previousDelivery();
+		
+	}
+	
 	/**
 	 * This method updates the state of the application depending on the state of the model variables
 	 * As the state changes, the display may vary a lot. This method also calls for a repaint of the mainFrame.
@@ -106,4 +133,7 @@ public class Controller implements UserActions, MapPainter {
 	public void draw(Graphics g, float scale) {
 		currentState.DrawMap(g, scale, map, deliveryQuery, route);
 	}
+
+
+	
 }

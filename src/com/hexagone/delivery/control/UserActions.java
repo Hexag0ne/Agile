@@ -9,5 +9,10 @@ public interface UserActions {
 	public void computeRouteButtonClick();
 	
 	public void generatePlanningButtonClick();
+
+	public void startNavigationButtonClick();
 	
+	public void nextDelivery();
+	
+	public void previousDelivery();
 }

@@ -89,7 +89,7 @@ public class MainFrame extends JFrame {
 		mapPanel = new MapPanel(painter);
 		centerPanel.add(mapPanel);
 		
-		tourNavigationPanel = new TourNavigationPanel();
+		tourNavigationPanel = new TourNavigationPanel(controller);
 		centerPanel.add(tourNavigationPanel, BorderLayout.WEST);
 		
 		tourTablePanel = new TourTablePanel();
