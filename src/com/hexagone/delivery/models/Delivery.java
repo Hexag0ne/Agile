@@ -164,6 +164,26 @@ public class Delivery {
 		else return null;
 	}
 	
+	public String getDepartureTimeString(){
+		if(this.getDepartureTime() != null){
+			Calendar departureTimeCalendar = GregorianCalendar.getInstance();
+			departureTimeCalendar.setTime(this.getDepartureTime());
+			return (""+departureTimeCalendar.get(Calendar.HOUR_OF_DAY)+"h"+departureTimeCalendar.get(Calendar.MINUTE));
+		}
+		else return null;
+	}
+	
+	public String getArrivalTimeString(){
+		if(this.getDepartureTime() != null){
+			Calendar arrivalTimeCalendar = GregorianCalendar.getInstance();
+			arrivalTimeCalendar.setTime(this.getDepartureTime());
+			return (""+arrivalTimeCalendar.get(Calendar.HOUR_OF_DAY)+"h"+arrivalTimeCalendar.get(Calendar.MINUTE));
+			
+		}
+		else return null;
+		
+	}
+	
 	public Delivery(Intersection intersection) {
 		this.intersection = intersection;
 	}

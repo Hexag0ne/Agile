@@ -53,10 +53,10 @@ public class TableModel extends AbstractTableModel {
                 value = dp.getTimeslotDelivery();
                 break;
             case 3:
-                value = dp.getArrivalTime();
+                value = dp.getArrivalTimeString();
                 break;
             case 4:
-                value = dp.getDepartureTime();
+                value = dp.getDepartureTimeString();
                 break;
             case 5:
                 value = dp.getWaitingTime();
