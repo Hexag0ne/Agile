@@ -61,7 +61,7 @@ class CompleteGraphComputer {
 	
 	/**
 	 * Gives back the adjacency matrix of the Map / Delivery query combination given in the constructor of the game
-	 * @return the adjacency matrix as a 2D array of Double.
+	 * @return the adjacency matrix as a 2D array of Double. The time unit is second
 	 */
 	public Double[][] getAdjacencyMatrix() {
 		if (adjacencyMatrix != null)

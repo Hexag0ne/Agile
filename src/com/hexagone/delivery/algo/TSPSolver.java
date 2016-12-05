@@ -98,7 +98,7 @@ abstract class TSPSolver {
 		if (unseenIntersections.size() == 0) { // All intersections have been
 												// visited
 			// We add the cost to go back to the warehouse
-			pathCost.add(Calendar.MINUTE, Integer.valueOf(costs[currentIntersection][0].intValue()));
+			pathCost.add(Calendar.SECOND, Integer.valueOf(costs[currentIntersection][0].intValue()));
 			if (bestSolutionCost == null || pathCost.compareTo(bestSolutionCost) < 0) { // We found a new better solution
 												// !
 				bestSolution.clear();
@@ -119,7 +119,7 @@ abstract class TSPSolver {
 
 				/** Recursive call */
 				Calendar timeReachingNextIntersection = (Calendar) pathCost.clone();
-				timeReachingNextIntersection.add(Calendar.MINUTE, Integer.valueOf(costs[currentIntersection][prochainSommet].intValue()));
+				timeReachingNextIntersection.add(Calendar.SECOND, Integer.valueOf(costs[currentIntersection][prochainSommet].intValue()));
 				
 				// If we arrive before the opening window, we wait there
 				// try / catch because of no opening window case
@@ -134,7 +134,7 @@ abstract class TSPSolver {
 					
 				}
 				
-				timeReachingNextIntersection.add(Calendar.MINUTE, stayTime[prochainSommet]);
+				timeReachingNextIntersection.add(Calendar.SECOND, stayTime[prochainSommet]);
 				
 				branchAndBound(prochainSommet, timeReachingNextIntersection, tpsDebut);
 
@@ -160,7 +160,7 @@ abstract class TSPSolver {
 	private boolean betterPathPossible(Calendar pathCost, int currentIntersection, ArrayList<Integer> unseenIntersections){
 		Calendar bestTimePossible = GregorianCalendar.getInstance();
 		bestTimePossible.setTime(pathCost.getTime());
-		bestTimePossible.add(Calendar.MINUTE, bound(currentIntersection, unseenIntersections, costs, stayTime));
+		bestTimePossible.add(Calendar.SECOND, bound(currentIntersection, unseenIntersections, costs, stayTime));
 		boolean costPotentiallySmaller = bestSolutionCost == null || bestSolutionCost.compareTo(bestTimePossible) > 0;
 		
 		boolean noTimeWindowMissed = true;
