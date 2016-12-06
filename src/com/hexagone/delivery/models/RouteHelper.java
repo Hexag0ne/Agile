@@ -80,6 +80,7 @@ public class RouteHelper {
 			Intersection is = intersections.get(it1);
 			
 			Delivery delivery;
+			//TODO erreur dans l'appel. Les paramètres sont inversés !!!
 			ArrayList<Road> roads = getRoadsbetweenIntersections(it1, it2);
 			if (i == deliveryPoints.size() - 1) {
 				delivery = completeWarehouse(calArrival, is, roads);
