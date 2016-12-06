@@ -66,7 +66,7 @@ public class XMLDeserialiser {
 			JAXBContext jaxbContext = JAXBContext.newInstance(DeliveryQuery.class);
 			javax.xml.bind.Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 			return (DeliveryQuery) jaxbUnmarshaller.unmarshal(xml);
-		} catch (JAXBException e) {
+			} catch (JAXBException e) {
 			throw new XMLException("Could not parse Delivery Query xml file.");
 		}
 	}
@@ -91,6 +91,11 @@ public class XMLDeserialiser {
 		NodeList roads = root.getElementsByTagName("troncon");
 		for (int i = 0; i < roads.getLength(); i++) {
 			map.addRoad(createRoad((Element) roads.item(i)));
+		}
+		
+		if (map.getAllIntersectionIdentifiers().size() < 2 || map.getRoads().size() < 2)
+		{
+			throw new XMLException("Not a valid map !");
 		}
 
 		return map;
