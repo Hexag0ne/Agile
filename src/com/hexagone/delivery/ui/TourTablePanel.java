@@ -32,6 +32,14 @@ public class TourTablePanel extends JPanel {
 		add(table.getTableHeader(), BorderLayout.PAGE_START);
 		add(table, BorderLayout.CENTER);
 	}
+	
+	public void selectionRow(int numberRow){
+		if(numberRow<table.getRowCount()){
+			table.setRowSelectionInterval(numberRow,numberRow);
+		}
+	}
+	
+	
 
 
 	public TourTablePanel() {

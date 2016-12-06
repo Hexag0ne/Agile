@@ -6,6 +6,8 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -95,8 +97,19 @@ public class MainFrame extends JFrame {
 		tourTablePanel = new TourTablePanel();
 		centerPanel.add(tourTablePanel, BorderLayout.EAST);
 		
+		//centerPanel.addKeyListener(keyListener);
+		
 		allPanel.add(centerPanel, BorderLayout.CENTER);
 		
+		//Set focus on center panel to detect keyboard events 
+		this.addWindowFocusListener(new WindowAdapter() {
+			public void windowGainedFocus(WindowEvent e) {
+				centerPanel.requestFocusInWindow();
+			}
+		});
+        setFocusable(true);
+        
+        
 		this.add(allPanel);
 	}
 	
@@ -108,6 +121,10 @@ public class MainFrame extends JFrame {
 	
 	public void setTableData(Vector<Delivery> data) {
 		tourTablePanel.setTableData(data);
+	}
+	
+	public void selectionRow(int step) {
+		tourTablePanel.selectionRow(step);
 	}
 	
 	/**
@@ -173,4 +190,6 @@ public class MainFrame extends JFrame {
 		}
 		
 	}
+
+	
 }
