@@ -22,6 +22,7 @@ import com.hexagone.delivery.models.Road;
 import com.hexagone.delivery.models.Route;
 import com.hexagone.delivery.models.Warehouse;
 import com.hexagone.delivery.ui.MainFrame;
+import com.hexagone.delivery.ui.Popup;
 import com.hexagone.delivery.xml.XMLDeserialiser;
 import com.hexagone.delivery.xml.XMLException;
 
@@ -36,7 +37,7 @@ public class NavigateState implements ControllerActions {
 		try {
 			return XMLDeserialiser.loadMap();
 		} catch (XMLException e) {
-			//TODO Exception popup for the user ?
+			Popup.showInformation("Le fichier choisi n'est pas un plan valide.");
 			return null;
 		}
 	}
@@ -46,7 +47,7 @@ public class NavigateState implements ControllerActions {
 		try {
 			return XMLDeserialiser.loadDeliveryQuery();
 		} catch (XMLException e) {
-			//TODO Exception popup for the user ?
+			Popup.showInformation("Le fichier choisi n'est pas une livraison valide.");
 			return null;
 		}
 	}
