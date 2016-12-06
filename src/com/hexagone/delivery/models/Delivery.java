@@ -118,14 +118,11 @@ public class Delivery {
 		this.startSchedule = startSchedule;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
-		return "Delivery [intersection = " + intersection + ", endSchedule = " + endSchedule + ", duration = "
-				+ duration + ", startSchedule = " + startSchedule + "]";
+		return "Delivery [intersection=" + intersection + ", endSchedule=" + endSchedule + ", duration=" + duration
+				+ ", startSchedule=" + startSchedule + ", departureTime=" + departureTime + ", arrivalTime="
+				+ arrivalTime + ", waitingTime=" + waitingTime + "]";
 	}
 
 	public Date getDepartureTime() {

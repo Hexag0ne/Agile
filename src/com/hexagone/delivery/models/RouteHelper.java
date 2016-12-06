@@ -53,7 +53,9 @@ public class RouteHelper {
 		HashMap<Integer, Intersection> intersections = map.getIntersections();
 		
 		ArrayList<Integer> deliveryPoints = deliveryComputer.getDeliveryPoints();
-		//Integer[] its = {0, 8, 12, 22, 5, 0}; ArrayList<Integer> deliveryPoints = new ArrayList<Integer>(); deliveryPoints.addAll(Arrays.asList(its));
+		Integer[] its = {0, 8, 12, 22, 5, 0}; ArrayList<Integer> deliveryPoints2 = new ArrayList<Integer>(); deliveryPoints2.addAll(Arrays.asList(its));
+		System.out.println(deliveryPoints);
+		System.out.println(deliveryPoints2);
 
 		Calendar calArrival = Calendar.getInstance();
 		calArrival.setTime(deliveryQuery.getWarehouse().getDepartureTime());
@@ -148,7 +150,6 @@ public class RouteHelper {
 			deliveryCounter++;
 			departureTime = route.get(it).getDelivery().getDepartureTime();
 		}
-		System.out.println(res);
 		// Fin des instructions
 		return res;
 	}
@@ -176,15 +177,16 @@ public class RouteHelper {
 		Calendar calDeparture = (Calendar) calArrival.clone();
 		calDeparture.add(Calendar.SECOND, duration);
 		
-		long waitingMilliSeconds;
+		long waitingSeconds;
 		int waitingTime = 0;
 		if (d.getStartSchedule() != null) {
 			Calendar calTemp = Calendar.getInstance();
 			calTemp.setTime(d.getStartSchedule());
 			// (if arrival time before startSchedule, wait)
 			if (calArrival.before(calTemp)) {
-				waitingMilliSeconds = (calTemp.getTimeInMillis() - calArrival.getTimeInMillis()) / 1000;
-				waitingTime = (int) (waitingMilliSeconds);
+				waitingSeconds = (calTemp.getTimeInMillis() - calArrival.getTimeInMillis()) / 1000;
+				waitingTime = (int) (waitingSeconds / 60);
+				calDeparture.add(Calendar.SECOND, (int) waitingSeconds);
 			}
 		}
 		d.setTimes(calDeparture.getTime(), calArrival.getTime(), waitingTime);
