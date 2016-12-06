@@ -18,8 +18,15 @@ import com.hexagone.delivery.models.Route;
 import com.hexagone.delivery.xml.XMLDeserialiser;
 import com.hexagone.delivery.xml.XMLException;
 
+/**
+ * This class allows us to draw the map and the points of the delivery on top of it
+ * when the state is LOADDELIVERY_STATE
+ */
 public class LoadDeliveryState implements ControllerActions {
 
+	/**
+	 * Opens a FileChooser that lets the user pick an XML file on the file system.
+	 */
 	@Override
 	public Map loadMap() {
 		try {
@@ -30,6 +37,9 @@ public class LoadDeliveryState implements ControllerActions {
 		}
 	}
 
+	/**
+	 * This method allows to load a delivery query from a XML file
+	 */
 	@Override
 	public DeliveryQuery loadDeliveryQuery() {
 		try {
@@ -40,6 +50,13 @@ public class LoadDeliveryState implements ControllerActions {
 		}
 	}
 
+	/**
+	 * This method computes a delivery and returns a Route   
+	 * @param map
+	 * @param delivery
+	 * @return the route computed as a Route Object
+	 * 
+	 */
 	@Override
 	public Route computeDelivery(Map map, DeliveryQuery delivery) {
 		// TODO Auto-generated method stub
@@ -47,7 +64,17 @@ public class LoadDeliveryState implements ControllerActions {
 	}
 
 	/**
+	 * This methods draws the map and the points of the delivery on top of it
+	 * (as the map and the deliveryQuery are known in the class). 
+	 * 
 	 * In the LoadDeliveryState, the map has been loaded. We draw the roads and intersections of this map
+	 * 
+	 * @param g 
+	 * @param scale 
+	 * 			: ratio chosen for the drawing of the map
+	 * @param map
+	 * @param deliveryQuery
+	 * @param route
 	 */
 	@Override
 	public void DrawMap(Graphics g, float scale, Map map, DeliveryQuery delivery, Route route) {
@@ -81,7 +108,6 @@ public class LoadDeliveryState implements ControllerActions {
 				g2.draw(lin);
 			}
 		}
-		
 		
 		for (Intersection i : intersections) {
 			Point p = new Point();

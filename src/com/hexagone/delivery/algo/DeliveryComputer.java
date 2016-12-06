@@ -6,6 +6,12 @@ import com.hexagone.delivery.models.Delivery;
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Map;
 
+/**
+ * This class provides the algorithms needed to calculate the delivery points, to get the shortest
+ * path of the delivery. It also checks that there is no empty solution and no timeout.
+ * 
+ */
+
 public class DeliveryComputer {
 
 	private DeliveryQuery deliveryQuery;
@@ -16,14 +22,14 @@ public class DeliveryComputer {
 
 	/**
 	 * 
-	 * This methods computes the adjacency matrix
+	 * This methods calculates the intersections of the delivery in the right order.
 	 * 
 	 * @param map
 	 *            the map in which the problem takes place
 	 * @param deliveryQuery
 	 *            the delivery query
 	 * 
-	 * @return deliveryIntersections the list of intersections of the delivery
+	 * @return deliveryIntersections the list of intersections of the delivery in order
 	 * 
 	 * 
 	 */

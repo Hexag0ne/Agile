@@ -8,11 +8,17 @@ import javax.swing.JTable;
 
 import com.hexagone.delivery.models.Delivery;
 
+
+/**
+ * Panel for the tour table.
+ *
+ */
 public class TourTablePanel extends JPanel {
 
 	private JTable table;
 	private TableModel tableModel;
 
+	/** Sets the table data*/
 	public void setTableData(Vector<Delivery> data){
 	
 		if(tableModel == null){
@@ -34,6 +40,10 @@ public class TourTablePanel extends JPanel {
 	}
 
 
+	/**
+	 * Constructor for the tour table panel
+	 * 			
+	 */
 	public TourTablePanel() {
 		super();
 		table = new JTable();

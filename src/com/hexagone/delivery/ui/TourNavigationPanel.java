@@ -14,6 +14,10 @@ import javax.swing.JTextField;
 
 import com.hexagone.delivery.control.UserActions;
 
+
+/**
+ * Panel for the tour navigation.
+ */
 public class TourNavigationPanel extends JPanel {
 
 	UserActions controller;
@@ -29,7 +33,11 @@ public class TourNavigationPanel extends JPanel {
 	private JPanel searchButtonPanel;
 	private JButton addDP;
 	
-	
+	/**
+	 * Constructor for the tour navigation panel
+	 * @param controller the controller implementing the UserActions to be performed when an event occurs
+	 * 			
+	 */
 	public TourNavigationPanel(UserActions controller) {
 		this.controller = controller;
 		
@@ -71,6 +79,9 @@ public class TourNavigationPanel extends JPanel {
 		setBackground(Color.white);
 	}
 	
+	/**
+	 * Class handling what to do when the user starts the navigation
+	 */
 	private class actionStartTourListener implements ActionListener {
 
 		@Override
@@ -79,6 +90,9 @@ public class TourNavigationPanel extends JPanel {
 		}
 	}
 	
+	/**
+	 * Class handling what to do when the user wants to look at the next delivery
+	 */
 	private class actionNextDeliveryListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -86,6 +100,9 @@ public class TourNavigationPanel extends JPanel {
 		}
 	}
 	
+	/**
+	 * Class handling what to do when the user wants to look at the previous delivery
+	 */
 	private class actionPreviousDeliveryListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {

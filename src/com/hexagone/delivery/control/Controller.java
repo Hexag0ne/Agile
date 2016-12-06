@@ -10,6 +10,10 @@ import com.hexagone.delivery.models.Map;
 import com.hexagone.delivery.models.Route;
 import com.hexagone.delivery.ui.MainFrame;
 
+/** 
+ * This class provides control methods for the drawing of the map
+ * 
+ */
 public class Controller implements UserActions, MapPainter {
 
 	/** Element of model Map loaded by the user */
@@ -32,6 +36,7 @@ public class Controller implements UserActions, MapPainter {
 	private ControllerActions ROUTEVIEW_STATE;
 	private NavigateState NAVIGATE_STATE;
 	
+	/** Constructor */
 	public Controller(){
 		LOADMAP_STATE = new LoadMapState();
 		LOADDELIVERY_STATE = new LoadDeliveryState();
@@ -54,6 +59,9 @@ public class Controller implements UserActions, MapPainter {
 		new Controller();
 	}
 
+	/**
+	 * Loads the map on button click
+	 */
 	@Override
 	public void loadMapButtonClick() {
 		deliveryQuery = null; //Change of map -> we discard the deliveryQuery
@@ -62,6 +70,9 @@ public class Controller implements UserActions, MapPainter {
 		this.currentState = nextState();
 	}
 
+	/**
+	 * Loads a delivery query on button click
+	 */
 	@Override
 	public void loadDeliveryQueryButtonClick() {
 		route = null;
@@ -69,24 +80,36 @@ public class Controller implements UserActions, MapPainter {
 		this.currentState = nextState();
 	}
 
+	/**
+	 * Computes a route on button click
+	 */
 	@Override
 	public void computeRouteButtonClick() {
 		this.route = currentState.computeDelivery(map, deliveryQuery);
 		this.currentState = nextState();
 	}
 
+	/**
+	 * Generates a planning on button click
+	 */
 	@Override
 	public void generatePlanningButtonClick() {
 		// TODO Auto-generated method stub
 		
 	}
 	
+	/**
+	 * Starts navigation on button click
+	 */
 	@Override
 	public void startNavigationButtonClick() {
 		this.currentState = NAVIGATE_STATE;
 		NAVIGATE_STATE.startTour();
 	}
 	
+	/**
+	 * Moves to the next delivery
+	 */
 	@Override
 	public void nextDelivery() {
 		this.currentState = NAVIGATE_STATE;
@@ -94,6 +117,9 @@ public class Controller implements UserActions, MapPainter {
 		
 	}
 
+	/**
+	 * Moves to the previous delivery
+	 */
 	@Override
 	public void previousDelivery() {
 		this.currentState = NAVIGATE_STATE;
@@ -128,7 +154,10 @@ public class Controller implements UserActions, MapPainter {
 		
 		return nextState;
 	}
-
+	
+	/**
+	 * Draws the map from current state
+	 */
 	@Override
 	public void draw(Graphics g, float scale) {
 		currentState.DrawMap(g, scale, map, deliveryQuery, route);

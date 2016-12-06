@@ -11,12 +11,12 @@ import com.hexagone.delivery.xml.XMLException;
 import com.hexagone.ui.MainFrame;
 
 /**
- * Classe qui gère le lancement de l'application. Point d'entrée de l'éxécutable
+ * This class manages the launch of the application. Starting point of the executable.
  */
 public class Main {
 
 	/**
-	 * Lancement de l'application. Pas de paramètres particuliers.
+	 * Launching of the application. No parameters.
 	 * 
 	 * @throws XMLException
 	 */
@@ -26,6 +26,14 @@ public class Main {
 		frame.setLocationRelativeTo(null);
 	}
 
+	/**
+	 * Gets the intersections between two points : i1 and i2
+	 * @param i1
+	 * 			: departure bound
+	 * @param i2
+	 * 			: ending bound
+	 * @return the list of intersections as an ArrayList of Integers
+	 */
 	public static ArrayList<Integer> getIntersectionsBetween(Integer i1, Integer i2) {
 		ArrayList<Integer> sols = new ArrayList<Integer>();
 

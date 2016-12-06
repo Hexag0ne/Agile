@@ -10,7 +10,7 @@ import com.hexagone.delivery.models.Delivery;
 import com.hexagone.delivery.models.DeliveryQuery;
 
 /**
- * This class provides the basic interface and implementation for the Travelling
+ * This class provides the basic interface and implementation for the Traveling
  * Salesman Problem faced in this software
  */
 abstract class TSPSolver {
@@ -72,18 +72,15 @@ abstract class TSPSolver {
 	}
 
 	/**
-	 * Methode definissant le patron (template) d'une resolution par separation
-	 * et evaluation (branch and bound) du TSP
+	 * This methods defines the template of a solution (obtained by branch and bound of TSP)
 	 * 
-	 * @param sommetCrt
-	 *            le dernier sommet visite
-	 * @param coutVus
-	 *            la somme des couts des arcs du chemin passant par tous les
-	 *            sommets de vus + la somme des duree des sommets de vus
+	 * @param currentIntersection
+	 *            the current intersection
+	 * @param pathCost
+	 *            the cost of the path as a Calendar Object
 	 * @param tpsDebut
-	 *            : moment ou la resolution a commence
-	 * @param tpsLimite
-	 *            : limite de temps pour la resolution
+	 *            : the time of the beginning of the calculation
+	 *            
 	 */
 	private void branchAndBound(int currentIntersection, Calendar pathCost, long tpsDebut) {
 		/**
@@ -180,43 +177,37 @@ abstract class TSPSolver {
 			}
 		}
 		
-		
-		
-		
 		return costPotentiallySmaller && noTimeWindowMissed;
 	}
 	
 	/**
-	 * Methode devant etre redefinie par les sous-classes de TemplateTSP
-	 * 
+	 * This method gives the lower bound of the permutations cost 
 	 * @param sommetCourant
 	 * @param nonVus
-	 *            : tableau des sommets restant a visiter
+	 *            : table of the unvisited intersections
 	 * @param cout
-	 *            : cout[i][j] = duree pour aller de i a j, avec 0 <= i <
-	 *            nbSommets et 0 <= j < nbSommets
+	 *            : cout[i][j] = duration to go from i to j with 0 <= i <
+	 *            nbSommets and 0 <= j < nbSommets
 	 * @param duree
-	 *            : duree[i] = duree pour visiter le sommet i, avec 0 <= i <
+	 *            : duree[i] = duration to visit intersection i, with 0 <= i <
 	 *            nbSommets
-	 * @return une borne inferieure du cout des permutations commencant par
-	 *         sommetCourant, contenant chaque sommet de nonVus exactement une
-	 *         fois et terminant par le sommet 0
+	 * @return a lower bound of the permutations cost starting with sommetCourant, 
+	 * 			including each 'nonVus' intersection exactly once and ending with intersection 0
 	 */
 	protected abstract int bound(Integer sommetCourant, ArrayList<Integer> nonVus, Double[][] cout, Integer[] duree);
 
 	/**
-	 * Methode devant etre redefinie par les sous-classes de TemplateTSP
+	 * This method provides an iterator for nonVus
 	 * 
 	 * @param sommetCrt
 	 * @param nonVus
-	 *            : tableau des sommets restant a visiter
+	 *            : table of the intersections that have not been visited yet
 	 * @param cout
-	 *            : cout[i][j] = duree pour aller de i a j, avec 0 <= i <
-	 *            nbSommets et 0 <= j < nbSommets
+	 *            : cout[i][j] = duration to go from i to j, with 0 <= i <
+	 *            nbSommets and 0 <= j < nbSommets
 	 * @param duree
-	 *            : duree[i] = duree pour visiter le sommet i, avec 0 <= i <
-	 *            nbSommets
-	 * @return un iterateur permettant d'iterer sur tous les sommets de nonVus
+	 *            : duree[i] = duration to visit intersection i, with 0 <= i <nbSommets
+	 * @return an iterator that allows us to iterate on all of the 'nonVus' intersections
 	 */
 	protected abstract Iterator<Integer> iterator(Integer sommetCrt, ArrayList<Integer> nonVus, Double[][] cout,
 			Integer[] duree);
@@ -225,6 +216,10 @@ abstract class TSPSolver {
 	 * Constructor
 	 * 
 	 * @param costsAdjacencyMatrix
+	 *            the adjacency matrix of the graph. costsAdjacencyMatrix[i][j]
+	 *            represents the cost going from i to j.
+	 * @param deliveryQuery 
+	 * 			  the deliveries to make.
 	 */
 	public TSPSolver(Double[][] costsAdjacencyMatrix, DeliveryQuery deliveryQuery) {
 		costs = costsAdjacencyMatrix;

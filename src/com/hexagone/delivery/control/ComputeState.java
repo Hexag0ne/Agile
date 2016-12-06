@@ -21,8 +21,15 @@ import com.hexagone.delivery.models.Warehouse;
 import com.hexagone.delivery.xml.XMLDeserialiser;
 import com.hexagone.delivery.xml.XMLException;
 
+/**
+ * This class allows us to draw the map and the points of the delivery on top of it
+ * when the state is COMPUTE_STATE
+ */
 public class ComputeState implements ControllerActions {
 
+	/**
+	 * Opens a FileChooser that lets the user pick an XML file on the file system.
+	 */
 	@Override
 	public Map loadMap() {
 		try {
@@ -33,6 +40,9 @@ public class ComputeState implements ControllerActions {
 		}
 	}
 
+	/**
+	 * This method allows to load a delivery query from a XML file
+	 */
 	@Override
 	public DeliveryQuery loadDeliveryQuery() {
 		try {
@@ -43,6 +53,13 @@ public class ComputeState implements ControllerActions {
 		}
 	}
 
+	/**
+	 * This method computes a delivery and returns a Route   
+	 * @param map
+	 * @param delivery
+	 * @return the route computed as a Route Object
+	 * 
+	 */
 	@Override
 	public Route computeDelivery(Map map, DeliveryQuery delivery) {
 		DeliveryComputer computer = new DeliveryComputer(map, delivery);
@@ -52,12 +69,17 @@ public class ComputeState implements ControllerActions {
 	}
 
 	/**
-	 * In the ComputeState, the map and the deliveryQuery are known. Hence we draw the map and the points of delivery
-	 * on top of it
+	 * This methods draws the map and the points of the delivery on top of it
+	 * (as the map and the deliveryQuery are known in the class). 
+	 * @param g 
+	 * @param scale 
+	 * 			: ratio chosen for the drawing of the map
+	 * @param map
+	 * @param deliveryQuery
+	 * @param route
 	 */
 	@Override
 	public void DrawMap(Graphics g, float scale, Map map, DeliveryQuery deliveryQuery, Route route) {
-		
 		//Painting the map
 		//Painting the roads first
 		ArrayList<Intersection> intersections = new ArrayList<Intersection>(map.getIntersections().values());
@@ -97,7 +119,6 @@ public class ComputeState implements ControllerActions {
 			g.setColor(Color.BLUE);
 			g.fillOval((int)(((p.x)) / scale),(int) (((p.y)) / scale), 10, 10);
 		}
-		
 		
 		//Drawing the deliveryQuery
 		Warehouse warehouse = deliveryQuery.getWarehouse();
