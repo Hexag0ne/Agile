@@ -11,6 +11,10 @@ import com.hexagone.delivery.models.Map;
 import com.hexagone.delivery.models.RouteHelper;
 import com.hexagone.delivery.ui.MainFrame;
 
+/** 
+ * This class provides control methods for the drawing of the map
+ * 
+ */
 public class Controller implements UserActions, MapPainter {
 
 	/** Element of model Map loaded by the user */
@@ -32,7 +36,8 @@ public class Controller implements UserActions, MapPainter {
 	private ControllerActions COMPUTE_STATE;
 	private NavigateState NAVIGATE_STATE;
 	
-	public Controller() {
+	/** Constructor */
+	public Controller(){
 		LOADMAP_STATE = new LoadMapState();
 		LOADDELIVERY_STATE = new LoadDeliveryState();
 		COMPUTE_STATE = new ComputeState();
@@ -45,8 +50,9 @@ public class Controller implements UserActions, MapPainter {
 		mainFrame.setVisible(true);
 	}
 
-	/*
-	 * (non-Javadoc)
+	
+	/**
+	 * Loads the map on button click
 	 * @see com.hexagone.delivery.control.UserActions#loadMapButtonClick()
 	 */
 	@Override
@@ -61,8 +67,8 @@ public class Controller implements UserActions, MapPainter {
 		this.currentState = nextState();
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Loads a delivery query on button click
 	 * @see com.hexagone.delivery.control.UserActions#loadDeliveryQueryButtonClick()
 	 */
 	@Override
@@ -75,9 +81,9 @@ public class Controller implements UserActions, MapPainter {
 		}
 		this.currentState = nextState();
 	}
-
-	/*
-	 * (non-Javadoc)
+	
+	/**
+	 * Computes a route on button click
 	 * @see com.hexagone.delivery.control.UserActions#computeRouteButtonClick()
 	 */
 	@Override
@@ -87,17 +93,19 @@ public class Controller implements UserActions, MapPainter {
 		this.currentState = nextState();
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Generates a planning on button click
 	 * @see com.hexagone.delivery.control.UserActions#generatePlanningButtonClick()
 	 */
 	@Override
 	public void generatePlanningButtonClick() {
-		currentState.generatePlanning(routeHelper);
+		// TODO Auto-generated method stub
+		
 	}
 	
-	/*
-	 * (non-Javadoc)
+	
+	/**
+	 * Moves to the next delivery	
 	 * @see com.hexagone.delivery.control.UserActions#nextDelivery()
 	 */
 	@Override
@@ -106,8 +114,8 @@ public class Controller implements UserActions, MapPainter {
 		
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Moves to the previous delivery
 	 * @see com.hexagone.delivery.control.UserActions#previousDelivery()
 	 */
 	@Override
@@ -151,7 +159,10 @@ public class Controller implements UserActions, MapPainter {
 		mainFrame.setFocusableOnCenterPanel();
 		return nextState;
 	}
-
+	
+	/**
+	 * Draws the map from current state
+	 */
 	@Override
 	public void draw(Graphics g, float scale) {
 		currentState.DrawMap(g, scale, map, deliveryQuery, routeHelper);

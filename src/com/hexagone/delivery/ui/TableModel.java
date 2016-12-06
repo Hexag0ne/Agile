@@ -6,6 +6,10 @@ import javax.swing.table.AbstractTableModel;
 
 import com.hexagone.delivery.models.Delivery;
 
+/**
+ * Model of a table. Extends AbstractTableModel
+ *
+ */
 
 public class TableModel extends AbstractTableModel {
 
@@ -38,6 +42,14 @@ public class TableModel extends AbstractTableModel {
 		return data.size();
 	}
 
+	/**
+	 * Gets the value at a row Index and a column Index
+	 * @param rowIndex
+	 * 		: index of the row as an Integer
+	 * @param columnIndex
+	 * 		: index of the column as an Integer
+	 * @return the value Object
+	 */
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Object value = "??";

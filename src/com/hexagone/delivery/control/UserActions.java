@@ -1,5 +1,9 @@
 package com.hexagone.delivery.control;
 
+/**
+ * This class is an interface of user actions
+ *
+ */
 public interface UserActions {
 
 	/**

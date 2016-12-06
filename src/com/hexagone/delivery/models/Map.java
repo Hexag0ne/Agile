@@ -8,10 +8,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 /**
- * This class modelizes a city as an aggregate of Intersections and Roads.
+ * This class models a city as an aggregate of Intersections and Roads.
  * @see Intersection
  * @see Road
  */
+
 public class Map {
 
 	/** HashMap of the Intersections present in the map. The key is the unique identifier of the Intersection it maps */

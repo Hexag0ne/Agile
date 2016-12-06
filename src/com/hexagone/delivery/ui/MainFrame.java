@@ -23,6 +23,11 @@ import com.hexagone.delivery.models.Delivery;
 import com.hexagone.ui.MapTour;
 import com.hexagone.ui.TourPanel;
 
+/**
+ * Main window of the graphical user interface
+ * 
+ */
+
 public class MainFrame extends JFrame {
 
 	/** Controller of this instance of MainFrame */
@@ -53,8 +58,6 @@ public class MainFrame extends JFrame {
 	public MainFrame(UserActions controller, MapPainter painter)
 	{
 		this.controller = controller;
-
-
 		this.setTitle("Delivery App");
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setSize(screenSize.width, screenSize.height-50);
@@ -174,7 +177,6 @@ public class MainFrame extends JFrame {
 
 	/**
 	 * Class handling what to do when the user presses on the button computeTour
-	 * @author patrick
 	 *
 	 */
 	private class ComputeTourListener implements ActionListener {

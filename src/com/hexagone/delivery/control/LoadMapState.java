@@ -10,6 +10,10 @@ import com.hexagone.delivery.xml.NoFileChosenException;
 import com.hexagone.delivery.xml.XMLDeserialiser;
 import com.hexagone.delivery.xml.XMLException;
 
+/**
+ * This class allows us to draw the map and the points of the delivery on top of it
+ * when the state is LOADMAP_STATE
+ */
 public class LoadMapState implements ControllerActions {
 
 	/**
@@ -28,7 +32,7 @@ public class LoadMapState implements ControllerActions {
 	}
 
 	/**
-	 * Return null, one cannot load a deliveryQuery before loading a Map
+	 * Returns null, one cannot load a deliveryQuery before loading a Map
 	 */
 	@Override
 	public DeliveryQuery loadDeliveryQuery() {

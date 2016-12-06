@@ -17,6 +17,17 @@ import java.util.Locale;
 import com.hexagone.delivery.algo.DeliveryComputer;
 import com.hexagone.delivery.launcher.Main;
 
+/**
+ * This class is part of the map modeling. A Route carries several information :
+ * <ul>
+ * <li>the arrival points</li>
+ * <li>the map</li>
+ * <li>the delivery query</li>
+ * <li>the delivery computer</li>
+ * </ul>
+ * Note that if a real road allows cars to travel both ways, it will be
+ * modeled as <strong>two different roads </strong> in the map.
+ */
 public class RouteHelper {
 
 	private LinkedHashMap<Integer, ArrivalPoint> route;
@@ -48,6 +59,10 @@ public class RouteHelper {
 		return planning;
 	}
 
+	/** 
+	 * Generates a route, from the calculation of the intersections of the map, the delivery points, the roads between two intersections
+	 * 
+	 */
 	public LinkedHashMap<Integer, ArrivalPoint> generateRoute() {
 		LinkedHashMap<Integer, ArrivalPoint> route = new LinkedHashMap<Integer, ArrivalPoint>();
 		HashMap<Integer, Intersection> intersections = map.getIntersections();
@@ -154,6 +169,16 @@ public class RouteHelper {
 		return res;
 	}
 	
+	/**
+	 * Completes a particular Arrival Point : a warehouse. Sets the arrival time of the delivery
+	 * @param calArrival
+	 * 			: calendar corresponding to the arrival
+	 * @param is
+	 * 			: current intersection as an Intersection Object
+	 * @param roads
+	 * 			: roads of the route as an ArrayList of Road
+	 * @return the delivery Object
+	 */
 	private Delivery completeWarehouse(Calendar calArrival, Intersection is, ArrayList<Road> roads) {
 		Delivery d = new Delivery(is);
 		int roadTime = getTotalTime(roads);
@@ -162,6 +187,12 @@ public class RouteHelper {
 		return d;
 	}
 
+	/**
+	 * Calculates the total time of the road
+	 * @param roads
+	 * 			: roads of the route as an ArrayList of Road
+	 * @return the total time as an Integer
+	 */
 	private int getTotalTime(ArrayList<Road> roads) {
 		int roadTime = 0;
 		for (Road r : roads) {
@@ -170,6 +201,16 @@ public class RouteHelper {
 		return roadTime;
 	}
 
+	/**
+	 * Completes the delivery for an arrival point. 
+	 * @param calArrival
+	 *		: calendar corresponding to the arrival
+	 * @param d
+	 * 		: current delivery 
+	 * @param roads
+	 * 		: roads of the route as an ArrayList of Road
+	 * @return the delivery
+	 */
 	private Delivery completeDelivery(Calendar calArrival, Delivery d, ArrayList<Road> roads) {
 		int roadTime = getTotalTime(roads);
 		calArrival.add(Calendar.SECOND, roadTime);
@@ -193,6 +234,15 @@ public class RouteHelper {
 		return d;
 	}
 
+	/** 
+	 * Gets the roads in order between two intersections
+	 * 
+	 * @param it1
+	 * 			: identifier of the first intersection
+	 * @param it2
+	 * 			: identifier of the 2nd intersection
+	 * @return the roads found as an ArrayList of Road
+	 */
 	private ArrayList<Road> getRoadsbetweenIntersections(Integer it1, Integer it2) {
 		ArrayList<Road> roads = new ArrayList<Road>();
 		ArrayList<Integer> sols = deliveryComputer.getShortestPath(it1, it2);
@@ -209,6 +259,12 @@ public class RouteHelper {
 		return roads;
 	}
 	
+	/** 
+	 * Finds a delivery with the identifier of its intersection
+	 * @param it
+	 * 			: identifier of the intersection
+	 * @return the delivery as a Delivery Object
+	 */
 	private Delivery findDelivery(Integer it) {
 		Delivery[] deliveries = deliveryQuery.getDeliveries();
 		Delivery d;
@@ -268,6 +324,12 @@ public class RouteHelper {
 		return deg;
 	}
 
+	/**
+	 * Interprets a position and gives its number and suffix
+	 * @param pos
+	 *  	: position as an Integer
+	 * @return the plain position as a String : number of the position and suffix
+	 */
 	private String getPlainPosition(int pos) {
 		String res = "";
 		String num = String.valueOf(pos); // default value
@@ -283,6 +345,12 @@ public class RouteHelper {
 		return res;
 	}
 
+	/**
+	 * Interprets a degree and gives its direction
+	 * @param deg
+	 *  	: degree as an Integer
+	 * @return the plain degree as a String : the direction depending on the angle
+	 */
 	private String getPlainDegree(int deg) {
 		String dir = "tout droit"; // default value
 		int threshhold = 10;
@@ -295,8 +363,11 @@ public class RouteHelper {
 		return dir;
 	}
 
-	/*
-	 * Returns angle between three points (marked as p1/p2/p3)
+	/**
+	 * Returns the angle between three points (marked as p1/p2/p3)
+	 * @param p0, p1, p2
+	 * 			: Points that we want to get the angle of
+	 * @return the angle as an Integer
 	 */
 	public int getAngle(Point p0, Point p1, Point p2) {
 		double b = Math.pow(p1.x - p0.x, 2) + Math.pow(p1.y - p0.y, 2);

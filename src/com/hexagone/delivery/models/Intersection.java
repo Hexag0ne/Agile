@@ -4,12 +4,15 @@
 package com.hexagone.delivery.models;
 
 import java.awt.Point;
-
 /**
- * This class represents an intersection of the map
- * 
- * @author patrick
+ * This class models an intersection of the map
+ * It carries several information :
+ * <ul>
+ * <li>the coordinates</li>
+ * <li>the identifier</li>
+ * </ul>
  */
+
 public class Intersection {
 	private Point coordinates;
 	private Integer id;

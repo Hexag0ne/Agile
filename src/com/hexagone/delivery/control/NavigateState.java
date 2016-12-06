@@ -29,12 +29,19 @@ import com.hexagone.delivery.xml.NoFileChosenException;
 import com.hexagone.delivery.xml.XMLDeserialiser;
 import com.hexagone.delivery.xml.XMLException;
 
+/**
+ * This class allows us to draw the map and the points of the delivery on top of it
+ * when the state is NAVIGATE_STATE
+ */
 public class NavigateState implements ControllerActions {
 
 	private MainFrame frame;
 
 	private int step;
 
+	/**
+	 * Opens a FileChooser that lets the user pick an XML file on the file system.
+	 */
 	@Override
 	public Map loadMap() {
 		try {
@@ -47,6 +54,9 @@ public class NavigateState implements ControllerActions {
 		}
 	}
 
+	/**
+	 * This method allows to load a delivery query from a XML file
+	 */
 	@Override
 	public DeliveryQuery loadDeliveryQuery() {
 		try {
@@ -59,6 +69,13 @@ public class NavigateState implements ControllerActions {
 		}
 	}
 
+	/**
+	 * This method computes a delivery and returns a Route   
+	 * @param map
+	 * @param delivery
+	 * @return the route computed as a Route Object
+	 * 
+	 */
 	@Override
 	public RouteHelper computeDelivery(Map map, DeliveryQuery delivery) {
 		DeliveryComputer computer = new DeliveryComputer(map, delivery);
@@ -74,6 +91,16 @@ public class NavigateState implements ControllerActions {
 		Popup.showInformation(routeHelper.getPlanning(), "Feuille de route généré !");
 	}
 
+	/**
+	 * This methods draws the map and the points of the delivery on top of it
+	 * (as the map and the deliveryQuery are known in the class). 
+	 * @param g 
+	 * @param scale 
+	 * 			: ratio chosen for the drawing of the map
+	 * @param map
+	 * @param deliveryQuery
+	 * @param route
+	 */
 	@Override
 	public void DrawMap(Graphics g, float coefficient, Map map, DeliveryQuery deliveryQuery, RouteHelper routeHelper) {
 		ArrayList<Intersection> intersections = new ArrayList<Intersection>(map.getIntersections().values());
@@ -210,12 +237,21 @@ public class NavigateState implements ControllerActions {
 		} // TODO Auto-generated method stub
 
 	}
-
+	
+	/**
+	 * Repaints the frame when the tour starts
+	 */
 	public void startTour() {
 		step = 0;
 		frame.repaint();
 		frame.setFocusableOnCenterPanel();
 	}
+	
+	/**
+	 * Increments the step and moves to the next delivery
+	 * @param maxValue
+	 * 			: maximum value for the step
+	 */
 
 	public void nextDelivery(int maxValue) {
 		step++;
@@ -226,6 +262,11 @@ public class NavigateState implements ControllerActions {
 		frame.repaint();
 		frame.setFocusableOnCenterPanel();
 	}
+	
+	/**
+	 * Decrements the step if it is positive
+	 */
+
 
 	public void previousDelivery() {
 		if (step > 0) {
@@ -236,7 +277,11 @@ public class NavigateState implements ControllerActions {
 		frame.repaint();
 		frame.setFocusableOnCenterPanel();
 	}
-
+	
+	/**
+	 * Constructor
+	 * @param frame
+	 */
 	public NavigateState(MainFrame frame) {
 		this.frame = frame;
 	}

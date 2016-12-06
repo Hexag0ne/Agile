@@ -17,8 +17,8 @@ import com.hexagone.delivery.models.Road;
  */
 class CompleteGraphComputer {
 	/**
-	 * The main goal of this class is to apply the Dijkstra alogrithm to obtain
-	 * an adjacent matrix to then compute the most tume efficient way around the
+	 * The main goal of this class is to apply the Dijkstra algorithm to obtain
+	 * an adjacent matrix to then compute the most time efficient way around the
 	 * different passage points given in the deliveryQuery
 	 */
 	
@@ -103,7 +103,7 @@ class CompleteGraphComputer {
 	 * Allows to compute the costs of going from intersection 'Intersection' to
 	 * all the other points in the map The result is stored in the HashMap cost.
 	 * The HashMap previous stores the Intersection from which one needs to come
-	 * from to go by the shortes path.
+	 * from to go by the shortest path.
 	 * 
 	 * @param map
 	 *            the map in which the problem takes place
@@ -121,7 +121,7 @@ class CompleteGraphComputer {
 		/** Set of the non-visited nodes */
 		HashSet<Integer> nonVisitedNodes = map.getAllIntersectionIdentifiers();
 
-		/** Cost array initialisation */
+		/** Cost array initialization */
 		cost.put(intersection, new Double(0));
 
 		/** Beginning of the computation */
@@ -136,7 +136,7 @@ class CompleteGraphComputer {
 			nonVisitedNodes.remove(intersection);
 
 			/**
-			 * we go through each of the available neighbours starting from the
+			 * we go through each of the available neighbors starting from the
 			 * current intersection
 			 */
 			ArrayList<Road> neighbours = map.getRoadsStartingFrom(intersection);
@@ -166,8 +166,8 @@ class CompleteGraphComputer {
 	 * This method gives the key of the smallest element in the array
 	 * 
 	 * @param array
-	 *            the array from whih one wants to find the minimum
-	 * @return the index of the minimum element in the array as an int
+	 *            the array from which one wants to find the minimum
+	 * @return the index of the minimum element in the array as an integer
 	 */
 	static Integer smallestCost(HashMap<Integer, Double> hashMap, HashSet<Integer> keyCandidates) {
 		Iterator<Integer> keySetIterator = keyCandidates.iterator();

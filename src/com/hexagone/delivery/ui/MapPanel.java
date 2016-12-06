@@ -9,6 +9,10 @@ import javax.swing.JPanel;
 
 import com.hexagone.delivery.control.MapPainter;
 
+/**
+ * Panel that contains the map.
+ *
+ */
 public class MapPanel extends JPanel {
 
 	MapPainter painter;

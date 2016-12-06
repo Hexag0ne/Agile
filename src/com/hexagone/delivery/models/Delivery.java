@@ -18,11 +18,21 @@ import com.hexagone.delivery.xml.IntersectionAdapter;
 
 /**
  * This class models a delivery in a delivery query
+ * It carries several information :
+ * <ul>
+ * <li>the intersection where the delivery takes place</li>
+ * <li>the time point after which it is no longer possible to deliver</li>
+ * <li>the time in minutes that the delivery takes</li>
+ * <li>the time from which the delivery may take place</li>
+ * <li>the departure time</li>
+ * <li>the arrival time</li>
+ * <li>the waiting time</li>
+ * </ul>
  */
+
 @XmlRootElement(name = "livraison")
 public class Delivery {
 
-	
 	/** The intersection where the delivery takes place */
 	private Intersection intersection;
 
@@ -151,6 +161,10 @@ public class Delivery {
 		this.waitingTime = waitingTime;
 	}
 	
+	/**
+	 * This methods gives the time slot of the delivery
+	 * @return the time slot as a String 
+	 */
 	public String getTimeslotDelivery() {
 		if(this.getStartSchedule() != null){
 			Calendar startScheduleCalendar = GregorianCalendar.getInstance();
@@ -163,6 +177,10 @@ public class Delivery {
 		else return null;
 	}
 	
+	/**
+	 * This methods gives the departure time of the delivery
+	 * @return the departure time as a String 
+	 */
 	public String getDepartureTimeString(){
 		if(this.getDepartureTime() != null){
 			SimpleDateFormat small = new SimpleDateFormat("HH:mm", Locale.FRENCH);
@@ -171,6 +189,10 @@ public class Delivery {
 		else return null;
 	}
 	
+	/**
+	 * This methods gives the arrival time of the delivery
+	 * @return the arrival time as a String 
+	 */
 	public String getArrivalTimeString(){
 		if(this.getDepartureTime() != null){
 			SimpleDateFormat small = new SimpleDateFormat("HH:mm", Locale.FRENCH);
@@ -181,10 +203,17 @@ public class Delivery {
 		
 	}
 	
+	/**
+	 * Constructs a Delivery from an intersection
+	 * @param intersection 
+	 */
 	public Delivery(Intersection intersection) {
 		this.intersection = intersection;
 	}
 	
+	/**
+	 * Default Constructor
+	 */
 	public Delivery() {	
 	}
 }
