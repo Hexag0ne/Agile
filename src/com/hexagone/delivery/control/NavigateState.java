@@ -203,7 +203,7 @@ public class NavigateState implements ControllerActions {
 		if(step > maxValue){
 			step = maxValue;
 		}
-			
+		frame.selectionRow(step);	
 		frame.repaint();
 	}
 	
@@ -212,6 +212,7 @@ public class NavigateState implements ControllerActions {
 			step --;
 		}
 		
+		frame.selectionRow(step);	
 		frame.repaint();
 	}
 	
