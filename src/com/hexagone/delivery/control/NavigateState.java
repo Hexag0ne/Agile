@@ -13,8 +13,6 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.swing.JOptionPane;
-
 import com.hexagone.delivery.algo.DeliveryComputer;
 import com.hexagone.delivery.models.ArrivalPoint;
 import com.hexagone.delivery.models.DeliveryQuery;
@@ -225,12 +223,12 @@ public class NavigateState implements ControllerActions {
 						break;
 					}
 				}
-				g.fillOval((int) (((pointDelivery.x)) / coefficient), (int) (((pointDelivery.y)) / coefficient), 20,
+				g.fillOval((int) (((pointDelivery.x)) / coefficient)-5, (int) (((pointDelivery.y)) / coefficient)-5, 20,
 						20);
 			}
 
 			g.setColor(Color.RED);
-			g.fillOval((int) (((pointWarehouse.x)) / coefficient), (int) (((pointWarehouse.y)) / coefficient), 15, 15);
+			g.fillOval((int) (((pointWarehouse.x)) / coefficient)-2, (int) (((pointWarehouse.y)) / coefficient)-2, 14, 14);
 			g.drawString("Entrepôt", (int) (((pointWarehouse.x)) / coefficient + 5),
 					(int) (((pointWarehouse.y)) / coefficient));
 

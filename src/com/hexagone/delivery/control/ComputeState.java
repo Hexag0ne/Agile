@@ -148,7 +148,7 @@ public class ComputeState implements ControllerActions {
 		}
 		// Draw Warehouse
 		g.setColor(Color.RED);
-		g.fillOval((int)(((pointWarehouse.x)) / scale),(int)( ((pointWarehouse.y)) / scale), 15, 15);
+		g.fillOval((int)(((pointWarehouse.x)) / scale)-2,(int)( ((pointWarehouse.y)) / scale)-2, 14, 14);
 		g.drawString("Entrepôt",(int)( ((pointWarehouse.x)) / scale + 5), (int)(((pointWarehouse.y)) / scale));
 
 		// Draw Delivery points
@@ -162,7 +162,7 @@ public class ComputeState implements ControllerActions {
 					break;
 				}
 			}
-			g.fillOval((int)(((pointDelivery.x)) / scale),(int)( ((pointDelivery.y)) / scale), 10, 10);
+			g.fillOval((int)(((pointDelivery.x)) / scale)-1,(int)( ((pointDelivery.y)) / scale)-1, 12, 12);
 
 		}
 	}
