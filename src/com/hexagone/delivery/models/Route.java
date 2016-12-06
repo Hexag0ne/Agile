@@ -52,8 +52,8 @@ public class Route {
 		LinkedHashMap<Integer, ArrivalPoint> route = new LinkedHashMap<Integer, ArrivalPoint>();
 		HashMap<Integer, Intersection> intersections = map.getIntersections();
 		
-		//ArrayList<Integer> deliveryPoints = deliveryComputer.getDeliveryPoints();
-		Integer[] its = {0, 8, 12, 22, 5, 0}; ArrayList<Integer> deliveryPoints = new ArrayList<Integer>(); deliveryPoints.addAll(Arrays.asList(its));
+		ArrayList<Integer> deliveryPoints = deliveryComputer.getDeliveryPoints();
+		//Integer[] its = {0, 8, 12, 22, 5, 0}; ArrayList<Integer> deliveryPoints = new ArrayList<Integer>(); deliveryPoints.addAll(Arrays.asList(its));
 
 		Calendar calArrival = Calendar.getInstance();
 		calArrival.setTime(deliveryQuery.getWarehouse().getDepartureTime());
@@ -106,7 +106,7 @@ public class Route {
 		res += "Mon planning (" + planningDate + ")\n\n";
 		res += "\tDépart de l'entrepôt à " + small.format(departureTime) + ". ";
 		// Record for longest java call ?
-		res += "Rejoindre l'intersection " + route.entrySet().iterator().next().getValue().getRoads().get(0).getOrigin() + "\n.";
+		res += "Rejoindre l'intersection " + route.entrySet().iterator().next().getValue().getRoads().get(0).getOrigin() + ".\n";
 		
 		// Iterating over arrival points
 		int deliveryCounter = 0;
@@ -193,8 +193,8 @@ public class Route {
 
 	private ArrayList<Road> getRoadsbetweenIntersections(Integer it1, Integer it2) {
 		ArrayList<Road> roads = new ArrayList<Road>();
-		//ArrayList<Integer> sols = deliveryComputer.getShortestPath(it1, it2);
-		ArrayList<Integer> sols = Main.getShortestPath(it1, it2);
+		ArrayList<Integer> sols = deliveryComputer.getShortestPath(it1, it2);
+		//ArrayList<Integer> sols = Main.getShortestPath(it1, it2);
 		
 		for (int j = 0; j < sols.size() - 1; j++) {
 			for (Road r : this.map.getRoadsStartingFrom(sols.get(j))) {
