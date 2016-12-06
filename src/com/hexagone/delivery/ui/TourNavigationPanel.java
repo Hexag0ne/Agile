@@ -52,7 +52,7 @@ public class TourNavigationPanel extends JPanel {
 		searchZonePanel.setSize(searchPanel.getPreferredSize().width-10,searchPanel.getPreferredSize().height);
 		searchZonePanel.add(searchZone);
 		searchPanel.add(searchZonePanel);
-		searchButton = new JButton(new ImageIcon(getClass().getResource("/search.png")));
+		searchButton = new JButton(new ImageIcon(getClass().getClassLoader().getResource("resources/search.png")));
 		//searchButton.addActionListener(searchListener);
 		searchButtonPanel = new JPanel(new FlowLayout());
 		searchButtonPanel.setSize(searchPanel.getPreferredSize().width-searchZonePanel.getPreferredSize().width,searchPanel.getPreferredSize().height);
