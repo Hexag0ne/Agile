@@ -17,7 +17,7 @@ import java.util.Locale;
 import com.hexagone.delivery.algo.DeliveryComputer;
 import com.hexagone.delivery.launcher.Main;
 
-public class Route {
+public class RouteHelper {
 
 	private LinkedHashMap<Integer, ArrivalPoint> route;
 
@@ -31,7 +31,7 @@ public class Route {
 	
 	private HashMap<Integer, Intersection> intersections;
 
-	public Route(Map map, DeliveryQuery dq, DeliveryComputer dc) {
+	public RouteHelper(Map map, DeliveryQuery dq, DeliveryComputer dc) {
 		this.map = map;
 		this.deliveryQuery = dq;
 		this.deliveryComputer = dc;

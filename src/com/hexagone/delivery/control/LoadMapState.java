@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
 
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Map;
-import com.hexagone.delivery.models.Route;
+import com.hexagone.delivery.models.RouteHelper;
 import com.hexagone.delivery.ui.Popup;
 import com.hexagone.delivery.xml.XMLDeserialiser;
 import com.hexagone.delivery.xml.XMLException;
@@ -38,20 +38,20 @@ public class LoadMapState implements ControllerActions {
 	 * Returns null. It shouldn't be called in the InitState
 	 */
 	@Override
-	public Route computeDelivery(Map map, DeliveryQuery delivery) {
+	public RouteHelper computeDelivery(Map map, DeliveryQuery delivery) {
 		return null;
 	}
 	
 	@Override
-	public void generatePlanning(Route route) {
-		JOptionPane.showMessageDialog(null, "Veuillez calculez la tournée.", "Erreur", JOptionPane.ERROR_MESSAGE);
+	public void generatePlanning(RouteHelper routeHelper) {
+		Popup.showError("Veuillez calculez la tournée", "Erreur");
 	}
 
 	/**
 	 * In the loadMap state, the map isn't present. Therefore this method doesn't draw anything
 	 */
 	@Override
-	public void DrawMap(Graphics g, float scale, Map m, DeliveryQuery delivery, Route route) {
+	public void DrawMap(Graphics g, float scale, Map m, DeliveryQuery delivery, RouteHelper routeHelper) {
 		//No action
 	}
 
