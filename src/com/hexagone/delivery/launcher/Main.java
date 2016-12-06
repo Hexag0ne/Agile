@@ -12,6 +12,7 @@ public class Main {
 	 * Launching of the application. No parameters.
 	 */
 	public static void main(String[] args) {
-		new Controller();
+		Controller c = new Controller();
+		c.launch();
 	}
 }

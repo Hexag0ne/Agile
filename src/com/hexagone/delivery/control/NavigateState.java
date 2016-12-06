@@ -115,22 +115,8 @@ public class NavigateState implements ControllerActions {
 			for (Road r : roadsFromI) {
 				g.setColor(Color.GRAY);
 				Graphics2D g2 = (Graphics2D) g;
-				Point destination = null;
-				Point origine = null;
-				// TODO
-				for (Intersection in : intersections) {
-					if ((in.getId()).equals(r.getOrigin())) {
-						origine = in.getCoordinates();
-						break;
-					}
-				}
-				// TODO
-				for (Intersection in : intersections) {
-					if ((in.getId()).equals(r.getDestination())) {
-						destination = in.getCoordinates();
-						break;
-					}
-				}
+				Point destination = intersections.get(r.getOrigin()).getCoordinates();
+                Point origine = intersections.get(r.getDestination()).getCoordinates();
 				Line2D lin = new Line2D.Float(((origine.x) / coefficient) + 5, ((origine.y) / coefficient) + 5,
 						((destination.x) / coefficient) + 5, ((destination.y) / coefficient) + 5);
 				g2.draw(lin);
@@ -139,14 +125,7 @@ public class NavigateState implements ControllerActions {
 
 		Warehouse warehouse = deliveryQuery.getWarehouse();
 		Intersection intersectionWarehouse = warehouse.getIntersection();
-		Point pointWarehouse = new Point();
-		// TODO
-		for (Intersection in : intersections) {
-			if ((in.getId()).equals(intersectionWarehouse.getId())) {
-				pointWarehouse = in.getCoordinates();
-				break;
-			}
-		}
+		Point pointWarehouse = intersections.get(intersectionWarehouse.getId()).getCoordinates();
 
 		HashMap<Integer, ArrivalPoint> tour = routeHelper.getRoute();
 		Set<Entry<Integer, ArrivalPoint>> entrySet = tour.entrySet();
@@ -163,22 +142,8 @@ public class NavigateState implements ControllerActions {
 				for (Road r : roadsToNextDP) {
 					g.setColor(Color.green);
 					Graphics2D g2 = (Graphics2D) g;
-					Point destination = null;
-					Point origine = null;
-					// TODO
-					for (Intersection in : intersections) {
-						if ((in.getId()).equals(r.getOrigin())) {
-							origine = in.getCoordinates();
-							break;
-						}
-					}
-					// TODO
-					for (Intersection in : intersections) {
-						if ((in.getId()).equals(r.getDestination())) {
-							destination = in.getCoordinates();
-							break;
-						}
-					}
+					Point destination = intersections.get(r.getOrigin()).getCoordinates();
+	                Point origine = intersections.get(r.getDestination()).getCoordinates();
 					Line2D lin = new Line2D.Float(((origine.x) / coefficient) + 5, ((origine.y) / coefficient) + 5,
 							((destination.x) / coefficient) + 5, ((destination.y) / coefficient) + 5);
 					g2.setColor(Color.GREEN);
@@ -193,21 +158,8 @@ public class NavigateState implements ControllerActions {
 			for (Road r : roadsToNextDP) {
 				g.setColor(Color.BLACK);
 				Graphics2D g2 = (Graphics2D) g;
-				Point destination = null;
-				Point origine = null;
-				for (Intersection in : intersections) {
-					if ((in.getId()).equals(r.getOrigin())) {
-						origine = in.getCoordinates();
-						break;
-					}
-				}
-				// TODO
-				for (Intersection in : intersections) {
-					if ((in.getId()).equals(r.getDestination())) {
-						destination = in.getCoordinates();
-						break;
-					}
-				}
+				Point destination = intersections.get(r.getOrigin()).getCoordinates();
+                Point origine = intersections.get(r.getDestination()).getCoordinates();
 				Line2D lin = new Line2D.Float(((origine.x) / coefficient) + 5, ((origine.y) / coefficient) + 5,
 						((destination.x) / coefficient) + 5, ((destination.y) / coefficient) + 5);
 				g2.setStroke(new BasicStroke(3));
@@ -216,13 +168,7 @@ public class NavigateState implements ControllerActions {
 			if (i == step) {
 				// g.setColor(new Color(0, 102, 0));
 				g.setColor(Color.BLACK);
-				// TODO
-				for (Intersection in : intersections) {
-					if ((in.getId()).equals(entry.getKey())) {
-						pointDelivery = in.getCoordinates();
-						break;
-					}
-				}
+				pointDelivery = intersections.get(entry.getKey()).getCoordinates();
 				g.fillOval((int) (((pointDelivery.x)) / coefficient) - 5, (int) (((pointDelivery.y)) / coefficient) - 5,
 						20, 20);
 			}
@@ -238,18 +184,11 @@ public class NavigateState implements ControllerActions {
 
 		Delivery[] deliveries = deliveryQuery.getDeliveries();
 		g.setColor(new Color(20, 200, 20));
+		Point pointDelivery;
 		for (Delivery d : deliveries) {
-			Intersection i = d.getIntersection();
-			Point pointDelivery = new Point();
-			for (Intersection in : intersections) {
-				if ((in.getId()).equals(i.getId())) {
-					pointDelivery = in.getCoordinates();
-					break;
-				}
-			}
+			pointDelivery = intersections.get(d.getIntersection().getId()).getCoordinates();
 			g.fillOval((int) (((pointDelivery.x)) / coefficient) - 1, (int) (((pointDelivery.y)) / coefficient) - 1, 12,
 					12);
-
 		}
 		g.setColor(Color.RED);
 		g.fillOval((int) (((pointWarehouse.x)) / coefficient) - 2, (int) (((pointWarehouse.y)) / coefficient) - 2, 14,

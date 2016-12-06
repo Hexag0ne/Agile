@@ -13,10 +13,11 @@ import com.hexagone.delivery.models.Delivery;
 
 public class TableModel extends AbstractTableModel {
 
-	private static Vector<String> columnNames = new Vector<String>();
+	private Vector<String> columnNames;
 	private Vector<Delivery> data;
 
 	public TableModel(Vector<Delivery> data) {
+		this.columnNames = new Vector<String>(); 
 		this.data = data;
 		columnNames.addElement("N°");
 		columnNames.addElement("Durée (min)");
@@ -24,7 +25,6 @@ public class TableModel extends AbstractTableModel {
 		columnNames.addElement("Heure d'arrivée");
 		columnNames.addElement("Heure de départ");
 		columnNames.addElement("Temps d'attente (min)");
-
 	}
 
 	@Override
