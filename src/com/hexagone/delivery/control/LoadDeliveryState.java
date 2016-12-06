@@ -22,13 +22,14 @@ import com.hexagone.delivery.xml.XMLDeserialiser;
 import com.hexagone.delivery.xml.XMLException;
 
 /**
- * This class allows us to draw the map and the points of the delivery on top of it
- * when the state is LOADDELIVERY_STATE
+ * This class allows us to draw the map and the points of the delivery on top of
+ * it when the state is LOADDELIVERY_STATE
  */
 public class LoadDeliveryState implements ControllerActions {
 
 	/**
-	 * Opens a FileChooser that lets the user pick an XML file on the file system.
+	 * Opens a FileChooser that lets the user pick an XML file on the file
+	 * system.
 	 */
 	@Override
 	public Map loadMap() {
@@ -58,7 +59,8 @@ public class LoadDeliveryState implements ControllerActions {
 	}
 
 	/**
-	 * This method computes a delivery and returns a Route   
+	 * This method computes a delivery and returns a Route
+	 * 
 	 * @param map
 	 * @param delivery
 	 * @return the route computed as a Route Object
@@ -69,7 +71,7 @@ public class LoadDeliveryState implements ControllerActions {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	@Override
 	public void generatePlanning(RouteHelper routeHelper) {
 		JOptionPane.showMessageDialog(null, "Veuillez calculez la tournée.", "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -77,13 +79,14 @@ public class LoadDeliveryState implements ControllerActions {
 
 	/**
 	 * This methods draws the map and the points of the delivery on top of it
-	 * (as the map and the deliveryQuery are known in the class). 
+	 * (as the map and the deliveryQuery are known in the class).
 	 * 
-	 * In the LoadDeliveryState, the map has been loaded. We draw the roads and intersections of this map
+	 * In the LoadDeliveryState, the map has been loaded. We draw the roads and
+	 * intersections of this map
 	 * 
-	 * @param g 
-	 * @param scale 
-	 * 			: ratio chosen for the drawing of the map
+	 * @param g
+	 * @param scale
+	 *            : ratio chosen for the drawing of the map
 	 * @param map
 	 * @param deliveryQuery
 	 * @param route
@@ -118,16 +121,16 @@ public class LoadDeliveryState implements ControllerActions {
 				}
 				Line2D lin = new Line2D.Float(((origine.x) / scale) + 5, ((origine.y) / scale) + 5,
 						((destination.x) / scale) + 5, ((destination.y) / scale) + 5);
-				//g2.setStroke(new BasicStroke(2));
+				// g2.setStroke(new BasicStroke(2));
 				g2.draw(lin);
 			}
 		}
-		
+
 		for (Intersection i : intersections) {
 			Point p = new Point();
 			p = i.getCoordinates();
 			g.setColor(Color.BLUE);
-			g.fillOval((int)(((p.x)) / scale),(int) (((p.y)) / scale), 10, 10);
+			g.fillOval((int) (((p.x)) / scale), (int) (((p.y)) / scale), 10, 10);
 		}
 	}
 

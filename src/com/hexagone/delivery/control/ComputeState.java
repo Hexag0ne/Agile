@@ -25,13 +25,14 @@ import com.hexagone.delivery.xml.XMLDeserialiser;
 import com.hexagone.delivery.xml.XMLException;
 
 /**
- * This class allows us to draw the map and the points of the delivery on top of it
- * when the state is COMPUTE_STATE
+ * This class allows us to draw the map and the points of the delivery on top of
+ * it when the state is COMPUTE_STATE
  */
 public class ComputeState implements ControllerActions {
 
 	/**
-	 * Opens a FileChooser that lets the user pick an XML file on the file system.
+	 * Opens a FileChooser that lets the user pick an XML file on the file
+	 * system.
 	 */
 	@Override
 	public Map loadMap() {
@@ -61,7 +62,8 @@ public class ComputeState implements ControllerActions {
 	}
 
 	/**
-	 * This method computes a delivery and returns a Route   
+	 * This method computes a delivery and returns a Route
+	 * 
 	 * @param map
 	 * @param delivery
 	 * @return the route computed as a Route Object
@@ -71,10 +73,10 @@ public class ComputeState implements ControllerActions {
 	public RouteHelper computeDelivery(Map map, DeliveryQuery delivery) {
 		DeliveryComputer computer = new DeliveryComputer(map, delivery);
 		computer.getDeliveryPoints(); // to launch computation
-		
+
 		return new RouteHelper(map, delivery, computer);
 	}
-	
+
 	@Override
 	public void generatePlanning(RouteHelper routeHelper) {
 		JOptionPane.showMessageDialog(null, "Veuillez calculez la tournée.", "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -82,19 +84,20 @@ public class ComputeState implements ControllerActions {
 
 	/**
 	 * This methods draws the map and the points of the delivery on top of it
-	 * (as the map and the deliveryQuery are known in the class). 
-	 * @param g 
-	 * @param scale 
-	 * 			: ratio chosen for the drawing of the map
+	 * (as the map and the deliveryQuery are known in the class).
+	 * 
+	 * @param g
+	 * @param scale
+	 *            : ratio chosen for the drawing of the map
 	 * @param map
 	 * @param deliveryQuery
 	 * @param route
 	 */
 	@Override
 	public void DrawMap(Graphics g, float scale, Map map, DeliveryQuery deliveryQuery, RouteHelper routeHelper) {
-		
-		//Painting the map
-		//Painting the roads first
+
+		// Painting the map
+		// Painting the roads first
 		ArrayList<Intersection> intersections = new ArrayList<Intersection>(map.getIntersections().values());
 		Set<Integer> roads = new HashSet<Integer>();
 		roads = (map.getRoads()).keySet();
@@ -121,19 +124,19 @@ public class ComputeState implements ControllerActions {
 				}
 				Line2D lin = new Line2D.Float(((origine.x) / scale) + 5, ((origine.y) / scale) + 5,
 						((destination.x) / scale) + 5, ((destination.y) / scale) + 5);
-				//g2.setStroke(new BasicStroke(2));
+				// g2.setStroke(new BasicStroke(2));
 				g2.draw(lin);
 			}
 		}
-		//Painting the  of the map
+		// Painting the of the map
 		for (Intersection i : intersections) {
 			Point p = new Point();
 			p = i.getCoordinates();
 			g.setColor(Color.BLUE);
-			g.fillOval((int)(((p.x)) / scale),(int) (((p.y)) / scale), 10, 10);
+			g.fillOval((int) (((p.x)) / scale), (int) (((p.y)) / scale), 10, 10);
 		}
-		
-		//Drawing the deliveryQuery
+
+		// Drawing the deliveryQuery
 		Warehouse warehouse = deliveryQuery.getWarehouse();
 		Delivery[] deliveries = deliveryQuery.getDeliveries();
 
@@ -147,8 +150,8 @@ public class ComputeState implements ControllerActions {
 		}
 		// Draw Warehouse
 		g.setColor(Color.RED);
-		g.fillOval((int)(((pointWarehouse.x)) / scale)-2,(int)( ((pointWarehouse.y)) / scale)-2, 14, 14);
-		g.drawString("Entrepôt",(int)( ((pointWarehouse.x)) / scale + 5), (int)(((pointWarehouse.y)) / scale));
+		g.fillOval((int) (((pointWarehouse.x)) / scale) - 2, (int) (((pointWarehouse.y)) / scale) - 2, 14, 14);
+		g.drawString("Entrepôt", (int) (((pointWarehouse.x)) / scale + 5), (int) (((pointWarehouse.y)) / scale));
 
 		// Draw Delivery points
 		g.setColor(new Color(20, 200, 20));
@@ -161,7 +164,7 @@ public class ComputeState implements ControllerActions {
 					break;
 				}
 			}
-			g.fillOval((int)(((pointDelivery.x)) / scale)-1,(int)( ((pointDelivery.y)) / scale)-1, 12, 12);
+			g.fillOval((int) (((pointDelivery.x)) / scale) - 1, (int) (((pointDelivery.y)) / scale) - 1, 12, 12);
 
 		}
 	}

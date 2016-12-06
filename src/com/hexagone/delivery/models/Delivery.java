@@ -17,8 +17,8 @@ import com.hexagone.delivery.xml.DateAdapter;
 import com.hexagone.delivery.xml.IntersectionAdapter;
 
 /**
- * This class models a delivery in a delivery query
- * It carries several information :
+ * This class models a delivery in a delivery query It carries several
+ * information :
  * <ul>
  * <li>the intersection where the delivery takes place</li>
  * <li>the time point after which it is no longer possible to deliver</li>
@@ -44,13 +44,13 @@ public class Delivery {
 
 	/** The time from which the delivery may take place */
 	private Date startSchedule;
-	
+
 	private Date departureTime;
-	
+
 	private Date arrivalTime;
-	
+
 	private int waitingTime = 0;
-	
+
 	public void setTimes(Date departure, Date arrival, int waiting) {
 		this.setDepartureTime(departure);
 		this.setArrivalTime(arrival);
@@ -59,6 +59,7 @@ public class Delivery {
 
 	/**
 	 * Gives back the intersection object at which the delivery takes place.
+	 * 
 	 * @return the intersection object where this delivery takes place
 	 */
 	public Intersection getIntersection() {
@@ -66,8 +67,11 @@ public class Delivery {
 	}
 
 	/**
-	 * Allows to set the intersection at which the delivery is going to take place
-	 * @param intersection the intersection at which this delivery is going to take place
+	 * Allows to set the intersection at which the delivery is going to take
+	 * place
+	 * 
+	 * @param intersection
+	 *            the intersection at which this delivery is going to take place
 	 */
 	@XmlJavaTypeAdapter(IntersectionAdapter.class)
 	@XmlAttribute(name = "adresse")
@@ -76,8 +80,9 @@ public class Delivery {
 	}
 
 	/**
-	 * Gives bask the end of the delivery possibility if any.
-	 * In case there is no time limit to make the delivery, this method will return null
+	 * Gives bask the end of the delivery possibility if any. In case there is
+	 * no time limit to make the delivery, this method will return null
+	 * 
 	 * @return the Date at which the delivery point closes
 	 */
 	public Date getEndSchedule() {
@@ -86,7 +91,9 @@ public class Delivery {
 
 	/**
 	 * Allows the user to define an end for the delivery
-	 * @param endSchedule the date at which it will not be possible to deliver annymore
+	 * 
+	 * @param endSchedule
+	 *            the date at which it will not be possible to deliver annymore
 	 */
 	@XmlJavaTypeAdapter(DateAdapter.class)
 	@XmlAttribute(name = "finPlage")
@@ -96,6 +103,7 @@ public class Delivery {
 
 	/**
 	 * Allows the user to get the time the delivery is going to take.
+	 * 
 	 * @return the number of minutes necessary to make the delivery
 	 */
 	public int getDuration() {
@@ -103,9 +111,11 @@ public class Delivery {
 	}
 
 	/**
-	 * Allows the user to define the time needed to make the delivery, that is how long one needs to stay at the 
-	 * delivery point
-	 * @param duration the time needed to make the delivery in minutes
+	 * Allows the user to define the time needed to make the delivery, that is
+	 * how long one needs to stay at the delivery point
+	 * 
+	 * @param duration
+	 *            the time needed to make the delivery in minutes
 	 */
 	@XmlAttribute(name = "duree")
 	public void setDuration(int duration) {
@@ -113,7 +123,9 @@ public class Delivery {
 	}
 
 	/**
-	 * Allows the user to get the Date at which it becomes possible to make the delivery
+	 * Allows the user to get the Date at which it becomes possible to make the
+	 * delivery
+	 * 
 	 * @return the date at which the delivery point opens
 	 */
 	public Date getStartSchedule() {
@@ -121,8 +133,12 @@ public class Delivery {
 	}
 
 	/**
-	 * Allows the user to define a time at which the delivery point is going to open.
-	 * @param startSchedule the moment at which the user is going to be able to begin ist delivery 
+	 * Allows the user to define a time at which the delivery point is going to
+	 * open.
+	 * 
+	 * @param startSchedule
+	 *            the moment at which the user is going to be able to begin ist
+	 *            delivery
 	 */
 	@XmlJavaTypeAdapter(DateAdapter.class)
 	@XmlAttribute(name = "debutPlage")
@@ -160,60 +176,65 @@ public class Delivery {
 	public void setWaitingTime(int waitingTime) {
 		this.waitingTime = waitingTime;
 	}
-	
+
 	/**
 	 * This methods gives the time slot of the delivery
-	 * @return the time slot as a String 
+	 * 
+	 * @return the time slot as a String
 	 */
 	public String getTimeslotDelivery() {
-		if(this.getStartSchedule() != null){
+		if (this.getStartSchedule() != null) {
 			Calendar startScheduleCalendar = GregorianCalendar.getInstance();
 			startScheduleCalendar.setTime(this.getStartSchedule());
 			Calendar endScheduleCalendar = GregorianCalendar.getInstance();
 			endScheduleCalendar.setTime(this.getEndSchedule());
-			String timeslotDelivery = (""+startScheduleCalendar.get(Calendar.HOUR_OF_DAY)+"h"+"-"+endScheduleCalendar.get(Calendar.HOUR_OF_DAY)+"h");
+			String timeslotDelivery = ("" + startScheduleCalendar.get(Calendar.HOUR_OF_DAY) + "h" + "-"
+					+ endScheduleCalendar.get(Calendar.HOUR_OF_DAY) + "h");
 			return timeslotDelivery;
-		}
-		else return null;
+		} else
+			return null;
 	}
-	
+
 	/**
 	 * This methods gives the departure time of the delivery
-	 * @return the departure time as a String 
+	 * 
+	 * @return the departure time as a String
 	 */
-	public String getDepartureTimeString(){
-		if(this.getDepartureTime() != null){
+	public String getDepartureTimeString() {
+		if (this.getDepartureTime() != null) {
 			SimpleDateFormat small = new SimpleDateFormat("HH:mm", Locale.FRENCH);
-			return (""+small.format(this.getDepartureTime()));
-		}
-		else return null;
+			return ("" + small.format(this.getDepartureTime()));
+		} else
+			return null;
 	}
-	
+
 	/**
 	 * This methods gives the arrival time of the delivery
-	 * @return the arrival time as a String 
+	 * 
+	 * @return the arrival time as a String
 	 */
-	public String getArrivalTimeString(){
-		if(this.getDepartureTime() != null){
+	public String getArrivalTimeString() {
+		if (this.getDepartureTime() != null) {
 			SimpleDateFormat small = new SimpleDateFormat("HH:mm", Locale.FRENCH);
-			return (""+small.format(this.getArrivalTime()));
-			
-		}
-		else return null;
-		
+			return ("" + small.format(this.getArrivalTime()));
+
+		} else
+			return null;
+
 	}
-	
+
 	/**
 	 * Constructs a Delivery from an intersection
-	 * @param intersection 
+	 * 
+	 * @param intersection
 	 */
 	public Delivery(Intersection intersection) {
 		this.intersection = intersection;
 	}
-	
+
 	/**
 	 * Default Constructor
 	 */
-	public Delivery() {	
+	public Delivery() {
 	}
 }

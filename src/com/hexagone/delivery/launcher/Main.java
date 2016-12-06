@@ -3,7 +3,8 @@ package com.hexagone.delivery.launcher;
 import com.hexagone.delivery.control.Controller;
 
 /**
- * This class manages the launch of the application. Starting point of the executable.
+ * This class manages the launch of the application. Starting point of the
+ * executable.
  */
 public class Main {
 
@@ -13,5 +14,5 @@ public class Main {
 
 	public static void main(String[] args) {
 		new Controller();
-	}	
+	}
 }

@@ -29,8 +29,8 @@ import com.hexagone.delivery.xml.XMLDeserialiser;
 import com.hexagone.delivery.xml.XMLException;
 
 /**
- * This class allows us to draw the map and the points of the delivery on top of it
- * when the state is NAVIGATE_STATE
+ * This class allows us to draw the map and the points of the delivery on top of
+ * it when the state is NAVIGATE_STATE
  */
 public class NavigateState implements ControllerActions {
 
@@ -39,7 +39,8 @@ public class NavigateState implements ControllerActions {
 	private int step;
 
 	/**
-	 * Opens a FileChooser that lets the user pick an XML file on the file system.
+	 * Opens a FileChooser that lets the user pick an XML file on the file
+	 * system.
 	 */
 	@Override
 	public Map loadMap() {
@@ -69,7 +70,8 @@ public class NavigateState implements ControllerActions {
 	}
 
 	/**
-	 * This method computes a delivery and returns a Route   
+	 * This method computes a delivery and returns a Route
+	 * 
 	 * @param map
 	 * @param delivery
 	 * @return the route computed as a Route Object
@@ -86,16 +88,17 @@ public class NavigateState implements ControllerActions {
 	@Override
 	public void generatePlanning(RouteHelper routeHelper) {
 		routeHelper.writeToTxt("export/planning.txt");
-		
+
 		Popup.showInformation(routeHelper.getPlanning(), "Feuille de route généré !");
 	}
 
 	/**
 	 * This methods draws the map and the points of the delivery on top of it
-	 * (as the map and the deliveryQuery are known in the class). 
-	 * @param g 
-	 * @param scale 
-	 * 			: ratio chosen for the drawing of the map
+	 * (as the map and the deliveryQuery are known in the class).
+	 * 
+	 * @param g
+	 * @param scale
+	 *            : ratio chosen for the drawing of the map
 	 * @param map
 	 * @param deliveryQuery
 	 * @param route
@@ -153,7 +156,7 @@ public class NavigateState implements ControllerActions {
 			Entry<Integer, ArrivalPoint> entry = iterator.next();
 			Point pointDelivery = new Point();
 
-			//Drawing the entire path
+			// Drawing the entire path
 			for (Entry<Integer, ArrivalPoint> entryALLMAP : tour.entrySet()) {
 
 				ArrayList<Road> roadsToNextDP = entryALLMAP.getValue().getRoads();
@@ -185,7 +188,7 @@ public class NavigateState implements ControllerActions {
 
 			}
 
-			//Drawing the path to wards the 'step' delivery
+			// Drawing the path to wards the 'step' delivery
 			ArrayList<Road> roadsToNextDP = entry.getValue().getRoads();
 			for (Road r : roadsToNextDP) {
 				g.setColor(Color.BLACK);
@@ -211,7 +214,7 @@ public class NavigateState implements ControllerActions {
 				g2.draw(lin);
 			}
 			if (i == step) {
-				//g.setColor(new Color(0, 102, 0));
+				// g.setColor(new Color(0, 102, 0));
 				g.setColor(Color.BLACK);
 				// TODO
 				for (Intersection in : intersections) {
@@ -220,11 +223,11 @@ public class NavigateState implements ControllerActions {
 						break;
 					}
 				}
-				g.fillOval((int) (((pointDelivery.x)) / coefficient)-5, (int) (((pointDelivery.y)) / coefficient)-5, 20,
-						20);
+				g.fillOval((int) (((pointDelivery.x)) / coefficient) - 5, (int) (((pointDelivery.y)) / coefficient) - 5,
+						20, 20);
 			}
-		} 
-		
+		}
+
 		// Draw Delivery points
 		for (Intersection in : intersections) {
 			Point p = new Point();
@@ -232,7 +235,7 @@ public class NavigateState implements ControllerActions {
 			g.setColor(Color.BLUE);
 			g.fillOval((int) (((p.x)) / coefficient), (int) (((p.y)) / coefficient), 10, 10);
 		}
-		
+
 		Delivery[] deliveries = deliveryQuery.getDeliveries();
 		g.setColor(new Color(20, 200, 20));
 		for (Delivery d : deliveries) {
@@ -244,16 +247,18 @@ public class NavigateState implements ControllerActions {
 					break;
 				}
 			}
-			g.fillOval((int)(((pointDelivery.x)) / coefficient)-1,(int)( ((pointDelivery.y)) / coefficient)-1, 12, 12);
+			g.fillOval((int) (((pointDelivery.x)) / coefficient) - 1, (int) (((pointDelivery.y)) / coefficient) - 1, 12,
+					12);
 
 		}
 		g.setColor(Color.RED);
-		g.fillOval((int) (((pointWarehouse.x)) / coefficient)-2, (int) (((pointWarehouse.y)) / coefficient)-2, 14, 14);
+		g.fillOval((int) (((pointWarehouse.x)) / coefficient) - 2, (int) (((pointWarehouse.y)) / coefficient) - 2, 14,
+				14);
 		g.drawString("Entrepôt", (int) (((pointWarehouse.x)) / coefficient + 5),
 				(int) (((pointWarehouse.y)) / coefficient));
 
 	}
-	
+
 	/**
 	 * Repaints the frame when the tour starts
 	 */
@@ -262,11 +267,12 @@ public class NavigateState implements ControllerActions {
 		frame.repaint();
 		frame.setFocusableOnCenterPanel();
 	}
-	
+
 	/**
 	 * Increments the step and moves to the next delivery
+	 * 
 	 * @param maxValue
-	 * 			: maximum value for the step
+	 *            : maximum value for the step
 	 */
 
 	public void nextDelivery(int maxValue) {
@@ -278,11 +284,10 @@ public class NavigateState implements ControllerActions {
 		frame.repaint();
 		frame.setFocusableOnCenterPanel();
 	}
-	
+
 	/**
 	 * Decrements the step if it is positive
 	 */
-
 
 	public void previousDelivery() {
 		if (step > 0) {
@@ -293,9 +298,10 @@ public class NavigateState implements ControllerActions {
 		frame.repaint();
 		frame.setFocusableOnCenterPanel();
 	}
-	
+
 	/**
 	 * Constructor
+	 * 
 	 * @param frame
 	 */
 	public NavigateState(MainFrame frame) {

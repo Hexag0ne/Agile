@@ -68,11 +68,12 @@ abstract class TSPSolver {
 		seenIntersections.add(new Integer(0));
 		Calendar pathCost = GregorianCalendar.getInstance();
 		pathCost.setTime(deliveryQuery.getWarehouse().getDepartureTime());
-		branchAndBound(0, pathCost,System.currentTimeMillis());
+		branchAndBound(0, pathCost, System.currentTimeMillis());
 	}
 
 	/**
-	 * This methods defines the template of a solution (obtained by branch and bound of TSP)
+	 * This methods defines the template of a solution (obtained by branch and
+	 * bound of TSP)
 	 * 
 	 * @param currentIntersection
 	 *            the current intersection
@@ -80,24 +81,29 @@ abstract class TSPSolver {
 	 *            the cost of the path as a Calendar Object
 	 * @param tpsDebut
 	 *            : the time of the beginning of the calculation
-	 *            
+	 * 
 	 */
 	private void branchAndBound(int currentIntersection, Calendar pathCost, long tpsDebut) {
 		/**
 		 * The computation has been going on for too long, the algorithm stops
 		 */
-		
+
 		if (System.currentTimeMillis() - tpsDebut > TIMELIMIT) {
-			timeLimitReached = true; 
-			return; 
+			timeLimitReached = true;
+			return;
 		}
-		
+
 		if (unseenIntersections.size() == 0) { // All intersections have been
 												// visited
 			// We add the cost to go back to the warehouse
 			pathCost.add(Calendar.SECOND, Integer.valueOf(costs[currentIntersection][0].intValue()));
-			if (bestSolutionCost == null || pathCost.compareTo(bestSolutionCost) < 0) { // We found a new better solution
-												// !
+			if (bestSolutionCost == null || pathCost.compareTo(bestSolutionCost) < 0) { // We
+																						// found
+																						// a
+																						// new
+																						// better
+																						// solution
+				// !
 				bestSolution.clear();
 				// We store the solution (the order of visiting)
 				for (Integer i : seenIntersections) {
@@ -106,8 +112,9 @@ abstract class TSPSolver {
 
 				bestSolutionCost = pathCost;
 			}
-		} else if (betterPathPossible(pathCost, currentIntersection, unseenIntersections)) { 
-			// If there still is a chance of finding a better solution with this combination
+		} else if (betterPathPossible(pathCost, currentIntersection, unseenIntersections)) {
+			// If there still is a chance of finding a better solution with this
+			// combination
 			Iterator<Integer> it = iterator((Integer) currentIntersection, unseenIntersections, costs, stayTime);
 			while (it.hasNext()) {
 				Integer prochainSommet = it.next();
@@ -116,23 +123,24 @@ abstract class TSPSolver {
 
 				/** Recursive call */
 				Calendar timeReachingNextIntersection = (Calendar) pathCost.clone();
-				timeReachingNextIntersection.add(Calendar.SECOND, Integer.valueOf(costs[currentIntersection][prochainSommet].intValue()));
-				
+				timeReachingNextIntersection.add(Calendar.SECOND,
+						Integer.valueOf(costs[currentIntersection][prochainSommet].intValue()));
+
 				// If we arrive before the opening window, we wait there
 				// try / catch because of no opening window case
 				try {
-					Date openingNextSchedule = deliveryQuery.getDeliveries()[prochainSommet-1].getStartSchedule();
+					Date openingNextSchedule = deliveryQuery.getDeliveries()[prochainSommet - 1].getStartSchedule();
 					Calendar nextSchedule = GregorianCalendar.getInstance();
 					nextSchedule.setTime(openingNextSchedule);
 					if (openingNextSchedule != null && timeReachingNextIntersection.compareTo(nextSchedule) < 0) {
 						timeReachingNextIntersection.setTime(openingNextSchedule);
 					}
 				} catch (NullPointerException e) {
-					
+
 				}
-				
+
 				timeReachingNextIntersection.add(Calendar.SECOND, stayTime[prochainSommet]);
-				
+
 				branchAndBound(prochainSommet, timeReachingNextIntersection, tpsDebut);
 
 				seenIntersections.remove(prochainSommet);
@@ -146,42 +154,53 @@ abstract class TSPSolver {
 	}
 
 	/**
-	 * Method computing if a better path than the current best solution is possible.
-	 * It also checks if upon arriving on the currentIntersection, the delivery does not overflow the end of the 
-	 * delivery on that intersection
-	 * @param pathCost the cost so far till the currentIntersection
-	 * @param currentIntersection the current Intersection being visited
-	 * @param unseenIntersections the Array of intersections yet to visit
+	 * Method computing if a better path than the current best solution is
+	 * possible. It also checks if upon arriving on the currentIntersection, the
+	 * delivery does not overflow the end of the delivery on that intersection
+	 * 
+	 * @param pathCost
+	 *            the cost so far till the currentIntersection
+	 * @param currentIntersection
+	 *            the current Intersection being visited
+	 * @param unseenIntersections
+	 *            the Array of intersections yet to visit
 	 * @return true if it is worth keeping the computation going
 	 */
-	private boolean betterPathPossible(Calendar pathCost, int currentIntersection, ArrayList<Integer> unseenIntersections){
+	private boolean betterPathPossible(Calendar pathCost, int currentIntersection,
+			ArrayList<Integer> unseenIntersections) {
 		Calendar bestTimePossible = GregorianCalendar.getInstance();
 		bestTimePossible.setTime(pathCost.getTime());
 		bestTimePossible.add(Calendar.SECOND, bound(currentIntersection, unseenIntersections, costs, stayTime));
 		boolean costPotentiallySmaller = bestSolutionCost == null || bestSolutionCost.compareTo(bestTimePossible) > 0;
-		
+
 		boolean noTimeWindowMissed = true;
-		
-		if (!(currentIntersection == 0)){ //i.e. if we are not at the warehouse.
-			
+
+		if (!(currentIntersection == 0)) { // i.e. if we are not at the
+											// warehouse.
+
 			try {
-				Delivery [] deliveries = deliveryQuery.getDeliveries();
-				//TODO add a try/catch ?
+				Delivery[] deliveries = deliveryQuery.getDeliveries();
+				// TODO add a try/catch ?
 				Calendar deliveryWindowEnd = GregorianCalendar.getInstance();
-				
-				deliveryWindowEnd.setTime(deliveries[currentIntersection-1].getEndSchedule());
-				
-				noTimeWindowMissed = pathCost.compareTo(deliveryWindowEnd) < 0; //True if arrivalTime before deliverWindowEnd
-			
+
+				deliveryWindowEnd.setTime(deliveries[currentIntersection - 1].getEndSchedule());
+
+				noTimeWindowMissed = pathCost.compareTo(deliveryWindowEnd) < 0; // True
+																				// if
+																				// arrivalTime
+																				// before
+																				// deliverWindowEnd
+
 			} catch (NullPointerException e) {
 			}
 		}
-		
+
 		return costPotentiallySmaller && noTimeWindowMissed;
 	}
-	
+
 	/**
-	 * This method gives the lower bound of the permutations cost 
+	 * This method gives the lower bound of the permutations cost
+	 * 
 	 * @param sommetCourant
 	 * @param nonVus
 	 *            : table of the unvisited intersections
@@ -191,8 +210,9 @@ abstract class TSPSolver {
 	 * @param duree
 	 *            : duree[i] = duration to visit intersection i, with 0 <= i <
 	 *            nbSommets
-	 * @return a lower bound of the permutations cost starting with sommetCourant, 
-	 * 			including each 'nonVus' intersection exactly once and ending with intersection 0
+	 * @return a lower bound of the permutations cost starting with
+	 *         sommetCourant, including each 'nonVus' intersection exactly once
+	 *         and ending with intersection 0
 	 */
 	protected abstract int bound(Integer sommetCourant, ArrayList<Integer> nonVus, Double[][] cout, Integer[] duree);
 
@@ -206,8 +226,10 @@ abstract class TSPSolver {
 	 *            : cout[i][j] = duration to go from i to j, with 0 <= i <
 	 *            nbSommets and 0 <= j < nbSommets
 	 * @param duree
-	 *            : duree[i] = duration to visit intersection i, with 0 <= i <nbSommets
-	 * @return an iterator that allows us to iterate on all of the 'nonVus' intersections
+	 *            : duree[i] = duration to visit intersection i, with 0 <= i
+	 *            <nbSommets
+	 * @return an iterator that allows us to iterate on all of the 'nonVus'
+	 *         intersections
 	 */
 	protected abstract Iterator<Integer> iterator(Integer sommetCrt, ArrayList<Integer> nonVus, Double[][] cout,
 			Integer[] duree);
@@ -218,14 +240,14 @@ abstract class TSPSolver {
 	 * @param costsAdjacencyMatrix
 	 *            the adjacency matrix of the graph. costsAdjacencyMatrix[i][j]
 	 *            represents the cost going from i to j.
-	 * @param deliveryQuery 
-	 * 			  the deliveries to make.
+	 * @param deliveryQuery
+	 *            the deliveries to make.
 	 */
 	public TSPSolver(Double[][] costsAdjacencyMatrix, DeliveryQuery deliveryQuery) {
 		costs = costsAdjacencyMatrix;
-		
+
 		this.deliveryQuery = deliveryQuery;
-		
+
 		Delivery[] deliveries = deliveryQuery.getDeliveries();
 		int lenght = deliveryQuery.getDeliveryPassageIdentifiers().length;
 

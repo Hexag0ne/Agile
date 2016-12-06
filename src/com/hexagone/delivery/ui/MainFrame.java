@@ -14,14 +14,11 @@ import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.hexagone.delivery.control.MapPainter;
 import com.hexagone.delivery.control.UserActions;
 import com.hexagone.delivery.models.Delivery;
-import com.hexagone.ui.MapTour;
-import com.hexagone.ui.TourPanel;
 
 /**
  * Main window of the graphical user interface
@@ -53,21 +50,21 @@ public class MainFrame extends JFrame {
 
 	/**
 	 * Constructor for the main frame
-	 * @param controller the controller implementing the UserActions to be performed when an event occurs
+	 * 
+	 * @param controller
+	 *            the controller implementing the UserActions to be performed
+	 *            when an event occurs
 	 */
-	public MainFrame(UserActions controller, MapPainter painter)
-	{
+	public MainFrame(UserActions controller, MapPainter painter) {
 		this.controller = controller;
 		this.setTitle("Delivery App");
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		this.setSize(screenSize.width, screenSize.height-50);
+		this.setSize(screenSize.width, screenSize.height - 50);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 
-
 		allPanel = new JPanel();
 		allPanel.setLayout(new BorderLayout());
-
 
 		// header components
 		headerPanel = new JPanel();
@@ -91,7 +88,7 @@ public class MainFrame extends JFrame {
 
 		allPanel.add(headerPanel, BorderLayout.NORTH);
 
-		//Other components
+		// Other components
 		centerPanel = new JPanel();
 		centerPanel.setLayout(new BorderLayout());
 
@@ -105,15 +102,13 @@ public class MainFrame extends JFrame {
 		tourTablePanel = new TourTablePanel();
 		centerPanel.add(tourTablePanel, BorderLayout.EAST);
 
-		//centerPanel.addKeyListener(keyListener);
+		// centerPanel.addKeyListener(keyListener);
 		centerPanel.addKeyListener(new KeyboardListenner());
-
 
 		allPanel.add(centerPanel, BorderLayout.CENTER);
 
-		//Set focus on center panel to detect keyboard events 
+		// Set focus on center panel to detect keyboard events
 		setFocusableOnCenterPanel();
-
 
 		this.add(allPanel);
 	}
@@ -122,7 +117,7 @@ public class MainFrame extends JFrame {
 		tourTablePanel.resetTableModel();
 	}
 
-	public void setSidePanelsVisible(boolean visible){
+	public void setSidePanelsVisible(boolean visible) {
 		tourNavigationPanel.setVisible(visible);
 		tourTablePanel.setVisible(visible);
 	}
@@ -134,9 +129,9 @@ public class MainFrame extends JFrame {
 	public void selectionRow(int step) {
 		tourTablePanel.selectionRow(step);
 	}
-	
+
 	public void setFocusableOnCenterPanel() {
-		
+
 		addWindowFocusListener(new WindowAdapter() {
 			public void windowGainedFocus(WindowEvent e) {
 				centerPanel.requestFocusInWindow();
@@ -152,7 +147,9 @@ public class MainFrame extends JFrame {
 
 		/*
 		 * (non-Javadoc)
-		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+		 * 
+		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.
+		 * ActionEvent)
 		 */
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -167,10 +164,12 @@ public class MainFrame extends JFrame {
 
 		/*
 		 * (non-Javadoc)
-		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+		 * 
+		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.
+		 * ActionEvent)
 		 */
 		@Override
-		public void actionPerformed(ActionEvent e){
+		public void actionPerformed(ActionEvent e) {
 			controller.loadDeliveryQueryButtonClick();
 		}
 	}
@@ -183,7 +182,9 @@ public class MainFrame extends JFrame {
 
 		/*
 		 * (non-Javadoc)
-		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+		 * 
+		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.
+		 * ActionEvent)
 		 */
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -199,7 +200,9 @@ public class MainFrame extends JFrame {
 
 		/*
 		 * (non-Javadoc)
-		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+		 * 
+		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.
+		 * ActionEvent)
 		 */
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -213,50 +216,51 @@ public class MainFrame extends JFrame {
 	 */
 	private class KeyboardListenner implements KeyListener {
 
-
-
 		@Override
 		public void keyPressed(KeyEvent e) {
 			int keyCode = e.getKeyCode();
 
-			if( (keyCode == KeyEvent.VK_UP) || (keyCode == KeyEvent.VK_LEFT) )
-			{
+			if ((keyCode == KeyEvent.VK_UP) || (keyCode == KeyEvent.VK_LEFT)) {
 				controller.previousDelivery();
-				
+
 			}
 
-			if( (keyCode == KeyEvent.VK_DOWN) || (keyCode == KeyEvent.VK_RIGHT) ){
+			if ((keyCode == KeyEvent.VK_DOWN) || (keyCode == KeyEvent.VK_RIGHT)) {
 
 				controller.nextDelivery();
 			}
 
-			if(keyCode == KeyEvent.VK_DELETE)
-			{
-				/*System.out.println("Yassine supprimer");
-					if( searchZone.getText()!= null){
-						int numberDP = Integer.parseInt(searchZone.getText());
-						int response= JOptionPane.showInternalConfirmDialog(all,
-								"Voulez-vous retirer le point de livraison n°= "+numberDP, "Suppression",
-								JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-						if(response == JOptionPane.OK_OPTION ){
-
-						}
-
-					}*/
+			if (keyCode == KeyEvent.VK_DELETE) {
+				/*
+				 * System.out.println("Yassine supprimer"); if(
+				 * searchZone.getText()!= null){ int numberDP =
+				 * Integer.parseInt(searchZone.getText()); int response=
+				 * JOptionPane.showInternalConfirmDialog(all,
+				 * "Voulez-vous retirer le point de livraison n°= "+numberDP,
+				 * "Suppression", JOptionPane.OK_CANCEL_OPTION,
+				 * JOptionPane.INFORMATION_MESSAGE); if(response ==
+				 * JOptionPane.OK_OPTION ){
+				 * 
+				 * }
+				 * 
+				 * }
+				 */
 
 			}
 
-			if(keyCode == KeyEvent.VK_M){
+			if (keyCode == KeyEvent.VK_M) {
 
 			}
 
 		}
 
 		@Override
-		public void keyReleased(KeyEvent e) {}
+		public void keyReleased(KeyEvent e) {
+		}
 
 		@Override
-		public void keyTyped(KeyEvent e) {}
+		public void keyTyped(KeyEvent e) {
+		}
 
 	}
 }

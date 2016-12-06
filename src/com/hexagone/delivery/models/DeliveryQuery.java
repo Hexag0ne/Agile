@@ -6,12 +6,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * This class models a delivery query
- * It carries several information :
+ * This class models a delivery query It carries several information :
  * <ul>
  * <li>the warehouse of the delivery query</li>
  * <li>the deliveries of the delivery query</li>
-
+ * 
  * </ul>
  */
 @XmlRootElement(name = "demandeDeLivraisons")
@@ -49,6 +48,7 @@ public class DeliveryQuery {
 
 	/**
 	 * Gives back the arrayList containing all the deliveries to make.
+	 * 
 	 * @return the arrayList containing all the deliveries to make
 	 */
 	public Delivery[] getDeliveries() {
