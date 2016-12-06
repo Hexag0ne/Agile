@@ -18,7 +18,6 @@ public class TourNavigationPanel extends JPanel {
 
 	UserActions controller;
 	
-	private JButton beginDeliveryButton;
 	private JButton nextDeliveryButton;
 	private JButton previousDeliveryButton;
 	
@@ -34,10 +33,6 @@ public class TourNavigationPanel extends JPanel {
 		this.controller = controller;
 		
 		this.setLayout(new GridLayout(10, 1));
-		
-		beginDeliveryButton = new JButton("Commencer la tournée");
-		beginDeliveryButton.addActionListener(new actionStartTourListener());
-		this.add(beginDeliveryButton);
 		
 		previousDeliveryButton = new JButton("Point de livraison précédent");
 		previousDeliveryButton.addActionListener(new actionPreviousDeliveryListener());
@@ -69,14 +64,6 @@ public class TourNavigationPanel extends JPanel {
 		addDP = new JButton("Ajouter un point de livraison");
 		add(addDP);
 		setBackground(Color.white);
-	}
-	
-	private class actionStartTourListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			controller.startNavigationButtonClick();
-		}
 	}
 	
 	private class actionNextDeliveryListener implements ActionListener {

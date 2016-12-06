@@ -29,14 +29,12 @@ public class Controller implements UserActions, MapPainter {
 	private ControllerActions LOADMAP_STATE;
 	private ControllerActions LOADDELIVERY_STATE;
 	private ControllerActions COMPUTE_STATE;
-	private ControllerActions ROUTEVIEW_STATE;
 	private NavigateState NAVIGATE_STATE;
 	
 	public Controller(){
 		LOADMAP_STATE = new LoadMapState();
 		LOADDELIVERY_STATE = new LoadDeliveryState();
 		COMPUTE_STATE = new ComputeState();
-		ROUTEVIEW_STATE = new RouteViewState();
 		
 		mainFrame = new MainFrame(this, this);
 		NAVIGATE_STATE = new NavigateState(mainFrame);
@@ -54,6 +52,10 @@ public class Controller implements UserActions, MapPainter {
 		new Controller();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.hexagone.delivery.control.UserActions#loadMapButtonClick()
+	 */
 	@Override
 	public void loadMapButtonClick() {
 		deliveryQuery = null; //Change of map -> we discard the deliveryQuery
@@ -62,6 +64,10 @@ public class Controller implements UserActions, MapPainter {
 		this.currentState = nextState();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.hexagone.delivery.control.UserActions#loadDeliveryQueryButtonClick()
+	 */
 	@Override
 	public void loadDeliveryQueryButtonClick() {
 		route = null;
@@ -69,34 +75,42 @@ public class Controller implements UserActions, MapPainter {
 		this.currentState = nextState();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.hexagone.delivery.control.UserActions#computeRouteButtonClick()
+	 */
 	@Override
 	public void computeRouteButtonClick() {
 		this.route = currentState.computeDelivery(map, deliveryQuery);
 		this.currentState = nextState();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.hexagone.delivery.control.UserActions#generatePlanningButtonClick()
+	 */
 	@Override
 	public void generatePlanningButtonClick() {
 		// TODO Auto-generated method stub
 		
 	}
 	
-	@Override
-	public void startNavigationButtonClick() {
-		this.currentState = NAVIGATE_STATE;
-		NAVIGATE_STATE.startTour();
-	}
-	
+	/*
+	 * (non-Javadoc)
+	 * @see com.hexagone.delivery.control.UserActions#nextDelivery()
+	 */
 	@Override
 	public void nextDelivery() {
-		this.currentState = NAVIGATE_STATE;
 		NAVIGATE_STATE.nextDelivery(route.getRoute().size());
 		
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.hexagone.delivery.control.UserActions#previousDelivery()
+	 */
 	@Override
 	public void previousDelivery() {
-		this.currentState = NAVIGATE_STATE;
 		NAVIGATE_STATE.previousDelivery();
 		
 	}
@@ -119,7 +133,8 @@ public class Controller implements UserActions, MapPainter {
 			mainFrame.setSidePanelsVisible(false);
 		}
 		if (deliveryQuery != null && map != null && route != null) {
-			nextState = ROUTEVIEW_STATE;
+			nextState = NAVIGATE_STATE;
+			NAVIGATE_STATE.startTour();
 			mainFrame.setTableData(new Vector<Delivery>(Arrays.asList(deliveryQuery.getDeliveries())));
 			mainFrame.setSidePanelsVisible(true);
 		}
