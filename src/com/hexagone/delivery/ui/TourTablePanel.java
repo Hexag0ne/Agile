@@ -39,6 +39,10 @@ public class TourTablePanel extends JPanel {
 		}
 	}
 	
+	public void resetTableModel(){
+		tableModel = null;
+	}
+	
 	
 
 
