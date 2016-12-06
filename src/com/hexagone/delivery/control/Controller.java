@@ -50,9 +50,12 @@ public class Controller implements UserActions, MapPainter {
 	 */
 	@Override
 	public void loadMapButtonClick() {
-		deliveryQuery = null; //Change of map -> we discard the deliveryQuery
-		route = null;
-		this.map = currentState.loadMap();
+		Map newMap = currentState.loadMap();
+		if (newMap != null){
+			deliveryQuery = null; //Change of map -> we discard the deliveryQuery
+			route = null;
+			map = newMap;
+		}
 		this.currentState = nextState();
 	}
 
@@ -62,8 +65,11 @@ public class Controller implements UserActions, MapPainter {
 	 */
 	@Override
 	public void loadDeliveryQueryButtonClick() {
-		route = null;
-		this.deliveryQuery = currentState.loadDeliveryQuery();
+		DeliveryQuery deliv = currentState.loadDeliveryQuery();
+		if (deliv != null) {
+			deliveryQuery = deliv;
+			route = null;
+		}
 		this.currentState = nextState();
 	}
 
