@@ -18,9 +18,10 @@ import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Intersection;
 import com.hexagone.delivery.models.Map;
 import com.hexagone.delivery.models.Road;
-import com.hexagone.delivery.models.Route;
+import com.hexagone.delivery.models.RouteHelper;
 import com.hexagone.delivery.models.Warehouse;
 import com.hexagone.delivery.ui.Popup;
+import com.hexagone.delivery.xml.NoFileChosenException;
 import com.hexagone.delivery.xml.XMLDeserialiser;
 import com.hexagone.delivery.xml.XMLException;
 
@@ -33,6 +34,8 @@ public class ComputeState implements ControllerActions {
 		} catch (XMLException e) {
 			Popup.showInformation("Le fichier choisi n'est pas un plan valide.");
 			return null;
+		} catch (NoFileChosenException e) {
+			return null;
 		}
 	}
 
@@ -43,19 +46,21 @@ public class ComputeState implements ControllerActions {
 		} catch (XMLException e) {
 			Popup.showInformation("Le fichier choisi n'est pas une livraison valide.");
 			return null;
+		} catch (NoFileChosenException e) {
+			return null;
 		}
 	}
 
 	@Override
-	public Route computeDelivery(Map map, DeliveryQuery delivery) {
+	public RouteHelper computeDelivery(Map map, DeliveryQuery delivery) {
 		DeliveryComputer computer = new DeliveryComputer(map, delivery);
 		computer.getDeliveryPoints(); // to launch computation
 		
-		return new Route(map, delivery, computer);
+		return new RouteHelper(map, delivery, computer);
 	}
 	
 	@Override
-	public void generatePlanning(Route route) {
+	public void generatePlanning(RouteHelper routeHelper) {
 		JOptionPane.showMessageDialog(null, "Veuillez calculez la tournée.", "Erreur", JOptionPane.ERROR_MESSAGE);
 	}
 
@@ -64,7 +69,7 @@ public class ComputeState implements ControllerActions {
 	 * on top of it
 	 */
 	@Override
-	public void DrawMap(Graphics g, float scale, Map map, DeliveryQuery deliveryQuery, Route route) {
+	public void DrawMap(Graphics g, float scale, Map map, DeliveryQuery deliveryQuery, RouteHelper routeHelper) {
 		
 		//Painting the map
 		//Painting the roads first

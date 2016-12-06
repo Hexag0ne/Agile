@@ -5,8 +5,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,10 +21,11 @@ import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Intersection;
 import com.hexagone.delivery.models.Map;
 import com.hexagone.delivery.models.Road;
-import com.hexagone.delivery.models.Route;
+import com.hexagone.delivery.models.RouteHelper;
 import com.hexagone.delivery.models.Warehouse;
 import com.hexagone.delivery.ui.MainFrame;
 import com.hexagone.delivery.ui.Popup;
+import com.hexagone.delivery.xml.NoFileChosenException;
 import com.hexagone.delivery.xml.XMLDeserialiser;
 import com.hexagone.delivery.xml.XMLException;
 
@@ -43,6 +42,8 @@ public class NavigateState implements ControllerActions {
 		} catch (XMLException e) {
 			Popup.showInformation("Le fichier choisi n'est pas un plan valide.");
 			return null;
+		} catch (NoFileChosenException e) {
+			return null;
 		}
 	}
 
@@ -53,26 +54,28 @@ public class NavigateState implements ControllerActions {
 		} catch (XMLException e) {
 			Popup.showInformation("Le fichier choisi n'est pas une livraison valide.");
 			return null;
+		} catch (NoFileChosenException e) {
+			return null;
 		}
 	}
 
 	@Override
-	public Route computeDelivery(Map map, DeliveryQuery delivery) {
+	public RouteHelper computeDelivery(Map map, DeliveryQuery delivery) {
 		DeliveryComputer computer = new DeliveryComputer(map, delivery);
 		computer.getDeliveryPoints();
 
-		return new Route(map, delivery, computer);
+		return new RouteHelper(map, delivery, computer);
 	}
 
 	@Override
-	public void generatePlanning(Route route) {
-		route.writeToTxt("export/planning.txt");
-		JOptionPane.showMessageDialog(null, route.getPlanning(), "Feuille de route généré !",
-				JOptionPane.INFORMATION_MESSAGE);
+	public void generatePlanning(RouteHelper routeHelper) {
+		routeHelper.writeToTxt("export/planning.txt");
+		
+		Popup.showInformation(routeHelper.getPlanning(), "Feuille de route généré !");
 	}
 
 	@Override
-	public void DrawMap(Graphics g, float coefficient, Map map, DeliveryQuery deliveryQuery, Route route) {
+	public void DrawMap(Graphics g, float coefficient, Map map, DeliveryQuery deliveryQuery, RouteHelper routeHelper) {
 		ArrayList<Intersection> intersections = new ArrayList<Intersection>(map.getIntersections().values());
 		Set<Integer> roads = new HashSet<Integer>();
 		roads = (map.getRoads()).keySet();
@@ -116,7 +119,7 @@ public class NavigateState implements ControllerActions {
 			}
 		}
 
-		HashMap<Integer, ArrivalPoint> tour = route.getRoute();
+		HashMap<Integer, ArrivalPoint> tour = routeHelper.getRoute();
 		Set<Entry<Integer, ArrivalPoint>> entrySet = tour.entrySet();
 		Iterator<Entry<Integer, ArrivalPoint>> iterator = entrySet.iterator();
 		for (int i = 0; i < step + 1 && i < tour.size(); i++) {
