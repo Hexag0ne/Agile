@@ -5,13 +5,17 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
+
+import javax.swing.JOptionPane;
 
 import com.hexagone.delivery.algo.DeliveryComputer;
 import com.hexagone.delivery.models.ArrivalPoint;
@@ -58,6 +62,12 @@ public class NavigateState implements ControllerActions {
 		computer.getDeliveryPoints();
 		
 		return new Route(map, delivery, computer);
+	}
+	
+	@Override
+	public void generatePlanning(Route route) {
+		route.writeToTxt("export/planning.txt");
+		JOptionPane.showMessageDialog(null, route.getPlanning(), "Feuille de route généré !", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	@Override
@@ -197,6 +207,7 @@ public class NavigateState implements ControllerActions {
 	public void startTour(){
 		step = 0;
 		frame.repaint();
+		frame.setFocusableOnCenterPanel();
 	}
 	
 	public void nextDelivery(int maxValue){
@@ -206,6 +217,7 @@ public class NavigateState implements ControllerActions {
 		}
 		frame.selectionRow(step);	
 		frame.repaint();
+		frame.setFocusableOnCenterPanel();
 	}
 	
 	public void previousDelivery(){
@@ -215,6 +227,7 @@ public class NavigateState implements ControllerActions {
 		
 		frame.selectionRow(step);	
 		frame.repaint();
+		frame.setFocusableOnCenterPanel();
 	}
 	
 	

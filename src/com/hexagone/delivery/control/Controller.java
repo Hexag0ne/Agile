@@ -31,7 +31,7 @@ public class Controller implements UserActions, MapPainter {
 	private ControllerActions COMPUTE_STATE;
 	private NavigateState NAVIGATE_STATE;
 	
-	public Controller(){
+	public Controller() {
 		LOADMAP_STATE = new LoadMapState();
 		LOADDELIVERY_STATE = new LoadDeliveryState();
 		COMPUTE_STATE = new ComputeState();
@@ -42,14 +42,6 @@ public class Controller implements UserActions, MapPainter {
 		mainFrame.setSidePanelsVisible(false);
 		
 		mainFrame.setVisible(true);
-	}
-
-	/**
-	 * Entry point for the application
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		new Controller();
 	}
 
 	/*
@@ -91,8 +83,7 @@ public class Controller implements UserActions, MapPainter {
 	 */
 	@Override
 	public void generatePlanningButtonClick() {
-		// TODO Auto-generated method stub
-		
+		currentState.generatePlanning(route);
 	}
 	
 	/*
@@ -140,7 +131,7 @@ public class Controller implements UserActions, MapPainter {
 		}
 		
 		mainFrame.repaint();
-		
+		mainFrame.setFocusableOnCenterPanel();
 		return nextState;
 	}
 

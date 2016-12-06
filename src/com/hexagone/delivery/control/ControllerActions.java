@@ -23,6 +23,8 @@ public interface ControllerActions {
 	 */
 	public Route computeDelivery(Map map, DeliveryQuery delivery);
 	
+	public void generatePlanning(Route route);
+	
 	public void DrawMap(Graphics g, float scale, Map m, DeliveryQuery delivery, Route route);
 	
 }

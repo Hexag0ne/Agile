@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
+
 import com.hexagone.delivery.algo.DeliveryComputer;
 import com.hexagone.delivery.models.Delivery;
 import com.hexagone.delivery.models.DeliveryQuery;
@@ -47,9 +49,14 @@ public class ComputeState implements ControllerActions {
 	@Override
 	public Route computeDelivery(Map map, DeliveryQuery delivery) {
 		DeliveryComputer computer = new DeliveryComputer(map, delivery);
-		computer.getDeliveryPoints();
+		computer.getDeliveryPoints(); // to launch computation
 		
 		return new Route(map, delivery, computer);
+	}
+	
+	@Override
+	public void generatePlanning(Route route) {
+		JOptionPane.showMessageDialog(null, "Veuillez calculez la tournée.", "Erreur", JOptionPane.ERROR_MESSAGE);
 	}
 
 	/**
