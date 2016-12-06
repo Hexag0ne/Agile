@@ -63,6 +63,7 @@ public class Route {
 			Intersection is = intersections.get(it1);
 			
 			Delivery delivery;
+			//TODO ! les paramètres de getRoadsBetweenIntersections sont inversés !
 			ArrayList<Road> roads = getRoadsbetweenIntersections(it1, it2);
 			if (i == deliveryPoints.size() - 1) {
 				delivery = completeWarehouse(calArrival, is, roads);
@@ -191,9 +192,15 @@ public class Route {
 		return d;
 	}
 
-	private ArrayList<Road> getRoadsbetweenIntersections(Integer it1, Integer it2) {
+	/**
+	 * Allows to get an ArrayList of the different roads that go from origin to destination
+	 * @param origin the identifier of the origin intersection
+	 * @param destination the identifier of the destination intersection
+	 * @return an arrayList of Roads that go from origin to destination 
+	 */
+	private ArrayList<Road> getRoadsbetweenIntersections(Integer origin, Integer destination) {
 		ArrayList<Road> roads = new ArrayList<Road>();
-		ArrayList<Integer> sols = deliveryComputer.getShortestPath(it1, it2);
+		ArrayList<Integer> sols = deliveryComputer.getShortestPath(origin, destination);
 		//ArrayList<Integer> sols = Main.getShortestPath(it1, it2);
 		
 		for (int j = 0; j < sols.size() - 1; j++) {
