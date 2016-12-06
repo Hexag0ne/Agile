@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
+
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Intersection;
 import com.hexagone.delivery.models.Map;
@@ -44,6 +46,11 @@ public class LoadDeliveryState implements ControllerActions {
 	public Route computeDelivery(Map map, DeliveryQuery delivery) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public void generatePlanning(Route route) {
+		JOptionPane.showMessageDialog(null, "Veuillez calculez la tournée.", "Erreur", JOptionPane.ERROR_MESSAGE);
 	}
 
 	/**

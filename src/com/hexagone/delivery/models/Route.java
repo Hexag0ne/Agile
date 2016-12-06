@@ -36,23 +36,19 @@ public class Route {
 		this.deliveryQuery = dq;
 		this.deliveryComputer = dc;
 		this.intersections = map.getIntersections();
+		this.route = generateRoute();
+		this.planning = generatePlanning();
 	}
 
 	public LinkedHashMap<Integer, ArrivalPoint> getRoute() {
-		if (route == null) {
-			generateRoute();
-		}
 		return route;
 	}
 
 	public String getPlanning() {
-		if (planning == null) {
-			generateString();
-		}
 		return planning;
 	}
 
-	public void generateRoute() {
+	public LinkedHashMap<Integer, ArrivalPoint> generateRoute() {
 		LinkedHashMap<Integer, ArrivalPoint> route = new LinkedHashMap<Integer, ArrivalPoint>();
 		HashMap<Integer, Intersection> intersections = map.getIntersections();
 		
@@ -77,15 +73,16 @@ public class Route {
 					delivery = completeDelivery(calArrival, d, roads);
 				}
 				else {
+					System.out.println("Delivery not found!");
 					delivery = null;
 				}
 			}
 			route.put(it1, new ArrivalPoint(roads, delivery));
 		}
-		this.route = route;
+		return route;
 	}
 	
-	public void generateTxt(String pathName) {
+	public void writeToTxt(String pathName) {
 		String planning = this.getPlanning();
 		File outfile = new File(pathName);
 		PrintWriter writer;
@@ -98,7 +95,7 @@ public class Route {
 		}
 	}
 
-	public void generateString() {
+	public String generatePlanning() {
 		// Setting formats
 		SimpleDateFormat full = new SimpleDateFormat("dd MMMM. yyyy", Locale.FRENCH);
 		SimpleDateFormat small = new SimpleDateFormat("HH:mm", Locale.FRENCH);
@@ -153,7 +150,7 @@ public class Route {
 		}
 		System.out.println(res);
 		// Fin des instructions
-		this.planning = res;
+		return res;
 	}
 	
 	private Delivery completeWarehouse(Calendar calArrival, Intersection is, ArrayList<Road> roads) {

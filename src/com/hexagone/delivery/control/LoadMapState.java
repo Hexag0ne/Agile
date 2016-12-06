@@ -2,6 +2,8 @@ package com.hexagone.delivery.control;
 
 import java.awt.Graphics;
 
+import javax.swing.JOptionPane;
+
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Map;
 import com.hexagone.delivery.models.Route;
@@ -37,6 +39,11 @@ public class LoadMapState implements ControllerActions {
 	@Override
 	public Route computeDelivery(Map map, DeliveryQuery delivery) {
 		return null;
+	}
+	
+	@Override
+	public void generatePlanning(Route route) {
+		JOptionPane.showMessageDialog(null, "Veuillez calculez la tournée.", "Erreur", JOptionPane.ERROR_MESSAGE);
 	}
 
 	/**

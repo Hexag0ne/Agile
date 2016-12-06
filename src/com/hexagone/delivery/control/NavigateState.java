@@ -12,8 +12,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
+
+import javax.swing.JOptionPane;
 
 import com.hexagone.delivery.algo.DeliveryComputer;
 import com.hexagone.delivery.models.ArrivalPoint;
@@ -59,6 +61,12 @@ public class NavigateState implements ControllerActions {
 		computer.getDeliveryPoints();
 		
 		return new Route(map, delivery, computer);
+	}
+	
+	@Override
+	public void generatePlanning(Route route) {
+		route.writeToTxt("export/planning.txt");
+		JOptionPane.showMessageDialog(null, route.getPlanning(), "Feuille de route généré !", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	@Override
