@@ -184,7 +184,7 @@ public class Route {
 			// (if arrival time before startSchedule, wait)
 			if (calArrival.before(calTemp)) {
 				waitingMilliSeconds = (calTemp.getTimeInMillis() - calArrival.getTimeInMillis()) / 1000;
-				waitingTime = (int) (waitingMilliSeconds);
+				waitingTime = (int) (waitingMilliSeconds/60);
 			}
 		}
 		d.setTimes(calDeparture.getTime(), calArrival.getTime(), waitingTime);

@@ -15,11 +15,11 @@ public class TableModel extends AbstractTableModel {
 	public TableModel(Vector<Delivery> data) {
 		this.data=data;
 		columnNames.addElement("N°");
-		columnNames.addElement("Durée");
+		columnNames.addElement("Durée (min)");
 		columnNames.addElement("Plage horaire");
-		columnNames.addElement("Temps d'arrivée");
-		columnNames.addElement("Temps de départ");
-		columnNames.addElement("Temps d'attente");
+		columnNames.addElement("Heure d'arrivée");
+		columnNames.addElement("Heure de départ");
+		columnNames.addElement("Temps d'attente (min)");
 
 	}
 	@Override
@@ -47,7 +47,7 @@ public class TableModel extends AbstractTableModel {
                 value = dp.getIntersection().getId();
                 break;
             case 1:
-                value = dp.getDuration();
+                value = (dp.getDuration())/60;
                 break;
             case 2:
                 value = dp.getTimeslotDelivery();
