@@ -2,8 +2,6 @@ package com.hexagone.delivery.control;
 
 import java.awt.Graphics;
 
-import javax.swing.JOptionPane;
-
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Map;
 import com.hexagone.delivery.models.RouteHelper;
