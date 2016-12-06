@@ -40,13 +40,13 @@ public class XMLFileOpener extends FileFilter {
 	 * @return an XML file as the File java object
 	 * @throws XMLException if the user cancels the operation
 	 */
-	public File open() throws XMLException {
+	public File open() throws NoFileChosenException {
 		int returnValue;
 		JFileChooser jFileChooserXML = new JFileChooser();
 		jFileChooserXML.setFileFilter(this);
 		returnValue = jFileChooserXML.showOpenDialog(null);
 		if (returnValue != JFileChooser.APPROVE_OPTION)
-			throw new XMLException("Problem opening XML file");
+			throw new NoFileChosenException("No file was selected");
 		return new File(jFileChooserXML.getSelectedFile().getAbsolutePath());
 	}
 
