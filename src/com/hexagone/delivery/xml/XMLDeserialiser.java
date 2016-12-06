@@ -33,10 +33,11 @@ public class XMLDeserialiser {
 	 * application is going to use afterwards. 
 	 * Note that if the file selected by the user isn't that of a Map, this method will yield an XMLException.
 	 * @return a properly formed Map object
-	 * @throws XMLException in case of a parsing problem or if the user cancels the file selection
+	 * @throws XMLException in case of a parsing problem, or if the user cancels the file selection
+	 * @throws NoFileChosenException 
 	 * @see com.hexagone.delivery.models.Map
 	 */
-	public static Map loadMap() throws XMLException {
+	public static Map loadMap() throws XMLException, NoFileChosenException {
 		File xml = XMLFileOpener.getInstance().open();
 		
 		try {
@@ -56,9 +57,10 @@ public class XMLDeserialiser {
 	 * XMLException.
 	 * @return a properly formated DeliveryQuery
 	 * @throws XMLException
+	 * @throws NoFileChosenException 
 	 * @see DeliveryQuery
 	 */
-	public static DeliveryQuery loadDeliveryQuery() throws XMLException {
+	public static DeliveryQuery loadDeliveryQuery() throws XMLException, NoFileChosenException {
 		File xml = XMLFileOpener.getInstance().open();
 		
 
@@ -66,7 +68,7 @@ public class XMLDeserialiser {
 			JAXBContext jaxbContext = JAXBContext.newInstance(DeliveryQuery.class);
 			javax.xml.bind.Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 			return (DeliveryQuery) jaxbUnmarshaller.unmarshal(xml);
-		} catch (JAXBException e) {
+			} catch (JAXBException e) {
 			throw new XMLException("Could not parse Delivery Query xml file.");
 		}
 	}
@@ -91,6 +93,11 @@ public class XMLDeserialiser {
 		NodeList roads = root.getElementsByTagName("troncon");
 		for (int i = 0; i < roads.getLength(); i++) {
 			map.addRoad(createRoad((Element) roads.item(i)));
+		}
+		
+		if (map.getAllIntersectionIdentifiers().size() < 2 || map.getRoads().size() < 2)
+		{
+			throw new XMLException("Not a valid map !");
 		}
 
 		return map;

@@ -22,7 +22,6 @@ public class TourNavigationPanel extends JPanel {
 
 	UserActions controller;
 	
-	private JButton beginDeliveryButton;
 	private JButton nextDeliveryButton;
 	private JButton previousDeliveryButton;
 	
@@ -43,10 +42,6 @@ public class TourNavigationPanel extends JPanel {
 		
 		this.setLayout(new GridLayout(10, 1));
 		
-		beginDeliveryButton = new JButton("Commencer la tournée");
-		beginDeliveryButton.addActionListener(new actionStartTourListener());
-		this.add(beginDeliveryButton);
-		
 		previousDeliveryButton = new JButton("Point de livraison précédent");
 		previousDeliveryButton.addActionListener(new actionPreviousDeliveryListener());
 		this.add(previousDeliveryButton);
@@ -65,7 +60,7 @@ public class TourNavigationPanel extends JPanel {
 		searchZonePanel.setSize(searchPanel.getPreferredSize().width-10,searchPanel.getPreferredSize().height);
 		searchZonePanel.add(searchZone);
 		searchPanel.add(searchZonePanel);
-		searchButton = new JButton(new ImageIcon(getClass().getResource("/search.png")));
+		searchButton = new JButton(new ImageIcon(getClass().getClassLoader().getResource("resources/search.png")));
 		//searchButton.addActionListener(searchListener);
 		searchButtonPanel = new JPanel(new FlowLayout());
 		searchButtonPanel.setSize(searchPanel.getPreferredSize().width-searchZonePanel.getPreferredSize().width,searchPanel.getPreferredSize().height);
@@ -79,20 +74,6 @@ public class TourNavigationPanel extends JPanel {
 		setBackground(Color.white);
 	}
 	
-	/**
-	 * Class handling what to do when the user starts the navigation
-	 */
-	private class actionStartTourListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			controller.startNavigationButtonClick();
-		}
-	}
-	
-	/**
-	 * Class handling what to do when the user wants to look at the next delivery
-	 */
 	private class actionNextDeliveryListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {

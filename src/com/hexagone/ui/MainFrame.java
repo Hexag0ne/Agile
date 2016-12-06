@@ -32,7 +32,7 @@ import com.hexagone.delivery.models.ArrivalPoint;
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Map;
 import com.hexagone.delivery.models.Road;
-import com.hexagone.delivery.models.Route;
+import com.hexagone.delivery.models.RouteHelper;
 import com.hexagone.delivery.xml.XMLDeserialiser;
 import com.hexagone.delivery.xml.XMLException;
 
@@ -204,7 +204,7 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				tour = new LinkedHashMap<>();
 				DeliveryComputer dc = new DeliveryComputer(map, deliveryQuery);
-				Route r = new Route(map, deliveryQuery, dc);
+				RouteHelper r = new RouteHelper(map, deliveryQuery, dc);
 				r.generateRoute();
 				tour = r.getRoute();
 				tourPanel = new MapFrame(map, deliveryQuery, true, coefficient, tour);
@@ -257,7 +257,7 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				if (tourPanel != null) {
 					DeliveryComputer dc = new DeliveryComputer(map, deliveryQuery);
-					Route r = new Route(map, deliveryQuery, dc);
+					RouteHelper r = new RouteHelper(map, deliveryQuery, dc);
 					r.generateRoute();
 					r.generateTxt("export/planning.txt");
 					JOptionPane.showMessageDialog(null, r.generateString(), "Feuille de route généré !", JOptionPane.INFORMATION_MESSAGE);

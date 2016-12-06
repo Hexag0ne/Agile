@@ -28,7 +28,7 @@ import com.hexagone.delivery.launcher.Main;
  * Note that if a real road allows cars to travel both ways, it will be
  * modeled as <strong>two different roads </strong> in the map.
  */
-public class Route {
+public class RouteHelper {
 
 	private LinkedHashMap<Integer, ArrivalPoint> route;
 
@@ -38,29 +38,39 @@ public class Route {
 
 	private DeliveryComputer deliveryComputer;
 
-	public Route(Map map, DeliveryQuery dq, DeliveryComputer dc) {
+	private String planning;
+	
+	private HashMap<Integer, Intersection> intersections;
+
+	public RouteHelper(Map map, DeliveryQuery dq, DeliveryComputer dc) {
 		this.map = map;
 		this.deliveryQuery = dq;
 		this.deliveryComputer = dc;
+		this.intersections = map.getIntersections();
+		this.route = generateRoute();
+		this.planning = generatePlanning();
 	}
 
 	public LinkedHashMap<Integer, ArrivalPoint> getRoute() {
-		if (route == null) {
-			generateRoute();
-		}
 		return route;
+	}
+
+	public String getPlanning() {
+		return planning;
 	}
 
 	/** 
 	 * Generates a route, from the calculation of the intersections of the map, the delivery points, the roads between two intersections
 	 * 
 	 */
-	private void generateRoute() {
+	public LinkedHashMap<Integer, ArrivalPoint> generateRoute() {
 		LinkedHashMap<Integer, ArrivalPoint> route = new LinkedHashMap<Integer, ArrivalPoint>();
 		HashMap<Integer, Intersection> intersections = map.getIntersections();
 		
-		//ArrayList<Integer> deliveryPoints = deliveryComputer.getDeliveryPoints();
-		Integer[] its = {0, 8, 12, 22, 5, 0}; ArrayList<Integer> deliveryPoints = new ArrayList<Integer>(); deliveryPoints.addAll(Arrays.asList(its));
+		ArrayList<Integer> deliveryPoints = deliveryComputer.getDeliveryPoints();
+		Integer[] its = {0, 8, 12, 22, 5, 0}; ArrayList<Integer> deliveryPoints2 = new ArrayList<Integer>(); deliveryPoints2.addAll(Arrays.asList(its));
+		System.out.println(deliveryPoints);
+		System.out.println(deliveryPoints2);
 
 		Calendar calArrival = Calendar.getInstance();
 		calArrival.setTime(deliveryQuery.getWarehouse().getDepartureTime());
@@ -80,13 +90,83 @@ public class Route {
 					delivery = completeDelivery(calArrival, d, roads);
 				}
 				else {
+					System.out.println("Delivery not found!");
 					delivery = null;
 				}
 			}
-			
 			route.put(it1, new ArrivalPoint(roads, delivery));
 		}
-		this.route = route;
+		return route;
+	}
+	
+	public void writeToTxt(String pathName) {
+		String planning = this.getPlanning();
+		File outfile = new File(pathName);
+		PrintWriter writer;
+		try {
+			writer = new PrintWriter(outfile, "UTF-8");
+			writer.println(planning);
+			writer.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public String generatePlanning() {
+		// Setting formats
+		SimpleDateFormat full = new SimpleDateFormat("dd MMMM. yyyy", Locale.FRENCH);
+		SimpleDateFormat small = new SimpleDateFormat("HH:mm", Locale.FRENCH);
+		String res = "";
+		// Displaying title
+		Date departureTime = deliveryQuery.getWarehouse().getDepartureTime();
+		String planningDate = full.format(departureTime);
+		res += "Mon planning (" + planningDate + ")\n\n";
+		res += "\tDépart de l'entrepôt à " + small.format(departureTime) + ". ";
+		// Record for longest java call ?
+		res += "Rejoindre l'intersection " + route.entrySet().iterator().next().getValue().getRoads().get(0).getOrigin() + ".\n";
+		
+		// Iterating over arrival points
+		int deliveryCounter = 0;
+		int waitingTime = 0;
+		Integer origin;
+		Date arrivalTime;
+		for (Integer it : route.keySet()) {
+			origin = route.get(it).getDelivery().getIntersection().getId();
+			waitingTime = route.get(it).getDelivery().getWaitingTime();
+			arrivalTime = route.get(it).getDelivery().getArrivalTime();
+			
+			if (deliveryCounter > 0) {
+				res += "\tDépart du point de livraison à " + small.format(departureTime) + ".\n";
+			}
+			
+			Road lastRoad = null;
+			int deg = 0;
+			int pos = 0;
+			int roadCounter = 1;
+			for (Road road : route.get(it).getRoads()) {
+				if (lastRoad != null) {
+					deg = getAngleBetweenRoads(lastRoad, road);
+					pos = getPosition(road, lastRoad, deg);
+				}
+				res += "\t\t" + roadCounter + "- Prendre la " + getPlainPosition(pos) + " " + getPlainDegree(deg) + " jusqu'à l'intersection " + road.getDestination() + "\n";
+				lastRoad = road;
+				roadCounter++;
+			}
+			if (deliveryCounter != route.values().size() - 1) {
+				res += "\tLivraison du point " + origin + ". Arrivée: " + small.format(arrivalTime) + ".\n";	
+			}
+			else {
+				res += "\tFin de la tournée à " + small.format(arrivalTime);
+			}
+			if (waitingTime != 0) {
+				res += "\tAttendre " + waitingTime + " minutes puis procéder à la livraison.\n";
+			}
+			res += "\n";
+			deliveryCounter++;
+			departureTime = route.get(it).getDelivery().getDepartureTime();
+		}
+		// Fin des instructions
+		return res;
 	}
 	
 	/**
@@ -138,15 +218,16 @@ public class Route {
 		Calendar calDeparture = (Calendar) calArrival.clone();
 		calDeparture.add(Calendar.SECOND, duration);
 		
-		long waitingMilliSeconds;
+		long waitingSeconds;
 		int waitingTime = 0;
 		if (d.getStartSchedule() != null) {
 			Calendar calTemp = Calendar.getInstance();
 			calTemp.setTime(d.getStartSchedule());
 			// (if arrival time before startSchedule, wait)
 			if (calArrival.before(calTemp)) {
-				waitingMilliSeconds = (calTemp.getTimeInMillis() - calArrival.getTimeInMillis()) / 1000;
-				waitingTime = (int) (waitingMilliSeconds);
+				waitingSeconds = (calTemp.getTimeInMillis() - calArrival.getTimeInMillis()) / 1000;
+				waitingTime = (int) (waitingSeconds / 60);
+				calDeparture.add(Calendar.SECOND, (int) waitingSeconds);
 			}
 		}
 		d.setTimes(calDeparture.getTime(), calArrival.getTime(), waitingTime);
@@ -164,7 +245,8 @@ public class Route {
 	 */
 	private ArrayList<Road> getRoadsbetweenIntersections(Integer it1, Integer it2) {
 		ArrayList<Road> roads = new ArrayList<Road>();
-		ArrayList<Integer> sols = Main.getIntersectionsBetween(it1, it2);
+		ArrayList<Integer> sols = deliveryComputer.getShortestPath(it1, it2);
+		//ArrayList<Integer> sols = Main.getShortestPath(it1, it2);
 		
 		for (int j = 0; j < sols.size() - 1; j++) {
 			for (Road r : this.map.getRoadsStartingFrom(sols.get(j))) {
@@ -176,7 +258,7 @@ public class Route {
 		}
 		return roads;
 	}
-
+	
 	/** 
 	 * Finds a delivery with the identifier of its intersection
 	 * @param it
@@ -195,120 +277,51 @@ public class Route {
 		return null;
 	}
 
-	/** 
-	 * Generates a text file of the route
-	 * @param pathName
-	 * 			: the path name of the file
-	 */
-	public void generateTxt(String pathName) {
-		File outfile = new File(pathName);
-		PrintWriter writer;
-		try {
-			writer = new PrintWriter(outfile, "UTF-8");
-			writer.println(this.generateString());
-			writer.close();
-		} catch (Exception e) {
-			e.printStackTrace();
+	private int getPosition(Road road, Road lastRoad, int deg) {
+		Point p1 = intersections.get(lastRoad.getOrigin()).getCoordinates();
+		Point p2 = intersections.get(road.getOrigin()).getCoordinates();
+		
+		ArrayList<Road> roads = new ArrayList<Road>();
+		for (Road rr : map.getRoadsStartingFrom(road.getOrigin())) {
+			int threshhold = 10;
+			Point p4 = intersections.get(rr.getDestination()).getCoordinates();
+			int new_angle = getAngle(p1, p2, p4);
+			if (deg > threshhold / 2 && deg < 90) {
+				if (new_angle > threshhold / 2 && new_angle < 90) {
+					roads.add(rr);
+				}
+			}
+			if (deg > 90 && deg < (360 - threshhold / 2)) {
+				if (new_angle > 90 && new_angle < (360 - threshhold / 2)) {
+					roads.add(rr);
+				}
+			}
 		}
+		// Filter those NOT left or not right ok ?
+		Collections.sort(roads, new Comparator<Road>() {
+			@Override
+			public int compare(Road r1, Road r2) {
+				Point pp1 = intersections.get(r1.getDestination()).getCoordinates();
+				Point pp2 = intersections.get(r2.getDestination()).getCoordinates();
+				int angle1 = getAngle(p1, p2, pp1);
+				int angle2 = getAngle(p1, p2, pp2);
+				if (angle1 > angle2) {
+					return 1;
+				} else {
+					return -1;
+				}
+			}
+		});
+		int pos = 1 + roads.indexOf(road);
+		return pos;
 	}
 
-	/** 
-	 * Generates text instructions (a planning) of the route
-	 * @return a String of the instructions
-	 */
-	public String generateString() {
-		// Setting formats
-		SimpleDateFormat full = new SimpleDateFormat("dd MMMM. yyyy", Locale.FRENCH);
-		SimpleDateFormat small = new SimpleDateFormat("HH:mm", Locale.FRENCH);
-		String res = "";
-		// Displaying title
-		Date departureTime = deliveryQuery.getWarehouse().getDepartureTime();
-		String planningDate = full.format(departureTime);
-		res += "Mon planning (" + planningDate + ")\n\n";
-		res += "\tDépart de l'entrepôt à " + small.format(departureTime) + ". ";
-		// Record for longest java call ?
-		res += "Rejoindre l'intersection " + route.entrySet().iterator().next().getValue().getRoads().get(0).getOrigin() + "\n.";
-		
-		// Iterating over arrival points
-		int deliveryCounter = 0;
-		int waitingTime = 0;
-		Integer origin;
-		Date arrivalTime;
-		for (Integer it : route.keySet()) {
-			origin = route.get(it).getDelivery().getIntersection().getId();
-			waitingTime = route.get(it).getDelivery().getWaitingTime();
-			arrivalTime = route.get(it).getDelivery().getArrivalTime();
-			
-			if (deliveryCounter > 0) {
-				res += "\tDépart du point de livraison à " + small.format(departureTime) + ".\n";
-			}
-			
-			Road lastRoad = null;
-			int deg = 0;
-			int pos = 0;
-			HashMap<Integer, Intersection> intersections = map.getIntersections();
-			int index = 1;
-			for (Road r : route.get(it).getRoads()) {
-				if (lastRoad != null) {
-					Point p1 = intersections.get(lastRoad.getOrigin()).getCoordinates();
-					Point p2 = intersections.get(r.getOrigin()).getCoordinates();
-					Point p3 = intersections.get(r.getDestination()).getCoordinates();
-					deg = getAngle(p1, p2, p3);
-					
-					// TODO
-					ArrayList<Road> roads = new ArrayList<Road>();
-					for (Road rr : map.getRoadsStartingFrom(r.getOrigin())) {
-						int threshhold = 10;
-						Point p4 = intersections.get(rr.getDestination()).getCoordinates();
-						int new_angle = getAngle(p1, p2, p4);
-						if (deg > threshhold / 2 && deg < 90) {
-							if (new_angle > threshhold / 2 && new_angle < 90) {
-								roads.add(rr);
-							}
-						}
-						if (deg > 90 && deg < (360 - threshhold / 2)) {
-							if (new_angle > 90 && new_angle < (360 - threshhold / 2)) {
-								roads.add(rr);
-							}
-						}
-					}
-					// Filter those NOT left or not right ok ?
-					Collections.sort(roads, new Comparator<Road>() {
-						@Override
-						public int compare(Road r1, Road r2) {
-							Point pp1 = intersections.get(r1.getDestination()).getCoordinates();
-							Point pp2 = intersections.get(r2.getDestination()).getCoordinates();
-							int angle1 = getAngle(p1, p2, pp1);
-							int angle2 = getAngle(p1, p2, pp2);
-							if (angle1 > angle2) {
-								return 1;
-							} else {
-								return -1;
-							}
-						}
-					});
-					pos = 1 + roads.indexOf(r);
-				}
-				res += "\t\t" + index + "- Prendre la " + getPlainPosition(pos) + " " + getPlainDegree(deg) + " jusqu'à l'intersection " + r.getDestination() + "\n";
-				lastRoad = r;
-				index++;
-			}
-			if (deliveryCounter != route.values().size() - 1) {
-				res += "\tLivraison du point " + origin + ". Arrivée: " + small.format(arrivalTime) + ".\n";	
-			}
-			else {
-				res += "\tFin de la tournée à " + small.format(arrivalTime);
-			}
-			if (waitingTime != 0) {
-				res += "\tAttendre " + waitingTime + " minutes puis procéder à la livraison.\n";
-			}
-			res += "\n";
-			deliveryCounter++;
-			departureTime = route.get(it).getDelivery().getDepartureTime();
-		}
-		System.out.println(res);
-		// Fin des instructions
-		return res;
+	private int getAngleBetweenRoads(Road lastRoad, Road road) {
+		Point p1 = intersections.get(lastRoad.getOrigin()).getCoordinates();
+		Point p2 = intersections.get(road.getOrigin()).getCoordinates();
+		Point p3 = intersections.get(road.getDestination()).getCoordinates();
+		int deg = getAngle(p1, p2, p3);
+		return deg;
 	}
 
 	/**

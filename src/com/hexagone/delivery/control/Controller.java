@@ -1,13 +1,14 @@
 package com.hexagone.delivery.control;
 
 import java.awt.Graphics;
-import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.Vector;
 
+import com.hexagone.delivery.models.ArrivalPoint;
 import com.hexagone.delivery.models.Delivery;
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Map;
-import com.hexagone.delivery.models.Route;
+import com.hexagone.delivery.models.RouteHelper;
 import com.hexagone.delivery.ui.MainFrame;
 
 /** 
@@ -21,7 +22,7 @@ public class Controller implements UserActions, MapPainter {
 	/** Deliveries chosen by the user */
 	private DeliveryQuery deliveryQuery;
 	/** Problem solution */
-	private Route route;
+	private RouteHelper routeHelper;
 	
 	/** Elements of the interface */
 	private MainFrame mainFrame;
@@ -33,7 +34,6 @@ public class Controller implements UserActions, MapPainter {
 	private ControllerActions LOADMAP_STATE;
 	private ControllerActions LOADDELIVERY_STATE;
 	private ControllerActions COMPUTE_STATE;
-	private ControllerActions ROUTEVIEW_STATE;
 	private NavigateState NAVIGATE_STATE;
 	
 	/** Constructor */
@@ -41,7 +41,6 @@ public class Controller implements UserActions, MapPainter {
 		LOADMAP_STATE = new LoadMapState();
 		LOADDELIVERY_STATE = new LoadDeliveryState();
 		COMPUTE_STATE = new ComputeState();
-		ROUTEVIEW_STATE = new RouteViewState();
 		
 		mainFrame = new MainFrame(this, this);
 		NAVIGATE_STATE = new NavigateState(mainFrame);
@@ -51,46 +50,49 @@ public class Controller implements UserActions, MapPainter {
 		mainFrame.setVisible(true);
 	}
 
-	/**
-	 * Entry point for the application
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		new Controller();
-	}
-
+	
 	/**
 	 * Loads the map on button click
+	 * @see com.hexagone.delivery.control.UserActions#loadMapButtonClick()
 	 */
 	@Override
 	public void loadMapButtonClick() {
-		deliveryQuery = null; //Change of map -> we discard the deliveryQuery
-		route = null;
-		this.map = currentState.loadMap();
+		Map newMap = currentState.loadMap();
+		if (newMap != null){
+			deliveryQuery = null; //Change of map -> we discard the deliveryQuery
+			routeHelper = null;
+			map = newMap;
+		}
 		this.currentState = nextState();
 	}
 
 	/**
 	 * Loads a delivery query on button click
+	 * @see com.hexagone.delivery.control.UserActions#loadDeliveryQueryButtonClick()
 	 */
 	@Override
 	public void loadDeliveryQueryButtonClick() {
-		route = null;
-		this.deliveryQuery = currentState.loadDeliveryQuery();
+		DeliveryQuery deliv = currentState.loadDeliveryQuery();
+		if (deliv != null) {
+			deliveryQuery = deliv;
+			routeHelper = null;
+		}
 		this.currentState = nextState();
 	}
-
+	
 	/**
 	 * Computes a route on button click
+	 * @see com.hexagone.delivery.control.UserActions#computeRouteButtonClick()
 	 */
 	@Override
 	public void computeRouteButtonClick() {
-		this.route = currentState.computeDelivery(map, deliveryQuery);
+		this.routeHelper = currentState.computeDelivery(map, deliveryQuery);
 		this.currentState = nextState();
 	}
 
 	/**
 	 * Generates a planning on button click
+	 * @see com.hexagone.delivery.control.UserActions#generatePlanningButtonClick()
 	 */
 	@Override
 	public void generatePlanningButtonClick() {
@@ -98,31 +100,23 @@ public class Controller implements UserActions, MapPainter {
 		
 	}
 	
-	/**
-	 * Starts navigation on button click
-	 */
-	@Override
-	public void startNavigationButtonClick() {
-		this.currentState = NAVIGATE_STATE;
-		NAVIGATE_STATE.startTour();
-	}
 	
 	/**
-	 * Moves to the next delivery
+	 * Moves to the next delivery	
+	 * @see com.hexagone.delivery.control.UserActions#nextDelivery()
 	 */
 	@Override
 	public void nextDelivery() {
-		this.currentState = NAVIGATE_STATE;
-		NAVIGATE_STATE.nextDelivery(route.getRoute().size());
+		NAVIGATE_STATE.nextDelivery(routeHelper.getRoute().size());
 		
 	}
 
 	/**
 	 * Moves to the previous delivery
+	 * @see com.hexagone.delivery.control.UserActions#previousDelivery()
 	 */
 	@Override
 	public void previousDelivery() {
-		this.currentState = NAVIGATE_STATE;
 		NAVIGATE_STATE.previousDelivery();
 		
 	}
@@ -144,14 +138,22 @@ public class Controller implements UserActions, MapPainter {
 			nextState = COMPUTE_STATE;
 			mainFrame.setSidePanelsVisible(false);
 		}
-		if (deliveryQuery != null && map != null && route != null) {
-			nextState = ROUTEVIEW_STATE;
-			mainFrame.setTableData(new Vector<Delivery>(Arrays.asList(deliveryQuery.getDeliveries())));
+		if (deliveryQuery != null && map != null && routeHelper != null) {
+			nextState = NAVIGATE_STATE;
+			NAVIGATE_STATE.startTour();
+			
+			Vector<Delivery> data = new Vector<Delivery>();
+			LinkedHashMap<Integer,ArrivalPoint> lhp = routeHelper.getRoute();
+			for (Integer it : lhp.keySet()) {
+				data.add(lhp.get(it).getDelivery());
+			}
+			
+			mainFrame.setTableData(data);
 			mainFrame.setSidePanelsVisible(true);
 		}
 		
 		mainFrame.repaint();
-		
+		mainFrame.setFocusableOnCenterPanel();
 		return nextState;
 	}
 	
@@ -160,7 +162,7 @@ public class Controller implements UserActions, MapPainter {
 	 */
 	@Override
 	public void draw(Graphics g, float scale) {
-		currentState.DrawMap(g, scale, map, deliveryQuery, route);
+		currentState.DrawMap(g, scale, map, deliveryQuery, routeHelper);
 	}
 
 

@@ -10,8 +10,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
+
+import javax.swing.JOptionPane;
 
 import com.hexagone.delivery.algo.DeliveryComputer;
 import com.hexagone.delivery.models.ArrivalPoint;
@@ -19,9 +21,11 @@ import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Intersection;
 import com.hexagone.delivery.models.Map;
 import com.hexagone.delivery.models.Road;
-import com.hexagone.delivery.models.Route;
+import com.hexagone.delivery.models.RouteHelper;
 import com.hexagone.delivery.models.Warehouse;
 import com.hexagone.delivery.ui.MainFrame;
+import com.hexagone.delivery.ui.Popup;
+import com.hexagone.delivery.xml.NoFileChosenException;
 import com.hexagone.delivery.xml.XMLDeserialiser;
 import com.hexagone.delivery.xml.XMLException;
 
@@ -43,7 +47,9 @@ public class NavigateState implements ControllerActions {
 		try {
 			return XMLDeserialiser.loadMap();
 		} catch (XMLException e) {
-			//TODO Exception popup for the user ?
+			Popup.showInformation("Le fichier choisi n'est pas un plan valide.");
+			return null;
+		} catch (NoFileChosenException e) {
 			return null;
 		}
 	}
@@ -56,7 +62,9 @@ public class NavigateState implements ControllerActions {
 		try {
 			return XMLDeserialiser.loadDeliveryQuery();
 		} catch (XMLException e) {
-			//TODO Exception popup for the user ?
+			Popup.showInformation("Le fichier choisi n'est pas une livraison valide.");
+			return null;
+		} catch (NoFileChosenException e) {
 			return null;
 		}
 	}
@@ -69,11 +77,18 @@ public class NavigateState implements ControllerActions {
 	 * 
 	 */
 	@Override
-	public Route computeDelivery(Map map, DeliveryQuery delivery) {
+	public RouteHelper computeDelivery(Map map, DeliveryQuery delivery) {
 		DeliveryComputer computer = new DeliveryComputer(map, delivery);
 		computer.getDeliveryPoints();
+
+		return new RouteHelper(map, delivery, computer);
+	}
+
+	@Override
+	public void generatePlanning(RouteHelper routeHelper) {
+		routeHelper.writeToTxt("export/planning.txt");
 		
-		return new Route(map, delivery, computer);
+		Popup.showInformation(routeHelper.getPlanning(), "Feuille de route généré !");
 	}
 
 	/**
@@ -87,7 +102,7 @@ public class NavigateState implements ControllerActions {
 	 * @param route
 	 */
 	@Override
-	public void DrawMap(Graphics g, float coefficient, Map map, DeliveryQuery deliveryQuery, Route route) {
+	public void DrawMap(Graphics g, float coefficient, Map map, DeliveryQuery deliveryQuery, RouteHelper routeHelper) {
 		ArrayList<Intersection> intersections = new ArrayList<Intersection>(map.getIntersections().values());
 		Set<Integer> roads = new HashSet<Integer>();
 		roads = (map.getRoads()).keySet();
@@ -100,12 +115,14 @@ public class NavigateState implements ControllerActions {
 				Graphics2D g2 = (Graphics2D) g;
 				Point destination = null;
 				Point origine = null;
+				// TODO
 				for (Intersection in : intersections) {
 					if ((in.getId()).equals(r.getOrigin())) {
 						origine = in.getCoordinates();
 						break;
 					}
 				}
+				// TODO
 				for (Intersection in : intersections) {
 					if ((in.getId()).equals(r.getDestination())) {
 						destination = in.getCoordinates();
@@ -118,11 +135,10 @@ public class NavigateState implements ControllerActions {
 			}
 		}
 
-
-
 		Warehouse warehouse = deliveryQuery.getWarehouse();
 		Intersection intersectionWarehouse = warehouse.getIntersection();
 		Point pointWarehouse = new Point();
+		// TODO
 		for (Intersection in : intersections) {
 			if ((in.getId()).equals(intersectionWarehouse.getId())) {
 				pointWarehouse = in.getCoordinates();
@@ -130,13 +146,12 @@ public class NavigateState implements ControllerActions {
 			}
 		}
 
+		HashMap<Integer, ArrivalPoint> tour = routeHelper.getRoute();
+		Set<Entry<Integer, ArrivalPoint>> entrySet = tour.entrySet();
+		Iterator<Entry<Integer, ArrivalPoint>> iterator = entrySet.iterator();
+		for (int i = 0; i < step + 1 && i < tour.size(); i++) {
 
-		HashMap<Integer, ArrivalPoint> tour = route.getRoute();
-		Set<Entry<Integer, ArrivalPoint>> entrySet= tour.entrySet();
-		Iterator<Entry<Integer, ArrivalPoint>> iterator= entrySet.iterator();
-		for (int i=0;i<step+1 && i<tour.size();i++) {
-
-			Entry<Integer, ArrivalPoint> entry= iterator.next();
+			Entry<Integer, ArrivalPoint> entry = iterator.next();
 			Point pointDelivery = new Point();
 
 			for (Entry<Integer, ArrivalPoint> entryALLMAP : tour.entrySet()) {
@@ -147,12 +162,14 @@ public class NavigateState implements ControllerActions {
 					Graphics2D g2 = (Graphics2D) g;
 					Point destination = null;
 					Point origine = null;
+					// TODO
 					for (Intersection in : intersections) {
 						if ((in.getId()).equals(r.getOrigin())) {
 							origine = in.getCoordinates();
 							break;
 						}
 					}
+					// TODO
 					for (Intersection in : intersections) {
 						if ((in.getId()).equals(r.getDestination())) {
 							destination = in.getCoordinates();
@@ -167,7 +184,7 @@ public class NavigateState implements ControllerActions {
 				}
 
 			}
-            
+
 			ArrayList<Road> roadsToNextDP = entry.getValue().getRoads();
 			for (Road r : roadsToNextDP) {
 				g.setColor(Color.blue);
@@ -180,6 +197,7 @@ public class NavigateState implements ControllerActions {
 						break;
 					}
 				}
+				// TODO
 				for (Intersection in : intersections) {
 					if ((in.getId()).equals(r.getDestination())) {
 						destination = in.getCoordinates();
@@ -192,40 +210,41 @@ public class NavigateState implements ControllerActions {
 				g2.draw(lin);
 			}
 
-
 			for (Intersection in : intersections) {
 				Point p = new Point();
 				p = in.getCoordinates();
 				g.setColor(Color.BLUE);
-				g.fillOval((int)(((p.x)) / coefficient),(int)( ((p.y)) / coefficient), 10, 10);
+				g.fillOval((int) (((p.x)) / coefficient), (int) (((p.y)) / coefficient), 10, 10);
 			}
-			if(i == step){
+			if (i == step) {
 				g.setColor(new Color(0, 102, 0));
+				// TODO
 				for (Intersection in : intersections) {
 					if ((in.getId()).equals(entry.getKey())) {
 						pointDelivery = in.getCoordinates();
 						break;
 					}
 				}
-				g.fillOval((int)(((pointDelivery.x)) / coefficient),(int)( ((pointDelivery.y)) / coefficient), 20, 20);
+				g.fillOval((int) (((pointDelivery.x)) / coefficient), (int) (((pointDelivery.y)) / coefficient), 20,
+						20);
 			}
 
-
-
 			g.setColor(Color.RED);
-			g.fillOval((int)(((pointWarehouse.x)) / coefficient),(int)( ((pointWarehouse.y)) / coefficient), 15, 15);
-			g.drawString("Entrepôt",(int)( ((pointWarehouse.x)) / coefficient + 5), (int)(((pointWarehouse.y)) / coefficient));
+			g.fillOval((int) (((pointWarehouse.x)) / coefficient), (int) (((pointWarehouse.y)) / coefficient), 15, 15);
+			g.drawString("Entrepôt", (int) (((pointWarehouse.x)) / coefficient + 5),
+					(int) (((pointWarehouse.y)) / coefficient));
 
-		}// TODO Auto-generated method stub
+		} // TODO Auto-generated method stub
 
 	}
 	
 	/**
 	 * Repaints the frame when the tour starts
 	 */
-	public void startTour(){
+	public void startTour() {
 		step = 0;
 		frame.repaint();
+		frame.setFocusableOnCenterPanel();
 	}
 	
 	/**
@@ -233,31 +252,37 @@ public class NavigateState implements ControllerActions {
 	 * @param maxValue
 	 * 			: maximum value for the step
 	 */
-	public void nextDelivery(int maxValue){
-		step ++;
-		if(step > maxValue){
+
+	public void nextDelivery(int maxValue) {
+		step++;
+		if (step > maxValue) {
 			step = maxValue;
 		}
-			
+		frame.selectionRow(step);
 		frame.repaint();
+		frame.setFocusableOnCenterPanel();
 	}
 	
 	/**
 	 * Decrements the step if it is positive
 	 */
-	public void previousDelivery(){
-		if(step > 0){
-			step --;
+
+
+	public void previousDelivery() {
+		if (step > 0) {
+			step--;
 		}
-		
+
+		frame.selectionRow(step);
 		frame.repaint();
+		frame.setFocusableOnCenterPanel();
 	}
 	
 	/**
 	 * Constructor
 	 * @param frame
 	 */
-	public NavigateState(MainFrame frame){
+	public NavigateState(MainFrame frame) {
 		this.frame = frame;
 	}
 

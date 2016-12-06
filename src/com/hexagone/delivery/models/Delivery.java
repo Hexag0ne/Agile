@@ -3,9 +3,11 @@
  */
 package com.hexagone.delivery.models;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -128,14 +130,11 @@ public class Delivery {
 		this.startSchedule = startSchedule;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
-		return "Delivery [intersection = " + intersection + ", endSchedule = " + endSchedule + ", duration = "
-				+ duration + ", startSchedule = " + startSchedule + "]";
+		return "Delivery [intersection=" + intersection + ", endSchedule=" + endSchedule + ", duration=" + duration
+				+ ", startSchedule=" + startSchedule + ", departureTime=" + departureTime + ", arrivalTime="
+				+ arrivalTime + ", waitingTime=" + waitingTime + "]";
 	}
 
 	public Date getDepartureTime() {
@@ -184,9 +183,8 @@ public class Delivery {
 	 */
 	public String getDepartureTimeString(){
 		if(this.getDepartureTime() != null){
-			Calendar departureTimeCalendar = GregorianCalendar.getInstance();
-			departureTimeCalendar.setTime(this.getDepartureTime());
-			return (""+departureTimeCalendar.get(Calendar.HOUR_OF_DAY)+"h"+departureTimeCalendar.get(Calendar.MINUTE));
+			SimpleDateFormat small = new SimpleDateFormat("HH:mm", Locale.FRENCH);
+			return (""+small.format(this.getDepartureTime()));
 		}
 		else return null;
 	}
@@ -197,9 +195,8 @@ public class Delivery {
 	 */
 	public String getArrivalTimeString(){
 		if(this.getDepartureTime() != null){
-			Calendar arrivalTimeCalendar = GregorianCalendar.getInstance();
-			arrivalTimeCalendar.setTime(this.getDepartureTime());
-			return (""+arrivalTimeCalendar.get(Calendar.HOUR_OF_DAY)+"h"+arrivalTimeCalendar.get(Calendar.MINUTE));
+			SimpleDateFormat small = new SimpleDateFormat("HH:mm", Locale.FRENCH);
+			return (""+small.format(this.getArrivalTime()));
 			
 		}
 		else return null;

@@ -10,14 +10,18 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
+
 import com.hexagone.delivery.algo.DeliveryComputer;
 import com.hexagone.delivery.models.Delivery;
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Intersection;
 import com.hexagone.delivery.models.Map;
 import com.hexagone.delivery.models.Road;
-import com.hexagone.delivery.models.Route;
+import com.hexagone.delivery.models.RouteHelper;
 import com.hexagone.delivery.models.Warehouse;
+import com.hexagone.delivery.ui.Popup;
+import com.hexagone.delivery.xml.NoFileChosenException;
 import com.hexagone.delivery.xml.XMLDeserialiser;
 import com.hexagone.delivery.xml.XMLException;
 
@@ -35,7 +39,9 @@ public class ComputeState implements ControllerActions {
 		try {
 			return XMLDeserialiser.loadMap();
 		} catch (XMLException e) {
-			//TODO Exception popup for the user ?
+			Popup.showInformation("Le fichier choisi n'est pas un plan valide.");
+			return null;
+		} catch (NoFileChosenException e) {
 			return null;
 		}
 	}
@@ -48,7 +54,9 @@ public class ComputeState implements ControllerActions {
 		try {
 			return XMLDeserialiser.loadDeliveryQuery();
 		} catch (XMLException e) {
-			//TODO Exception popup for the user ?
+			Popup.showInformation("Le fichier choisi n'est pas une livraison valide.");
+			return null;
+		} catch (NoFileChosenException e) {
 			return null;
 		}
 	}
@@ -61,11 +69,16 @@ public class ComputeState implements ControllerActions {
 	 * 
 	 */
 	@Override
-	public Route computeDelivery(Map map, DeliveryQuery delivery) {
+	public RouteHelper computeDelivery(Map map, DeliveryQuery delivery) {
 		DeliveryComputer computer = new DeliveryComputer(map, delivery);
-		computer.getDeliveryPoints();
+		computer.getDeliveryPoints(); // to launch computation
 		
-		return new Route(map, delivery, computer);
+		return new RouteHelper(map, delivery, computer);
+	}
+	
+	@Override
+	public void generatePlanning(RouteHelper routeHelper) {
+		JOptionPane.showMessageDialog(null, "Veuillez calculez la tournée.", "Erreur", JOptionPane.ERROR_MESSAGE);
 	}
 
 	/**
@@ -79,7 +92,8 @@ public class ComputeState implements ControllerActions {
 	 * @param route
 	 */
 	@Override
-	public void DrawMap(Graphics g, float scale, Map map, DeliveryQuery deliveryQuery, Route route) {
+	public void DrawMap(Graphics g, float scale, Map map, DeliveryQuery deliveryQuery, RouteHelper routeHelper) {
+		
 		//Painting the map
 		//Painting the roads first
 		ArrayList<Intersection> intersections = new ArrayList<Intersection>(map.getIntersections().values());

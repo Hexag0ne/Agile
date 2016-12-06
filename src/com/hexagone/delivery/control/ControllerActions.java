@@ -4,7 +4,7 @@ import java.awt.Graphics;
 
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Map;
-import com.hexagone.delivery.models.Route;
+import com.hexagone.delivery.models.RouteHelper;
 
 /**
  * This class is an interface of control actions for the drawing of the map
@@ -28,11 +28,13 @@ public interface ControllerActions {
 	 * Computes a delivery
 	 * @return a DeliveryQuery solving the Map / DeliveryQuery selected by the user
 	 */
-	public Route computeDelivery(Map map, DeliveryQuery delivery);
+	public RouteHelper computeDelivery(Map map, DeliveryQuery delivery);
 	
 	/**
 	 * Draws a map
 	 */
-	public void DrawMap(Graphics g, float scale, Map m, DeliveryQuery delivery, Route route);
+	public void DrawMap(Graphics g, float scale, Map m, DeliveryQuery delivery, RouteHelper routeHelper);
+	public void generatePlanning(RouteHelper routeHelper);
+	
 	
 }

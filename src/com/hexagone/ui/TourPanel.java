@@ -52,7 +52,6 @@ public class TourPanel extends JPanel {
 			entry=iterator.next();
 			data.addElement(entry.getValue().getDelivery());
 			break;
-
         }
 		if(table == null){
 			table = new JTable(new TableModel(data));

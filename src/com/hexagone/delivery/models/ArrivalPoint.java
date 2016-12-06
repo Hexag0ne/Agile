@@ -45,4 +45,9 @@ public class ArrivalPoint {
 	public void setDelivery(Delivery delivery) {
 		this.delivery = delivery;
 	}
+	
+	@Override
+	public String toString() {
+		return "ArrivalPoint [roads=" + roads + ", delivery=" + delivery + "]";
+	}
 }

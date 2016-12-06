@@ -29,15 +29,23 @@ public class TourTablePanel extends JPanel {
 		table.setFillsViewportHeight(true);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.getColumnModel().getColumn(0).setPreferredWidth(27);
-		table.getColumnModel().getColumn(1).setPreferredWidth(40);
+		table.getColumnModel().getColumn(1).setPreferredWidth(60);
 		table.getColumnModel().getColumn(2).setPreferredWidth(100);
 		table.getColumnModel().getColumn(3).setPreferredWidth(100);
 		table.getColumnModel().getColumn(4).setPreferredWidth(100);
-		table.getColumnModel().getColumn(5).setPreferredWidth(100);
+		table.getColumnModel().getColumn(5).setPreferredWidth(150);
 
 		add(table.getTableHeader(), BorderLayout.PAGE_START);
 		add(table, BorderLayout.CENTER);
 	}
+	
+	public void selectionRow(int numberRow){
+		if(numberRow<table.getRowCount()){
+			table.setRowSelectionInterval(numberRow,numberRow);
+		}
+	}
+	
+	
 
 
 	/**

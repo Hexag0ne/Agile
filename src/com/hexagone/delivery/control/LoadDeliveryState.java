@@ -10,11 +10,15 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
+
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Intersection;
 import com.hexagone.delivery.models.Map;
 import com.hexagone.delivery.models.Road;
-import com.hexagone.delivery.models.Route;
+import com.hexagone.delivery.models.RouteHelper;
+import com.hexagone.delivery.ui.Popup;
+import com.hexagone.delivery.xml.NoFileChosenException;
 import com.hexagone.delivery.xml.XMLDeserialiser;
 import com.hexagone.delivery.xml.XMLException;
 
@@ -32,7 +36,9 @@ public class LoadDeliveryState implements ControllerActions {
 		try {
 			return XMLDeserialiser.loadMap();
 		} catch (XMLException e) {
-			//TODO Exception popup for the user ?
+			Popup.showInformation("Le fichier choisi n'est pas un plan valide.");
+			return null;
+		} catch (NoFileChosenException e) {
 			return null;
 		}
 	}
@@ -45,7 +51,9 @@ public class LoadDeliveryState implements ControllerActions {
 		try {
 			return XMLDeserialiser.loadDeliveryQuery();
 		} catch (XMLException e) {
-			//TODO Exception popup for the user ?
+			Popup.showInformation("Le fichier choisi n'est pas une livraison valide.");
+			return null;
+		} catch (NoFileChosenException e) {
 			return null;
 		}
 	}
@@ -58,9 +66,14 @@ public class LoadDeliveryState implements ControllerActions {
 	 * 
 	 */
 	@Override
-	public Route computeDelivery(Map map, DeliveryQuery delivery) {
+	public RouteHelper computeDelivery(Map map, DeliveryQuery delivery) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public void generatePlanning(RouteHelper routeHelper) {
+		JOptionPane.showMessageDialog(null, "Veuillez calculez la tournée.", "Erreur", JOptionPane.ERROR_MESSAGE);
 	}
 
 	/**
@@ -77,7 +90,7 @@ public class LoadDeliveryState implements ControllerActions {
 	 * @param route
 	 */
 	@Override
-	public void DrawMap(Graphics g, float scale, Map map, DeliveryQuery delivery, Route route) {
+	public void DrawMap(Graphics g, float scale, Map map, DeliveryQuery delivery, RouteHelper routeHelper) {
 		ArrayList<Intersection> intersections = new ArrayList<Intersection>(map.getIntersections().values());
 		Set<Integer> roads = new HashSet<Integer>();
 		roads = (map.getRoads()).keySet();
@@ -90,12 +103,14 @@ public class LoadDeliveryState implements ControllerActions {
 				Graphics2D g2 = (Graphics2D) g;
 				Point destination = null;
 				Point origine = null;
+				// TODO
 				for (Intersection in : intersections) {
 					if ((in.getId()).equals(r.getOrigin())) {
 						origine = in.getCoordinates();
 						break;
 					}
 				}
+				// TODO
 				for (Intersection in : intersections) {
 					if ((in.getId()).equals(r.getDestination())) {
 						destination = in.getCoordinates();
