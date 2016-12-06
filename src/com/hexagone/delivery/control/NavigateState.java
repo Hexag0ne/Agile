@@ -5,8 +5,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +25,7 @@ import com.hexagone.delivery.models.Route;
 import com.hexagone.delivery.models.Warehouse;
 import com.hexagone.delivery.ui.MainFrame;
 import com.hexagone.delivery.ui.Popup;
+import com.hexagone.delivery.xml.NoFileChosenException;
 import com.hexagone.delivery.xml.XMLDeserialiser;
 import com.hexagone.delivery.xml.XMLException;
 
@@ -43,6 +42,8 @@ public class NavigateState implements ControllerActions {
 		} catch (XMLException e) {
 			Popup.showInformation("Le fichier choisi n'est pas un plan valide.");
 			return null;
+		} catch (NoFileChosenException e) {
+			return null;
 		}
 	}
 
@@ -52,6 +53,8 @@ public class NavigateState implements ControllerActions {
 			return XMLDeserialiser.loadDeliveryQuery();
 		} catch (XMLException e) {
 			Popup.showInformation("Le fichier choisi n'est pas une livraison valide.");
+			return null;
+		} catch (NoFileChosenException e) {
 			return null;
 		}
 	}

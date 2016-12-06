@@ -8,6 +8,7 @@ import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Map;
 import com.hexagone.delivery.models.Route;
 import com.hexagone.delivery.ui.Popup;
+import com.hexagone.delivery.xml.NoFileChosenException;
 import com.hexagone.delivery.xml.XMLDeserialiser;
 import com.hexagone.delivery.xml.XMLException;
 
@@ -22,6 +23,8 @@ public class LoadMapState implements ControllerActions {
 			return XMLDeserialiser.loadMap();
 		} catch (XMLException e) {
 			Popup.showInformation("Le fichier choisi n'est pas un plan valide.");
+			return null;
+		} catch (NoFileChosenException e) {
 			return null;
 		}
 	}

@@ -1,12 +1,8 @@
 package com.hexagone.delivery.control;
 
 import java.awt.Graphics;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.Set;
 import java.util.Vector;
-import java.util.Map.Entry;
 
 import com.hexagone.delivery.models.ArrivalPoint;
 import com.hexagone.delivery.models.Delivery;
