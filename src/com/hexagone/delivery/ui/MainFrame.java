@@ -115,6 +115,9 @@ public class MainFrame extends JFrame {
 		this.add(allPanel);
 	}
 
+	public void resetTable() {
+		tourTablePanel.resetTableModel();
+	}
 
 	public void setSidePanelsVisible(boolean visible){
 		tourNavigationPanel.setVisible(visible);
@@ -254,8 +257,4 @@ public class MainFrame extends JFrame {
 		public void keyTyped(KeyEvent e) {}
 
 	}
-
-	
-
-
 }

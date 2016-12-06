@@ -56,6 +56,7 @@ public class Controller implements UserActions, MapPainter {
 			deliveryQuery = null; //Change of map -> we discard the deliveryQuery
 			routeHelper = null;
 			map = newMap;
+			mainFrame.resetTable();
 		}
 		this.currentState = nextState();
 	}
@@ -70,6 +71,7 @@ public class Controller implements UserActions, MapPainter {
 		if (deliv != null) {
 			deliveryQuery = deliv;
 			routeHelper = null;
+			mainFrame.resetTable();
 		}
 		this.currentState = nextState();
 	}
@@ -80,6 +82,7 @@ public class Controller implements UserActions, MapPainter {
 	 */
 	@Override
 	public void computeRouteButtonClick() {
+		mainFrame.resetTable();
 		this.routeHelper = currentState.computeDelivery(map, deliveryQuery);
 		this.currentState = nextState();
 	}
