@@ -70,12 +70,14 @@ public class LoadDeliveryState implements ControllerActions {
 				Graphics2D g2 = (Graphics2D) g;
 				Point destination = null;
 				Point origine = null;
+				// TODO
 				for (Intersection in : intersections) {
 					if ((in.getId()).equals(r.getOrigin())) {
 						origine = in.getCoordinates();
 						break;
 					}
 				}
+				// TODO
 				for (Intersection in : intersections) {
 					if ((in.getId()).equals(r.getDestination())) {
 						destination = in.getCoordinates();

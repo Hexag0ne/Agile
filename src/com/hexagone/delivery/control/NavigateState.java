@@ -40,7 +40,7 @@ public class NavigateState implements ControllerActions {
 		try {
 			return XMLDeserialiser.loadMap();
 		} catch (XMLException e) {
-			//TODO Exception popup for the user ?
+			// TODO Exception popup for the user ?
 			return null;
 		}
 	}
@@ -50,7 +50,7 @@ public class NavigateState implements ControllerActions {
 		try {
 			return XMLDeserialiser.loadDeliveryQuery();
 		} catch (XMLException e) {
-			//TODO Exception popup for the user ?
+			// TODO Exception popup for the user ?
 			return null;
 		}
 	}
@@ -59,14 +59,15 @@ public class NavigateState implements ControllerActions {
 	public Route computeDelivery(Map map, DeliveryQuery delivery) {
 		DeliveryComputer computer = new DeliveryComputer(map, delivery);
 		computer.getDeliveryPoints();
-		
+
 		return new Route(map, delivery, computer);
 	}
-	
+
 	@Override
 	public void generatePlanning(Route route) {
 		route.writeToTxt("export/planning.txt");
-		JOptionPane.showMessageDialog(null, route.getPlanning(), "Feuille de route généré !", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, route.getPlanning(), "Feuille de route généré !",
+				JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	@Override
@@ -83,12 +84,14 @@ public class NavigateState implements ControllerActions {
 				Graphics2D g2 = (Graphics2D) g;
 				Point destination = null;
 				Point origine = null;
+				// TODO
 				for (Intersection in : intersections) {
 					if ((in.getId()).equals(r.getOrigin())) {
 						origine = in.getCoordinates();
 						break;
 					}
 				}
+				// TODO
 				for (Intersection in : intersections) {
 					if ((in.getId()).equals(r.getDestination())) {
 						destination = in.getCoordinates();
@@ -101,11 +104,10 @@ public class NavigateState implements ControllerActions {
 			}
 		}
 
-
-
 		Warehouse warehouse = deliveryQuery.getWarehouse();
 		Intersection intersectionWarehouse = warehouse.getIntersection();
 		Point pointWarehouse = new Point();
+		// TODO
 		for (Intersection in : intersections) {
 			if ((in.getId()).equals(intersectionWarehouse.getId())) {
 				pointWarehouse = in.getCoordinates();
@@ -113,13 +115,12 @@ public class NavigateState implements ControllerActions {
 			}
 		}
 
-
 		HashMap<Integer, ArrivalPoint> tour = route.getRoute();
-		Set<Entry<Integer, ArrivalPoint>> entrySet= tour.entrySet();
-		Iterator<Entry<Integer, ArrivalPoint>> iterator= entrySet.iterator();
-		for (int i=0;i<step+1 && i<tour.size();i++) {
+		Set<Entry<Integer, ArrivalPoint>> entrySet = tour.entrySet();
+		Iterator<Entry<Integer, ArrivalPoint>> iterator = entrySet.iterator();
+		for (int i = 0; i < step + 1 && i < tour.size(); i++) {
 
-			Entry<Integer, ArrivalPoint> entry= iterator.next();
+			Entry<Integer, ArrivalPoint> entry = iterator.next();
 			Point pointDelivery = new Point();
 
 			for (Entry<Integer, ArrivalPoint> entryALLMAP : tour.entrySet()) {
@@ -130,12 +131,14 @@ public class NavigateState implements ControllerActions {
 					Graphics2D g2 = (Graphics2D) g;
 					Point destination = null;
 					Point origine = null;
+					// TODO
 					for (Intersection in : intersections) {
 						if ((in.getId()).equals(r.getOrigin())) {
 							origine = in.getCoordinates();
 							break;
 						}
 					}
+					// TODO
 					for (Intersection in : intersections) {
 						if ((in.getId()).equals(r.getDestination())) {
 							destination = in.getCoordinates();
@@ -150,7 +153,7 @@ public class NavigateState implements ControllerActions {
 				}
 
 			}
-            
+
 			ArrayList<Road> roadsToNextDP = entry.getValue().getRoads();
 			for (Road r : roadsToNextDP) {
 				g.setColor(Color.blue);
@@ -163,6 +166,7 @@ public class NavigateState implements ControllerActions {
 						break;
 					}
 				}
+				// TODO
 				for (Intersection in : intersections) {
 					if ((in.getId()).equals(r.getDestination())) {
 						destination = in.getCoordinates();
@@ -175,62 +179,61 @@ public class NavigateState implements ControllerActions {
 				g2.draw(lin);
 			}
 
-
 			for (Intersection in : intersections) {
 				Point p = new Point();
 				p = in.getCoordinates();
 				g.setColor(Color.BLUE);
-				g.fillOval((int)(((p.x)) / coefficient),(int)( ((p.y)) / coefficient), 10, 10);
+				g.fillOval((int) (((p.x)) / coefficient), (int) (((p.y)) / coefficient), 10, 10);
 			}
-			if(i == step){
+			if (i == step) {
 				g.setColor(new Color(0, 102, 0));
+				// TODO
 				for (Intersection in : intersections) {
 					if ((in.getId()).equals(entry.getKey())) {
 						pointDelivery = in.getCoordinates();
 						break;
 					}
 				}
-				g.fillOval((int)(((pointDelivery.x)) / coefficient),(int)( ((pointDelivery.y)) / coefficient), 20, 20);
+				g.fillOval((int) (((pointDelivery.x)) / coefficient), (int) (((pointDelivery.y)) / coefficient), 20,
+						20);
 			}
 
-
-
 			g.setColor(Color.RED);
-			g.fillOval((int)(((pointWarehouse.x)) / coefficient),(int)( ((pointWarehouse.y)) / coefficient), 15, 15);
-			g.drawString("Entrepôt",(int)( ((pointWarehouse.x)) / coefficient + 5), (int)(((pointWarehouse.y)) / coefficient));
+			g.fillOval((int) (((pointWarehouse.x)) / coefficient), (int) (((pointWarehouse.y)) / coefficient), 15, 15);
+			g.drawString("Entrepôt", (int) (((pointWarehouse.x)) / coefficient + 5),
+					(int) (((pointWarehouse.y)) / coefficient));
 
-		}// TODO Auto-generated method stub
+		} // TODO Auto-generated method stub
 
 	}
-	
-	public void startTour(){
+
+	public void startTour() {
 		step = 0;
 		frame.repaint();
 		frame.setFocusableOnCenterPanel();
 	}
-	
-	public void nextDelivery(int maxValue){
-		step ++;
-		if(step > maxValue){
+
+	public void nextDelivery(int maxValue) {
+		step++;
+		if (step > maxValue) {
 			step = maxValue;
 		}
-		frame.selectionRow(step);	
+		frame.selectionRow(step);
 		frame.repaint();
 		frame.setFocusableOnCenterPanel();
 	}
-	
-	public void previousDelivery(){
-		if(step > 0){
-			step --;
+
+	public void previousDelivery() {
+		if (step > 0) {
+			step--;
 		}
-		
-		frame.selectionRow(step);	
+
+		frame.selectionRow(step);
 		frame.repaint();
 		frame.setFocusableOnCenterPanel();
 	}
-	
-	
-	public NavigateState(MainFrame frame){
+
+	public NavigateState(MainFrame frame) {
 		this.frame = frame;
 	}
 

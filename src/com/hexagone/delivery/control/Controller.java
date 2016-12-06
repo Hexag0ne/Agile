@@ -2,8 +2,13 @@ package com.hexagone.delivery.control;
 
 import java.awt.Graphics;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Set;
 import java.util.Vector;
+import java.util.Map.Entry;
 
+import com.hexagone.delivery.models.ArrivalPoint;
 import com.hexagone.delivery.models.Delivery;
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Map;
@@ -126,7 +131,14 @@ public class Controller implements UserActions, MapPainter {
 		if (deliveryQuery != null && map != null && route != null) {
 			nextState = NAVIGATE_STATE;
 			NAVIGATE_STATE.startTour();
-			mainFrame.setTableData(new Vector<Delivery>(Arrays.asList(deliveryQuery.getDeliveries())));
+			
+			Vector<Delivery> data = new Vector<Delivery>();
+			LinkedHashMap<Integer,ArrivalPoint> lhp = route.getRoute();
+			for (Integer it : lhp.keySet()) {
+				data.add(lhp.get(it).getDelivery());
+			}
+			
+			mainFrame.setTableData(data);
 			mainFrame.setSidePanelsVisible(true);
 		}
 		
