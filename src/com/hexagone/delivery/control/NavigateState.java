@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -196,6 +198,7 @@ public class NavigateState implements ControllerActions {
 	public void startTour(){
 		step = 0;
 		frame.repaint();
+		frame.setFocusableOnCenterPanel();
 	}
 	
 	public void nextDelivery(int maxValue){
@@ -205,6 +208,7 @@ public class NavigateState implements ControllerActions {
 		}
 		frame.selectionRow(step);	
 		frame.repaint();
+		frame.setFocusableOnCenterPanel();
 	}
 	
 	public void previousDelivery(){
@@ -214,6 +218,7 @@ public class NavigateState implements ControllerActions {
 		
 		frame.selectionRow(step);	
 		frame.repaint();
+		frame.setFocusableOnCenterPanel();
 	}
 	
 	

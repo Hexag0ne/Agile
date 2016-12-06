@@ -125,7 +125,7 @@ public class Controller implements UserActions, MapPainter {
 		}
 		
 		mainFrame.repaint();
-		
+		mainFrame.setFocusableOnCenterPanel();
 		return nextState;
 	}
 
