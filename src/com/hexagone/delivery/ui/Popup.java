@@ -15,4 +15,14 @@ public class Popup {
 	{
 		JOptionPane.showMessageDialog(null, message);
 	}
+	
+	public static void showInformation(String message, String title)
+	{
+		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public static void showError(String message, String title)
+	{
+		JOptionPane.showMessageDialog(null, message, title, JOptionPane.ERROR_MESSAGE);
+	}
 }

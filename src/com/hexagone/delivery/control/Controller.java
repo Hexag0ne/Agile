@@ -8,7 +8,7 @@ import com.hexagone.delivery.models.ArrivalPoint;
 import com.hexagone.delivery.models.Delivery;
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Map;
-import com.hexagone.delivery.models.Route;
+import com.hexagone.delivery.models.RouteHelper;
 import com.hexagone.delivery.ui.MainFrame;
 
 public class Controller implements UserActions, MapPainter {
@@ -18,7 +18,7 @@ public class Controller implements UserActions, MapPainter {
 	/** Deliveries chosen by the user */
 	private DeliveryQuery deliveryQuery;
 	/** Problem solution */
-	private Route route;
+	private RouteHelper routeHelper;
 	
 	/** Elements of the interface */
 	private MainFrame mainFrame;
@@ -54,7 +54,7 @@ public class Controller implements UserActions, MapPainter {
 		Map newMap = currentState.loadMap();
 		if (newMap != null){
 			deliveryQuery = null; //Change of map -> we discard the deliveryQuery
-			route = null;
+			routeHelper = null;
 			map = newMap;
 		}
 		this.currentState = nextState();
@@ -69,7 +69,7 @@ public class Controller implements UserActions, MapPainter {
 		DeliveryQuery deliv = currentState.loadDeliveryQuery();
 		if (deliv != null) {
 			deliveryQuery = deliv;
-			route = null;
+			routeHelper = null;
 		}
 		this.currentState = nextState();
 	}
@@ -80,7 +80,7 @@ public class Controller implements UserActions, MapPainter {
 	 */
 	@Override
 	public void computeRouteButtonClick() {
-		this.route = currentState.computeDelivery(map, deliveryQuery);
+		this.routeHelper = currentState.computeDelivery(map, deliveryQuery);
 		this.currentState = nextState();
 	}
 
@@ -90,7 +90,7 @@ public class Controller implements UserActions, MapPainter {
 	 */
 	@Override
 	public void generatePlanningButtonClick() {
-		currentState.generatePlanning(route);
+		currentState.generatePlanning(routeHelper);
 	}
 	
 	/*
@@ -99,7 +99,7 @@ public class Controller implements UserActions, MapPainter {
 	 */
 	@Override
 	public void nextDelivery() {
-		NAVIGATE_STATE.nextDelivery(route.getRoute().size());
+		NAVIGATE_STATE.nextDelivery(routeHelper.getRoute().size());
 		
 	}
 
@@ -130,12 +130,12 @@ public class Controller implements UserActions, MapPainter {
 			nextState = COMPUTE_STATE;
 			mainFrame.setSidePanelsVisible(false);
 		}
-		if (deliveryQuery != null && map != null && route != null) {
+		if (deliveryQuery != null && map != null && routeHelper != null) {
 			nextState = NAVIGATE_STATE;
 			NAVIGATE_STATE.startTour();
 			
 			Vector<Delivery> data = new Vector<Delivery>();
-			LinkedHashMap<Integer,ArrivalPoint> lhp = route.getRoute();
+			LinkedHashMap<Integer,ArrivalPoint> lhp = routeHelper.getRoute();
 			for (Integer it : lhp.keySet()) {
 				data.add(lhp.get(it).getDelivery());
 			}
@@ -151,7 +151,7 @@ public class Controller implements UserActions, MapPainter {
 
 	@Override
 	public void draw(Graphics g, float scale) {
-		currentState.DrawMap(g, scale, map, deliveryQuery, route);
+		currentState.DrawMap(g, scale, map, deliveryQuery, routeHelper);
 	}
 
 
