@@ -15,6 +15,7 @@ import java.util.Set;
 
 import com.hexagone.delivery.algo.DeliveryComputer;
 import com.hexagone.delivery.models.ArrivalPoint;
+import com.hexagone.delivery.models.Delivery;
 import com.hexagone.delivery.models.DeliveryQuery;
 import com.hexagone.delivery.models.Intersection;
 import com.hexagone.delivery.models.Map;
@@ -109,7 +110,7 @@ public class NavigateState implements ControllerActions {
 			ArrayList<Road> roadsFromI = new ArrayList<Road>();
 			roadsFromI = map.getRoads().get(j);
 			for (Road r : roadsFromI) {
-				g.setColor(Color.BLACK);
+				g.setColor(Color.GRAY);
 				Graphics2D g2 = (Graphics2D) g;
 				Point destination = null;
 				Point origine = null;
@@ -152,6 +153,7 @@ public class NavigateState implements ControllerActions {
 			Entry<Integer, ArrivalPoint> entry = iterator.next();
 			Point pointDelivery = new Point();
 
+			//Drawing the entire path
 			for (Entry<Integer, ArrivalPoint> entryALLMAP : tour.entrySet()) {
 
 				ArrayList<Road> roadsToNextDP = entryALLMAP.getValue().getRoads();
@@ -183,9 +185,10 @@ public class NavigateState implements ControllerActions {
 
 			}
 
+			//Drawing the path to wards the 'step' delivery
 			ArrayList<Road> roadsToNextDP = entry.getValue().getRoads();
 			for (Road r : roadsToNextDP) {
-				g.setColor(Color.blue);
+				g.setColor(Color.BLACK);
 				Graphics2D g2 = (Graphics2D) g;
 				Point destination = null;
 				Point origine = null;
@@ -207,15 +210,9 @@ public class NavigateState implements ControllerActions {
 				g2.setStroke(new BasicStroke(3));
 				g2.draw(lin);
 			}
-
-			for (Intersection in : intersections) {
-				Point p = new Point();
-				p = in.getCoordinates();
-				g.setColor(Color.BLUE);
-				g.fillOval((int) (((p.x)) / coefficient), (int) (((p.y)) / coefficient), 10, 10);
-			}
 			if (i == step) {
-				g.setColor(new Color(0, 102, 0));
+				//g.setColor(new Color(0, 102, 0));
+				g.setColor(Color.BLACK);
 				// TODO
 				for (Intersection in : intersections) {
 					if ((in.getId()).equals(entry.getKey())) {
@@ -226,13 +223,34 @@ public class NavigateState implements ControllerActions {
 				g.fillOval((int) (((pointDelivery.x)) / coefficient)-5, (int) (((pointDelivery.y)) / coefficient)-5, 20,
 						20);
 			}
+		} 
+		
+		// Draw Delivery points
+		for (Intersection in : intersections) {
+			Point p = new Point();
+			p = in.getCoordinates();
+			g.setColor(Color.BLUE);
+			g.fillOval((int) (((p.x)) / coefficient), (int) (((p.y)) / coefficient), 10, 10);
+		}
+		
+		Delivery[] deliveries = deliveryQuery.getDeliveries();
+		g.setColor(new Color(20, 200, 20));
+		for (Delivery d : deliveries) {
+			Intersection i = d.getIntersection();
+			Point pointDelivery = new Point();
+			for (Intersection in : intersections) {
+				if ((in.getId()).equals(i.getId())) {
+					pointDelivery = in.getCoordinates();
+					break;
+				}
+			}
+			g.fillOval((int)(((pointDelivery.x)) / coefficient)-1,(int)( ((pointDelivery.y)) / coefficient)-1, 12, 12);
 
-			g.setColor(Color.RED);
-			g.fillOval((int) (((pointWarehouse.x)) / coefficient)-2, (int) (((pointWarehouse.y)) / coefficient)-2, 14, 14);
-			g.drawString("Entrepôt", (int) (((pointWarehouse.x)) / coefficient + 5),
-					(int) (((pointWarehouse.y)) / coefficient));
-
-		} // TODO Auto-generated method stub
+		}
+		g.setColor(Color.RED);
+		g.fillOval((int) (((pointWarehouse.x)) / coefficient)-2, (int) (((pointWarehouse.y)) / coefficient)-2, 14, 14);
+		g.drawString("Entrepôt", (int) (((pointWarehouse.x)) / coefficient + 5),
+				(int) (((pointWarehouse.y)) / coefficient));
 
 	}
 	
