@@ -1,6 +1,5 @@
 package com.hexagone.delivery.control;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -119,7 +118,7 @@ public class LoadDeliveryState implements ControllerActions {
 				}
 				Line2D lin = new Line2D.Float(((origine.x) / scale) + 5, ((origine.y) / scale) + 5,
 						((destination.x) / scale) + 5, ((destination.y) / scale) + 5);
-				g2.setStroke(new BasicStroke(2));
+				//g2.setStroke(new BasicStroke(2));
 				g2.draw(lin);
 			}
 		}
