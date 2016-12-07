@@ -1,16 +1,11 @@
 package com.hexagone.delivery.ui;
 
-import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import com.hexagone.delivery.control.UserActions;
 
@@ -24,12 +19,6 @@ public class TourNavigationPanel extends JPanel {
 	private JButton nextDeliveryButton;
 	private JButton previousDeliveryButton;
 
-	private JPanel searchPanel;
-	private JTextField searchZone;
-	private JPanel searchZonePanel;
-	private JButton searchButton;
-	private JPanel searchButtonPanel;
-	private JButton addDP;
 
 	/**
 	 * Constructor for the tour navigation panel
@@ -42,7 +31,7 @@ public class TourNavigationPanel extends JPanel {
 	public TourNavigationPanel(UserActions controller) {
 		this.controller = controller;
 
-		this.setLayout(new GridLayout(10, 1));
+		this.setLayout(new GridLayout(1, 2));
 
 		previousDeliveryButton = new JButton("Point de livraison précédent");
 		previousDeliveryButton.addActionListener(new actionPreviousDeliveryListener());
@@ -52,6 +41,8 @@ public class TourNavigationPanel extends JPanel {
 		nextDeliveryButton.addActionListener(new actionNextDeliveryListener());
 		this.add(nextDeliveryButton);
 
+		/*
+		
 		searchPanel = new JPanel(new FlowLayout());
 		JLabel searchLabel = new JLabel("Supprimer/Modifier un point de livraison");
 
@@ -75,6 +66,8 @@ public class TourNavigationPanel extends JPanel {
 		addDP = new JButton("Ajouter un point de livraison");
 		add(addDP);
 		setBackground(Color.white);
+		
+		*/
 	}
 
 	private class actionNextDeliveryListener implements ActionListener {

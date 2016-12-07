@@ -2,6 +2,7 @@ package com.hexagone.delivery.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -24,7 +25,6 @@ import com.hexagone.delivery.models.Delivery;
  * Main window of the graphical user interface
  * 
  */
-
 public class MainFrame extends JFrame {
 
 	/** Controller of this instance of MainFrame */
@@ -36,12 +36,15 @@ public class MainFrame extends JFrame {
 	private JPanel headerPanel;
 	/** JPanel containing the map drawing */
 	private JPanel mapPanel;
-	/** JPanel on the left of the screen with buttons to navigate */
+	/** JPanel on the top right corner of the screen with buttons to navigate */
 	private JPanel tourNavigationPanel;
-	/** JPanel on the right side of the window */
+	/** JPanel on the right side of the window, below the tourNavigationPanel */
 	private TourTablePanel tourTablePanel;
 
 	private JPanel centerPanel;
+	
+	private JPanel rightPanel;
+	private JPanel leftPanel;
 
 	private JButton loadMapButton;
 	private JButton loadDeliveryButton;
@@ -88,29 +91,39 @@ public class MainFrame extends JFrame {
 
 		allPanel.add(headerPanel, BorderLayout.NORTH);
 
-		// Other components
-		centerPanel = new JPanel();
-		centerPanel.setLayout(new BorderLayout());
+		centerPanel = new JPanel(new GridLayout(1, 2));
 
-		// map panel
-		mapPanel = new MapPanel(painter);
-		centerPanel.add(mapPanel);
-
+		//left side
+		leftPanel = new JPanel(new BorderLayout());
+		
 		tourNavigationPanel = new TourNavigationPanel(controller);
-		centerPanel.add(tourNavigationPanel, BorderLayout.WEST);
+		leftPanel.add(tourNavigationPanel, BorderLayout.SOUTH);
 
+		mapPanel = new MapPanel(painter);
+		leftPanel.add(mapPanel, BorderLayout.CENTER);
+		
+		centerPanel.add(leftPanel);
+		
+		//right side
+		rightPanel = new JPanel(new BorderLayout());
+		
 		tourTablePanel = new TourTablePanel();
-		centerPanel.add(tourTablePanel, BorderLayout.EAST);
+		rightPanel.add(tourTablePanel, BorderLayout.CENTER);
 
+		centerPanel.add(rightPanel);
+		
 		// centerPanel.addKeyListener(keyListener);
 		centerPanel.addKeyListener(new KeyboardListenner());
-
+		
+		
+		
 		allPanel.add(centerPanel, BorderLayout.CENTER);
 
 		// Set focus on center panel to detect keyboard events
 		setFocusableOnCenterPanel();
 
 		this.add(allPanel);
+		this.pack();
 	}
 
 	public void resetTable() {
@@ -120,6 +133,7 @@ public class MainFrame extends JFrame {
 	public void setSidePanelsVisible(boolean visible) {
 		tourNavigationPanel.setVisible(visible);
 		tourTablePanel.setVisible(visible);
+		this.pack();
 	}
 
 	public void setTableData(Vector<Delivery> data) {
