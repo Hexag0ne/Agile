@@ -19,10 +19,7 @@ public class TourTablePanel extends JPanel {
 
 	/** Sets the table data */
 	public void setTableData(Vector<Delivery> data) {
-
-		if (tableModel == null) {
-			tableModel = new TableModel(data);
-		}
+		tableModel = new TableModel(data);
 
 		table.setModel(tableModel);
 		table.setFillsViewportHeight(true);

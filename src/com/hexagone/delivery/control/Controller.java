@@ -41,13 +41,14 @@ public class Controller implements UserActions, MapPainter {
 		LOADMAP_STATE = new LoadMapState();
 		LOADDELIVERY_STATE = new LoadDeliveryState();
 		COMPUTE_STATE = new ComputeState();
-
+	}
+	
+	public void launch() {
 		mainFrame = new MainFrame(this, this);
 		NAVIGATE_STATE = new NavigateState(mainFrame);
 		currentState = nextState();
 		mainFrame.setSidePanelsVisible(false);
-
-		mainFrame.setVisible(true);
+		mainFrame.setVisible(true);	
 	}
 
 	/**

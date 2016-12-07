@@ -103,22 +103,8 @@ public class LoadDeliveryState implements ControllerActions {
 			for (Road r : roadsFromI) {
 				g.setColor(Color.BLACK);
 				Graphics2D g2 = (Graphics2D) g;
-				Point destination = null;
-				Point origine = null;
-				// TODO
-				for (Intersection in : intersections) {
-					if ((in.getId()).equals(r.getOrigin())) {
-						origine = in.getCoordinates();
-						break;
-					}
-				}
-				// TODO
-				for (Intersection in : intersections) {
-					if ((in.getId()).equals(r.getDestination())) {
-						destination = in.getCoordinates();
-						break;
-					}
-				}
+				Point destination = intersections.get(r.getOrigin()).getCoordinates();
+                Point origine = intersections.get(r.getDestination()).getCoordinates();
 				Line2D lin = new Line2D.Float(((origine.x) / scale) + 5, ((origine.y) / scale) + 5,
 						((destination.x) / scale) + 5, ((destination.y) / scale) + 5);
 				// g2.setStroke(new BasicStroke(2));
@@ -127,8 +113,7 @@ public class LoadDeliveryState implements ControllerActions {
 		}
 
 		for (Intersection i : intersections) {
-			Point p = new Point();
-			p = i.getCoordinates();
+			Point p = i.getCoordinates();
 			g.setColor(Color.BLUE);
 			g.fillOval((int) (((p.x)) / scale), (int) (((p.y)) / scale), 10, 10);
 		}
