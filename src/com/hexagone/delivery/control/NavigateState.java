@@ -99,9 +99,8 @@ public class NavigateState implements ControllerActions {
 
 	@Override
 	public void generatePlanning(RouteHelper routeHelper) {
-		routeHelper.writeToTxt("export/planning.txt");
-
-		Popup.showInformation(routeHelper.getPlanning(), "Feuille de route généré !");
+		routeHelper.writeToTxt("export/planning.txt");		
+		Popup.showInformationWithScroll(routeHelper.getPlanning(), "Feuille de route généré !");
 	}
 
 	/**

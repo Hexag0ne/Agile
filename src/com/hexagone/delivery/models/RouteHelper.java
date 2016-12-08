@@ -40,6 +40,8 @@ public class RouteHelper {
 	private String planning;
 
 	private HashMap<Integer, Intersection> intersections;
+	
+	private int oldDuration;
 
 	public RouteHelper(Map map, DeliveryQuery dq, DeliveryComputer dc) {
 		this.map = map;
@@ -83,6 +85,7 @@ public class RouteHelper {
 		System.out.println(deliveryPoints2);
 
 		Calendar calArrival = Calendar.getInstance();
+		oldDuration = 0;
 		calArrival.setTime(deliveryQuery.getWarehouse().getDepartureTime());
 		for (int i = 1; i < deliveryPoints.size(); i++) {
 			Integer it1 = deliveryPoints.get(i);
@@ -225,11 +228,17 @@ public class RouteHelper {
 	 *            : roads of the route as an ArrayList of Road
 	 * @return the delivery
 	 */
-	private Delivery completeDelivery(Calendar calArrival, Delivery d, ArrayList<Road> roads) {
+	private Delivery completeDelivery(Calendar calArrival, Delivery d, ArrayList<Road> roads) { 
 		int roadTime = getTotalTime(roads);
+		if (oldDuration != 0) {
+			calArrival.add(Calendar.SECOND, oldDuration);
+		}
+		// Adding road time to arrival time
 		calArrival.add(Calendar.SECOND, roadTime);
 		int duration = d.getDuration();
+		// Departure Time = Arrival Time
 		Calendar calDeparture = (Calendar) calArrival.clone();
+		// Departure Time += duration
 		calDeparture.add(Calendar.SECOND, duration);
 
 		long waitingSeconds;
@@ -244,6 +253,7 @@ public class RouteHelper {
 				calDeparture.add(Calendar.SECOND, (int) waitingSeconds);
 			}
 		}
+		oldDuration = waitingTime + duration;
 		d.setTimes(calDeparture.getTime(), calArrival.getTime(), waitingTime);
 		return d;
 	}
