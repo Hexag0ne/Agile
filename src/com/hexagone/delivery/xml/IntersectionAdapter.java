@@ -14,7 +14,9 @@ public class IntersectionAdapter extends XmlAdapter<String, Intersection> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see javax.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.Object)
+	 * 
+	 * @see
+	 * javax.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.Object)
 	 */
 	@Override
 	public Intersection unmarshal(String v) {
@@ -23,7 +25,9 @@ public class IntersectionAdapter extends XmlAdapter<String, Intersection> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see javax.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
+	 * 
+	 * @see
+	 * javax.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
 	 */
 	@Override
 	public String marshal(Intersection v) {

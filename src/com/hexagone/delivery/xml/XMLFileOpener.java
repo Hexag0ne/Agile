@@ -15,7 +15,7 @@ public class XMLFileOpener extends FileFilter {
 	/**
 	 * This class is a singleton
 	 */
-	
+
 	/** Unique instance of the File Opener */
 	private static XMLFileOpener instance = null;
 
@@ -27,7 +27,9 @@ public class XMLFileOpener extends FileFilter {
 
 	/**
 	 * This method allows the access to the unique instance of the FileOpener
-	 * @return the XMLFile opener that will allow the user to choose a file on the file system and open it.
+	 * 
+	 * @return the XMLFile opener that will allow the user to choose a file on
+	 *         the file system and open it.
 	 */
 	protected static XMLFileOpener getInstance() {
 		if (instance == null)
@@ -36,9 +38,12 @@ public class XMLFileOpener extends FileFilter {
 	}
 
 	/**
-	 * This method opens a FileChosser to let the user choose a file on the system.
+	 * This method opens a FileChosser to let the user choose a file on the
+	 * system.
+	 * 
 	 * @return an XML file as the File java object
-	 * @throws XMLException if the user cancels the operation
+	 * @throws XMLException
+	 *             if the user cancels the operation
 	 */
 	public File open() throws NoFileChosenException {
 		int returnValue;
@@ -52,6 +57,7 @@ public class XMLFileOpener extends FileFilter {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see javax.swing.filechooser.FileFilter#accept(java.io.File)
 	 */
 	@Override
@@ -68,6 +74,7 @@ public class XMLFileOpener extends FileFilter {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see javax.swing.filechooser.FileFilter#getDescription()
 	 */
 	@Override
@@ -77,7 +84,9 @@ public class XMLFileOpener extends FileFilter {
 
 	/**
 	 * This method allows to get file's extension
-	 * @param f the file whose extension we want to extract
+	 * 
+	 * @param f
+	 *            the file whose extension we want to extract
 	 * @return file extension as a String, null if the file has no extension
 	 */
 	private static String getExtension(File f) {

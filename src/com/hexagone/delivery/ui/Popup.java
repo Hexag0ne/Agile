@@ -9,20 +9,19 @@ public class Popup {
 
 	/**
 	 * Opens a pop-up dialog with the message given as parameter
-	 * @param message the message to be displayed
+	 * 
+	 * @param message
+	 *            the message to be displayed
 	 */
-	public static void showInformation(String message)
-	{
+	public static void showInformation(String message) {
 		JOptionPane.showMessageDialog(null, message);
 	}
-	
-	public static void showInformation(String message, String title)
-	{
+
+	public static void showInformation(String message, String title) {
 		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
 	}
-	
-	public static void showError(String message, String title)
-	{
+
+	public static void showError(String message, String title) {
 		JOptionPane.showMessageDialog(null, message, title, JOptionPane.ERROR_MESSAGE);
 	}
 }

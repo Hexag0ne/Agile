@@ -1,6 +1,5 @@
 package com.hexagone.delivery.control;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -22,8 +21,16 @@ import com.hexagone.delivery.xml.NoFileChosenException;
 import com.hexagone.delivery.xml.XMLDeserialiser;
 import com.hexagone.delivery.xml.XMLException;
 
+/**
+ * This class allows us to draw the map and the points of the delivery on top of
+ * it when the state is LOADDELIVERY_STATE
+ */
 public class LoadDeliveryState implements ControllerActions {
 
+	/**
+	 * Opens a FileChooser that lets the user pick an XML file on the file
+	 * system.
+	 */
 	@Override
 	public Map loadMap() {
 		try {
@@ -36,6 +43,9 @@ public class LoadDeliveryState implements ControllerActions {
 		}
 	}
 
+	/**
+	 * This method allows to load a delivery query from a XML file
+	 */
 	@Override
 	public DeliveryQuery loadDeliveryQuery() {
 		try {
@@ -48,19 +58,38 @@ public class LoadDeliveryState implements ControllerActions {
 		}
 	}
 
+	/**
+	 * This method computes a delivery and returns a Route
+	 * 
+	 * @param map
+	 * @param delivery
+	 * @return the route computed as a Route Object
+	 * 
+	 */
 	@Override
 	public RouteHelper computeDelivery(Map map, DeliveryQuery delivery) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	@Override
 	public void generatePlanning(RouteHelper routeHelper) {
 		JOptionPane.showMessageDialog(null, "Veuillez calculez la tournée.", "Erreur", JOptionPane.ERROR_MESSAGE);
 	}
 
 	/**
-	 * In the LoadDeliveryState, the map has been loaded. We draw the roads and intersections of this map
+	 * This methods draws the map and the points of the delivery on top of it
+	 * (as the map and the deliveryQuery are known in the class).
+	 * 
+	 * In the LoadDeliveryState, the map has been loaded. We draw the roads and
+	 * intersections of this map
+	 * 
+	 * @param g
+	 * @param scale
+	 *            : ratio chosen for the drawing of the map
+	 * @param map
+	 * @param deliveryQuery
+	 * @param route
 	 */
 	@Override
 	public void DrawMap(Graphics g, float scale, Map map, DeliveryQuery delivery, RouteHelper routeHelper) {
@@ -74,35 +103,19 @@ public class LoadDeliveryState implements ControllerActions {
 			for (Road r : roadsFromI) {
 				g.setColor(Color.BLACK);
 				Graphics2D g2 = (Graphics2D) g;
-				Point destination = null;
-				Point origine = null;
-				// TODO
-				for (Intersection in : intersections) {
-					if ((in.getId()).equals(r.getOrigin())) {
-						origine = in.getCoordinates();
-						break;
-					}
-				}
-				// TODO
-				for (Intersection in : intersections) {
-					if ((in.getId()).equals(r.getDestination())) {
-						destination = in.getCoordinates();
-						break;
-					}
-				}
+				Point destination = intersections.get(r.getOrigin()).getCoordinates();
+                Point origine = intersections.get(r.getDestination()).getCoordinates();
 				Line2D lin = new Line2D.Float(((origine.x) / scale) + 5, ((origine.y) / scale) + 5,
 						((destination.x) / scale) + 5, ((destination.y) / scale) + 5);
-				g2.setStroke(new BasicStroke(2));
+				// g2.setStroke(new BasicStroke(2));
 				g2.draw(lin);
 			}
 		}
-		
-		
+
 		for (Intersection i : intersections) {
-			Point p = new Point();
-			p = i.getCoordinates();
+			Point p = i.getCoordinates();
 			g.setColor(Color.BLUE);
-			g.fillOval((int)(((p.x)) / scale),(int) (((p.y)) / scale), 10, 10);
+			g.fillOval((int) (((p.x)) / scale), (int) (((p.y)) / scale), 10, 10);
 		}
 	}
 

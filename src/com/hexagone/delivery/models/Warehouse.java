@@ -10,8 +10,13 @@ import com.hexagone.delivery.xml.DateAdapter;
 import com.hexagone.delivery.xml.IntersectionAdapter;
 
 /**
- * This class models a warehouse
+ * This class models a warehouse It carries several information :
+ * <ul>
+ * <li>its intersection</li>
+ * <li>its departure time></li>
+ * </ul>
  */
+
 @XmlRootElement(name = "entrepot")
 public class Warehouse {
 	private Intersection intersection;

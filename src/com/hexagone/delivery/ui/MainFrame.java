@@ -2,6 +2,7 @@ package com.hexagone.delivery.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -14,15 +15,16 @@ import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.hexagone.delivery.control.MapPainter;
 import com.hexagone.delivery.control.UserActions;
 import com.hexagone.delivery.models.Delivery;
-import com.hexagone.ui.MapTour;
-import com.hexagone.ui.TourPanel;
 
+/**
+ * Main window of the graphical user interface
+ * 
+ */
 public class MainFrame extends JFrame {
 
 	/** Controller of this instance of MainFrame */
@@ -34,12 +36,15 @@ public class MainFrame extends JFrame {
 	private JPanel headerPanel;
 	/** JPanel containing the map drawing */
 	private JPanel mapPanel;
-	/** JPanel on the left of the screen with buttons to navigate */
+	/** JPanel on the top right corner of the screen with buttons to navigate */
 	private JPanel tourNavigationPanel;
-	/** JPanel on the right side of the window */
+	/** JPanel on the right side of the window, below the tourNavigationPanel */
 	private TourTablePanel tourTablePanel;
 
 	private JPanel centerPanel;
+	
+	private JPanel rightPanel;
+	private JPanel leftPanel;
 
 	private JButton loadMapButton;
 	private JButton loadDeliveryButton;
@@ -48,23 +53,21 @@ public class MainFrame extends JFrame {
 
 	/**
 	 * Constructor for the main frame
-	 * @param controller the controller implementing the UserActions to be performed when an event occurs
+	 * 
+	 * @param controller
+	 *            the controller implementing the UserActions to be performed
+	 *            when an event occurs
 	 */
-	public MainFrame(UserActions controller, MapPainter painter)
-	{
+	public MainFrame(UserActions controller, MapPainter painter) {
 		this.controller = controller;
-
-
 		this.setTitle("Delivery App");
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		this.setSize(screenSize.width, screenSize.height-50);
+		this.setSize(screenSize.width, screenSize.height - 50);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 
-
 		allPanel = new JPanel();
 		allPanel.setLayout(new BorderLayout());
-
 
 		// header components
 		headerPanel = new JPanel();
@@ -88,40 +91,49 @@ public class MainFrame extends JFrame {
 
 		allPanel.add(headerPanel, BorderLayout.NORTH);
 
-		//Other components
-		centerPanel = new JPanel();
-		centerPanel.setLayout(new BorderLayout());
+		centerPanel = new JPanel(new GridLayout(1, 2));
 
-		// map panel
-		mapPanel = new MapPanel(painter);
-		centerPanel.add(mapPanel);
-
+		//left side
+		leftPanel = new JPanel(new BorderLayout());
+		
 		tourNavigationPanel = new TourNavigationPanel(controller);
-		centerPanel.add(tourNavigationPanel, BorderLayout.WEST);
+		leftPanel.add(tourNavigationPanel, BorderLayout.SOUTH);
 
+		mapPanel = new MapPanel(painter);
+		leftPanel.add(mapPanel, BorderLayout.CENTER);
+		
+		centerPanel.add(leftPanel);
+		
+		//right side
+		rightPanel = new JPanel(new BorderLayout());
+		
 		tourTablePanel = new TourTablePanel();
-		centerPanel.add(tourTablePanel, BorderLayout.EAST);
+		rightPanel.add(tourTablePanel, BorderLayout.CENTER);
 
-		//centerPanel.addKeyListener(keyListener);
+		centerPanel.add(rightPanel);
+		
+		// centerPanel.addKeyListener(keyListener);
 		centerPanel.addKeyListener(new KeyboardListenner());
-
-
+		
+		
+		
 		allPanel.add(centerPanel, BorderLayout.CENTER);
 
-		//Set focus on center panel to detect keyboard events 
+		// Set focus on center panel to detect keyboard events
 		setFocusableOnCenterPanel();
 
-
 		this.add(allPanel);
+		this.pack();
 	}
 
 	public void resetTable() {
 		tourTablePanel.resetTableModel();
 	}
 
-	public void setSidePanelsVisible(boolean visible){
+	public void setSidePanelsVisible(boolean visible) {
 		tourNavigationPanel.setVisible(visible);
 		tourTablePanel.setVisible(visible);
+		this.pack();
 	}
 
 	public void setTableData(Vector<Delivery> data) {
@@ -131,9 +143,9 @@ public class MainFrame extends JFrame {
 	public void selectionRow(int step) {
 		tourTablePanel.selectionRow(step);
 	}
-	
+
 	public void setFocusableOnCenterPanel() {
-		
+
 		addWindowFocusListener(new WindowAdapter() {
 			public void windowGainedFocus(WindowEvent e) {
 				centerPanel.requestFocusInWindow();
@@ -149,7 +161,9 @@ public class MainFrame extends JFrame {
 
 		/*
 		 * (non-Javadoc)
-		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+		 * 
+		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.
+		 * ActionEvent)
 		 */
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -164,24 +178,27 @@ public class MainFrame extends JFrame {
 
 		/*
 		 * (non-Javadoc)
-		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+		 * 
+		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.
+		 * ActionEvent)
 		 */
 		@Override
-		public void actionPerformed(ActionEvent e){
+		public void actionPerformed(ActionEvent e) {
 			controller.loadDeliveryQueryButtonClick();
 		}
 	}
 
 	/**
 	 * Class handling what to do when the user presses on the button computeTour
-	 * @author patrick
 	 *
 	 */
 	private class ComputeTourListener implements ActionListener {
 
 		/*
 		 * (non-Javadoc)
-		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+		 * 
+		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.
+		 * ActionEvent)
 		 */
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -197,7 +214,9 @@ public class MainFrame extends JFrame {
 
 		/*
 		 * (non-Javadoc)
-		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+		 * 
+		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.
+		 * ActionEvent)
 		 */
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -211,50 +230,51 @@ public class MainFrame extends JFrame {
 	 */
 	private class KeyboardListenner implements KeyListener {
 
-
-
 		@Override
 		public void keyPressed(KeyEvent e) {
 			int keyCode = e.getKeyCode();
 
-			if( (keyCode == KeyEvent.VK_UP) || (keyCode == KeyEvent.VK_LEFT) )
-			{
+			if ((keyCode == KeyEvent.VK_UP) || (keyCode == KeyEvent.VK_LEFT)) {
 				controller.previousDelivery();
-				
+
 			}
 
-			if( (keyCode == KeyEvent.VK_DOWN) || (keyCode == KeyEvent.VK_RIGHT) ){
+			if ((keyCode == KeyEvent.VK_DOWN) || (keyCode == KeyEvent.VK_RIGHT)) {
 
 				controller.nextDelivery();
 			}
 
-			if(keyCode == KeyEvent.VK_DELETE)
-			{
-				/*System.out.println("Yassine supprimer");
-					if( searchZone.getText()!= null){
-						int numberDP = Integer.parseInt(searchZone.getText());
-						int response= JOptionPane.showInternalConfirmDialog(all,
-								"Voulez-vous retirer le point de livraison n°= "+numberDP, "Suppression",
-								JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-						if(response == JOptionPane.OK_OPTION ){
-
-						}
-
-					}*/
+			if (keyCode == KeyEvent.VK_DELETE) {
+				/*
+				 * System.out.println("Yassine supprimer"); if(
+				 * searchZone.getText()!= null){ int numberDP =
+				 * Integer.parseInt(searchZone.getText()); int response=
+				 * JOptionPane.showInternalConfirmDialog(all,
+				 * "Voulez-vous retirer le point de livraison n°= "+numberDP,
+				 * "Suppression", JOptionPane.OK_CANCEL_OPTION,
+				 * JOptionPane.INFORMATION_MESSAGE); if(response ==
+				 * JOptionPane.OK_OPTION ){
+				 * 
+				 * }
+				 * 
+				 * }
+				 */
 
 			}
 
-			if(keyCode == KeyEvent.VK_M){
+			if (keyCode == KeyEvent.VK_M) {
 
 			}
 
 		}
 
 		@Override
-		public void keyReleased(KeyEvent e) {}
+		public void keyReleased(KeyEvent e) {
+		}
 
 		@Override
-		public void keyTyped(KeyEvent e) {}
+		public void keyTyped(KeyEvent e) {
+		}
 
 	}
 }

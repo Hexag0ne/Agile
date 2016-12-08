@@ -14,13 +14,15 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  * Class used when converting a Date stored in an XML file to a Date object
  */
 public class DateAdapter extends XmlAdapter<String, Date> {
-	
+
 	/** The format of the date we need to parse */
 	private DateFormat df = new SimpleDateFormat("H:m:s");
 
 	/*
 	 * (non-Javadoc)
-	 * @see javax.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.Object)
+	 * 
+	 * @see
+	 * javax.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.Object)
 	 */
 	@Override
 	public Date unmarshal(String v) throws ParseException {
@@ -29,7 +31,9 @@ public class DateAdapter extends XmlAdapter<String, Date> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see javax.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
+	 * 
+	 * @see
+	 * javax.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
 	 */
 	@Override
 	public String marshal(Date v) throws Exception {

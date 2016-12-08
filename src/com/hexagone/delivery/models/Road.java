@@ -9,8 +9,8 @@ package com.hexagone.delivery.models;
  * <li>it's length</li>
  * <li>the average speed motorists travel on this road</li>
  * </ul>
- * Note that if a real road allows cars to travel both ways, it will me
- * modelized as <strong>two different roads </strong> in the map.
+ * Note that if a real road allows cars to travel both ways, it will be modeled
+ * as <strong>two different roads </strong> in the map.
  */
 public class Road {
 
@@ -22,7 +22,7 @@ public class Road {
 
 	/**
 	 * Length of the road between the two intersections in
-	 * <strong>decimeters</strong>
+	 * <strong>decimetres</strong>
 	 */
 	private double length;
 	/**

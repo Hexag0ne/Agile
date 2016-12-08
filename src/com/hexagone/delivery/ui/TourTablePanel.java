@@ -8,19 +8,21 @@ import javax.swing.JTable;
 
 import com.hexagone.delivery.models.Delivery;
 
+/**
+ * Panel for the tour table.
+ *
+ */
 public class TourTablePanel extends JPanel {
 
 	private JTable table;
 	private TableModel tableModel;
 	private Vector<Delivery> data;
 
-	public void setTableData(Vector<Delivery> data){
-        this.data= data;
-		if((tableModel == null) || (data == null)){
-			tableModel = new TableModel(data);
-			table.setModel(tableModel);
 
-		}
+	public void setTableData(Vector<Delivery> data) {
+		tableModel = new TableModel(data);
+
+		table.setModel(tableModel);
 		table.setFillsViewportHeight(true);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.getColumnModel().getColumn(0).setPreferredWidth(27);
@@ -34,21 +36,23 @@ public class TourTablePanel extends JPanel {
 		add(table, BorderLayout.CENTER);
 	}
 
-	public void selectionRow(int numberRow){
-		if(numberRow<table.getRowCount()){
-			table.setRowSelectionInterval(numberRow,numberRow);
+	public void selectionRow(int numberRow) {
+		if (numberRow < table.getRowCount()) {
+			table.setRowSelectionInterval(numberRow, numberRow);
 		}
 	}
 
-	public void resetTableModel(){
-		table.removeAll();
-		this.data=null;
+
+	public void resetTableModel() {
+		tableModel = null;
+
 	}
-
-
-
-
-	public TourTablePanel() {
+	
+		/**
+		 * Constructor for the tour table panel
+		 * 
+		 */
+		public TourTablePanel() {
 		super();
 		table = new JTable();
 
