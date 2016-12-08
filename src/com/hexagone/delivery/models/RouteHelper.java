@@ -50,6 +50,14 @@ public class RouteHelper {
 		this.planning = generatePlanning();
 	}
 
+	public boolean routeFound(){
+		return deliveryComputer.checkNotEmptySolution();
+	}
+	
+	public boolean computationTimeOut(){
+		return deliveryComputer.checkTimeout();
+	}
+	
 	public LinkedHashMap<Integer, ArrivalPoint> getRoute() {
 		return route;
 	}

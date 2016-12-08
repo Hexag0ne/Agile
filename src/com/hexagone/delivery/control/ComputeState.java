@@ -73,8 +73,20 @@ public class ComputeState implements ControllerActions {
     @Override
     public RouteHelper computeDelivery(Map map, DeliveryQuery delivery) {
         DeliveryComputer computer = new DeliveryComputer(map, delivery);
-        computer.getDeliveryPoints(); // to launch computation
+        computer.compute();
 
+        if (!computer.checkNotEmptySolution()){
+        	if (computer.checkTimeout()){
+        		Popup.showInformation("Aucune solution n'a été trouvée \ndans le temps imparti", "Temps de calcul écoulé");
+        		return null;
+        	} else {
+        		Popup.showInformation("Il n'existe aucune tournée satisfaisante.", "Tournée impossible");
+        		return null;
+        	}
+        } else if (computer.checkTimeout()) {
+        	Popup.showInformation("La tournée calculée n'est peut-être pas optimale.", "Temps de calcul écoulé");
+        }
+        computer.getDeliveryPoints();
         return new RouteHelper(map, delivery, computer);
     }
 
