@@ -60,8 +60,7 @@ public class Controller implements UserActions, MapPainter {
 	public void loadMapButtonClick() {
 		Map newMap = currentState.loadMap();
 		if (newMap != null) {
-			deliveryQuery = null; // Change of map -> we discard the
-									// deliveryQuery
+			deliveryQuery = null; // Change of map -> we discard the deliveryQuery
 			routeHelper = null;
 			map = newMap;
 			mainFrame.resetTable();

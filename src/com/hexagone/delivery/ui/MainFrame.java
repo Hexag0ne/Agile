@@ -59,12 +59,15 @@ public class MainFrame extends JFrame {
 	 *            when an event occurs
 	 */
 	public MainFrame(UserActions controller, MapPainter painter) {
+		
 		this.controller = controller;
-		this.setTitle("Delivery App");
+		setTitle("Delivery App");
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		this.setSize(screenSize.width, screenSize.height - 50);
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.setLocationRelativeTo(null);
+		setSize(screenSize.width, screenSize.height - 50);
+		Dimension preferredSize = new Dimension(screenSize.width, screenSize.height - 50);
+		setPreferredSize(preferredSize);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setLocationRelativeTo(null);
 
 		allPanel = new JPanel();
 		allPanel.setLayout(new BorderLayout());
@@ -115,14 +118,12 @@ public class MainFrame extends JFrame {
 		// centerPanel.addKeyListener(keyListener);
 		centerPanel.addKeyListener(new KeyboardListenner());
 		
-		
-		
 		allPanel.add(centerPanel, BorderLayout.CENTER);
 
 		// Set focus on center panel to detect keyboard events
 		setFocusableOnCenterPanel();
 
-		this.add(allPanel);
+		this.setContentPane(allPanel);
 		this.pack();
 	}
 
