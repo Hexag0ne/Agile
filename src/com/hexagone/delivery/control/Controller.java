@@ -103,8 +103,7 @@ public class Controller implements UserActions, MapPainter {
 	 */
 	@Override
 	public void generatePlanningButtonClick() {
-		// TODO Auto-generated method stub
-
+		currentState.generatePlanning(routeHelper);
 	}
 
 	/**

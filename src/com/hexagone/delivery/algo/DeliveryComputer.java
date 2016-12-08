@@ -21,6 +21,14 @@ public class DeliveryComputer {
 	private CompleteGraphComputer graphComputer;
 	private TSPSolver tspSolver;
 
+	
+	public void compute(){
+		Double[][] costsAdjacencyMatrix = graphComputer.getAdjacencyMatrix();
+
+		tspSolver = new TSPSolverV1(costsAdjacencyMatrix, deliveryQuery);
+		tspSolver.computeSolution();
+	}
+	
 	/**
 	 * 
 	 * This methods calculates the intersections of the delivery in the right
@@ -38,11 +46,7 @@ public class DeliveryComputer {
 	 */
 	public ArrayList<Integer> getDeliveryPoints() {
 		if (deliveryIntersections.isEmpty()) {
-			Double[][] costsAdjacencyMatrix = graphComputer.getAdjacencyMatrix();
-
-			tspSolver = new TSPSolverV1(costsAdjacencyMatrix, deliveryQuery);
-			tspSolver.computeSolution();
-
+			
 			ArrayList<Integer> order = tspSolver.getBestSolution();
 
 			Delivery[] deliveries = deliveryQuery.getDeliveries();
