@@ -42,7 +42,7 @@ public class Controller implements UserActions, MapPainter {
 		LOADDELIVERY_STATE = new LoadDeliveryState();
 		COMPUTE_STATE = new ComputeState();
 	}
-	
+
 	public void launch() {
 		mainFrame = new MainFrame(this, this);
 		NAVIGATE_STATE = new NavigateState(mainFrame);
@@ -164,6 +164,15 @@ public class Controller implements UserActions, MapPainter {
 		return nextState;
 	}
 
+	/* 
+	 * This method looks for a delivery point by its id
+	 * @see com.hexagone.delivery.control.UserActions#searchDP()
+	 */
+	@Override
+	public void searchDP(int idP) {
+		NAVIGATE_STATE.searchDPByID(routeHelper.getRankDP(idP));
+	}
+
 	/**
 	 * Draws the map from current state
 	 */
@@ -171,5 +180,7 @@ public class Controller implements UserActions, MapPainter {
 	public void draw(Graphics g, float scale) {
 		currentState.DrawMap(g, scale, map, deliveryQuery, routeHelper);
 	}
+
+
 
 }

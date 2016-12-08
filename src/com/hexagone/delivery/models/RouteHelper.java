@@ -11,8 +11,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Locale;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import com.hexagone.delivery.algo.DeliveryComputer;
 
@@ -71,8 +74,7 @@ public class RouteHelper {
 		Integer[] its = { 0, 8, 12, 22, 5, 0 };
 		ArrayList<Integer> deliveryPoints2 = new ArrayList<Integer>();
 		deliveryPoints2.addAll(Arrays.asList(its));
-		System.out.println(deliveryPoints);
-		System.out.println(deliveryPoints2);
+	
 
 		Calendar calArrival = Calendar.getInstance();
 		calArrival.setTime(deliveryQuery.getWarehouse().getDepartureTime());
@@ -389,4 +391,27 @@ public class RouteHelper {
 		res = res * 180 / Math.PI;
 		return (int) res;
 	}
+	
+	/**
+	 * Returns the rank of a delivery point 
+	 * 
+	 * @param idDP: the delivery point id 
+	 */
+	
+	public int getRankDP(int idDP){
+		
+		int dpPosition=0;
+		Set<Integer> entrySet= route.keySet();
+		Iterator<Integer> iterator= entrySet.iterator();
+		int i=0;
+		while(iterator.hasNext()){
+			i++;
+			if((iterator.next()).equals(idDP)){
+				dpPosition=i-1;
+			}
+		}
+		
+		return dpPosition;
+	}
+	
 }

@@ -37,4 +37,6 @@ public interface UserActions {
 	 * steps of the delivery
 	 */
 	public void previousDelivery();
+
+	public void searchDP(int idDP);
 }

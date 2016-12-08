@@ -40,6 +40,8 @@ public class MainFrame extends JFrame {
 	private JPanel tourNavigationPanel;
 	/** JPanel on the right side of the window, below the tourNavigationPanel */
 	private TourTablePanel tourTablePanel;
+	/** JPanel for searching a delivery point by Id */ 
+	private SearchPanel searchPanel;
 
 	private JPanel centerPanel;
 	
@@ -50,6 +52,8 @@ public class MainFrame extends JFrame {
 	private JButton loadDeliveryButton;
 	private JButton computeTourButton;
 	private JButton generatePlanning;
+
+	
 
 	/**
 	 * Constructor for the main frame
@@ -112,7 +116,10 @@ public class MainFrame extends JFrame {
 		
 		tourTablePanel = new TourTablePanel();
 		rightPanel.add(tourTablePanel, BorderLayout.CENTER);
-
+		
+		searchPanel = new SearchPanel(controller);
+		rightPanel.add(searchPanel, BorderLayout.NORTH);
+		
 		centerPanel.add(rightPanel);
 		
 		// centerPanel.addKeyListener(keyListener);
@@ -134,6 +141,7 @@ public class MainFrame extends JFrame {
 	public void setSidePanelsVisible(boolean visible) {
 		tourNavigationPanel.setVisible(visible);
 		tourTablePanel.setVisible(visible);
+		searchPanel.setVisible(visible);
 		this.pack();
 	}
 

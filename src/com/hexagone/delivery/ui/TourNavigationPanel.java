@@ -41,33 +41,6 @@ public class TourNavigationPanel extends JPanel {
 		nextDeliveryButton.addActionListener(new actionNextDeliveryListener());
 		this.add(nextDeliveryButton);
 
-		/*
-		
-		searchPanel = new JPanel(new FlowLayout());
-		JLabel searchLabel = new JLabel("Supprimer/Modifier un point de livraison");
-
-		add(searchLabel);
-		searchZone = new JTextField("N° Point de livraison");
-		searchZone.setSize(100, 50);
-		searchZonePanel = new JPanel(new FlowLayout());
-		searchZonePanel.setSize(searchPanel.getPreferredSize().width - 10, searchPanel.getPreferredSize().height);
-		searchZonePanel.add(searchZone);
-		searchPanel.add(searchZonePanel);
-		searchButton = new JButton(new ImageIcon(getClass().getClassLoader().getResource("resources/search.png")));
-		// searchButton.addActionListener(searchListener);
-		searchButtonPanel = new JPanel(new FlowLayout());
-		searchButtonPanel.setSize(searchPanel.getPreferredSize().width - searchZonePanel.getPreferredSize().width,
-				searchPanel.getPreferredSize().height);
-		searchButtonPanel.add(searchButton);
-		searchPanel.add(searchButtonPanel);
-		searchPanel.setPreferredSize(getPreferredSize());
-		searchPanel.setBackground(Color.white);
-		add(searchPanel);
-		addDP = new JButton("Ajouter un point de livraison");
-		add(addDP);
-		setBackground(Color.white);
-		
-		*/
 	}
 
 	private class actionNextDeliveryListener implements ActionListener {

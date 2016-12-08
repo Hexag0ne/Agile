@@ -246,4 +246,10 @@ public class NavigateState implements ControllerActions {
 		this.frame = frame;
 	}
 
+	public void searchDPByID(int idP) {
+		frame.selectionRow(idP);
+		frame.repaint();
+		frame.setFocusableOnCenterPanel();
+	}
+
 }
