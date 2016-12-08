@@ -12,18 +12,19 @@ public class TourTablePanel extends JPanel {
 
 	private JTable table;
 	private TableModel tableModel;
+	private Vector<Delivery> data;
 
 	public void setTableData(Vector<Delivery> data){
-	
-		if(tableModel == null){
+        this.data= data;
+		if((tableModel == null) || (data == null)){
 			tableModel = new TableModel(data);
+			table.setModel(tableModel);
+
 		}
-		
-		table.setModel(tableModel);
 		table.setFillsViewportHeight(true);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.getColumnModel().getColumn(0).setPreferredWidth(27);
-		table.getColumnModel().getColumn(1).setPreferredWidth(60);
+		table.getColumnModel().getColumn(1).setPreferredWidth(70);
 		table.getColumnModel().getColumn(2).setPreferredWidth(100);
 		table.getColumnModel().getColumn(3).setPreferredWidth(100);
 		table.getColumnModel().getColumn(4).setPreferredWidth(100);
@@ -32,18 +33,19 @@ public class TourTablePanel extends JPanel {
 		add(table.getTableHeader(), BorderLayout.PAGE_START);
 		add(table, BorderLayout.CENTER);
 	}
-	
+
 	public void selectionRow(int numberRow){
 		if(numberRow<table.getRowCount()){
 			table.setRowSelectionInterval(numberRow,numberRow);
 		}
 	}
-	
+
 	public void resetTableModel(){
-		tableModel = null;
+		table.removeAll();
+		this.data=null;
 	}
-	
-	
+
+
 
 
 	public TourTablePanel() {

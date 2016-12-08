@@ -131,7 +131,6 @@ public class NavigateState implements ControllerActions {
 
 				ArrayList<Road> roadsToNextDP = entryALLMAP.getValue().getRoads();
 				for (Road r : roadsToNextDP) {
-					g.setColor(Color.green);
 					Graphics2D g2 = (Graphics2D) g;
 					Point destination = null;
 					Point origine = null;

@@ -15,7 +15,7 @@ public class TableModel extends AbstractTableModel {
 	public TableModel(Vector<Delivery> data) {
 		this.data=data;
 		columnNames.addElement("N°");
-		columnNames.addElement("Durée (min)");
+		columnNames.addElement("Durée(min)");
 		columnNames.addElement("Plage horaire");
 		columnNames.addElement("Heure d'arrivée");
 		columnNames.addElement("Heure de départ");
