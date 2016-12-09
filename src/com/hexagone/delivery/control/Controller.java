@@ -1,6 +1,8 @@
 package com.hexagone.delivery.control;
 
 import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Vector;
 
@@ -194,10 +196,48 @@ public class Controller implements UserActions, MapPainter {
 					"Voulez-vous retirer le point de livraison n°= "+idDP, "Suppression",
 					JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
 			if(response == JOptionPane.OK_OPTION ){
-				
+				Delivery deliveryToRemove = null;
+				ArrayList<Delivery> deliveries = new ArrayList<Delivery>(Arrays.asList(deliveryQuery.getDeliveries()));
+				for(Delivery d: deliveries){
+					if(idDP==(d.getIntersection().getId())){
+						deliveryToRemove= d;
+					}
+				}
+				deliveries.remove(deliveryToRemove);
+				Delivery[] newDeliveries = new Delivery[deliveries.size()];
+				deliveries.toArray(newDeliveries);
+				deliveryQuery.setDelivery(newDeliveries);
+				computeRouteButtonClick();
 			}
 		}
 
+
+	}
+
+	@Override
+	public void modifyDP() {
+
+		int rankDP = NAVIGATE_STATE.getRowSelected();
+		int idDP = routeHelper.getIdbyRank(rankDP);
+		if(idDP !=0){
+			int response= JOptionPane.showConfirmDialog(mainFrame,
+					"Voulez-vous retirer le point de livraison n°= "+idDP, "Suppression",
+					JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+			if(response == JOptionPane.OK_OPTION ){
+				Delivery deliveryToRemove = null;
+				ArrayList<Delivery> deliveries = new ArrayList<Delivery>(Arrays.asList(deliveryQuery.getDeliveries()));
+				for(Delivery d: deliveries){
+					if(idDP==(d.getIntersection().getId())){
+						deliveryToRemove= d;
+					}
+				}
+				deliveries.remove(deliveryToRemove);
+				Delivery[] newDeliveries = new Delivery[deliveries.size()];
+				deliveries.toArray(newDeliveries);
+				deliveryQuery.setDelivery(newDeliveries);
+				computeRouteButtonClick();
+			}
+		}
 
 	}
 

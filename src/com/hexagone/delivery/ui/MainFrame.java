@@ -260,6 +260,8 @@ public class MainFrame extends JFrame {
 			}
 
 			if (keyCode == KeyEvent.VK_M) {
+				
+				controller.modifyDP();
 
 			}
 

@@ -41,4 +41,6 @@ public interface UserActions {
 	public void searchDP(int idDP);
 
 	public void deleteDP();
+
+	public void modifyDP();
 }
