@@ -10,13 +10,11 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Vector;
 
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 import com.hexagone.delivery.models.ArrivalPoint;
 import com.hexagone.delivery.models.Delivery;
 import com.hexagone.delivery.models.DeliveryQuery;
-import com.hexagone.delivery.models.Intersection;
 import com.hexagone.delivery.models.Map;
 import com.hexagone.delivery.models.RouteHelper;
 import com.hexagone.delivery.ui.MainFrame;
@@ -218,6 +216,10 @@ public class Controller implements UserActions, MapPainter {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.hexagone.delivery.control.UserActions#modifyDP()
+	 */
 	@Override
 	public void modifyDP() {
 
