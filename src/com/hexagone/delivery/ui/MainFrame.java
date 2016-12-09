@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +18,7 @@ import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 
 import com.hexagone.delivery.control.MapPainter;
 import com.hexagone.delivery.control.UserActions;
@@ -122,14 +125,18 @@ public class MainFrame extends JFrame {
 		
 		centerPanel.add(rightPanel);
 		
-		// centerPanel.addKeyListener(keyListener);
-		centerPanel.addKeyListener(new KeyboardListenner());
+		/*
+		 * To detect keyboard events.
+		 */
+		KeyboardFocusManager kfm = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+		kfm.addKeyEventDispatcher(new MyKeyEventDispatcher());
+		
 		
 		allPanel.add(centerPanel, BorderLayout.CENTER);
 
 		// Set focus on center panel to detect keyboard events
 		setFocusableOnCenterPanel();
-
+        
 		this.setContentPane(allPanel);
 		this.pack();
 	}
@@ -235,14 +242,15 @@ public class MainFrame extends JFrame {
 	}
 
 	/**
-	 * Class handles keyboard events.
+	 * Class handling keyboard events.
 	 */
-	private class KeyboardListenner implements KeyListener {
+	
+	public class MyKeyEventDispatcher implements KeyEventDispatcher
+	{
 
 		@Override
-		public void keyPressed(KeyEvent e) {
+		public boolean dispatchKeyEvent(KeyEvent e) {
 			int keyCode = e.getKeyCode();
-
 			if ((keyCode == KeyEvent.VK_UP) || (keyCode == KeyEvent.VK_LEFT)) {
 				controller.previousDelivery();
 
@@ -275,15 +283,7 @@ public class MainFrame extends JFrame {
 
 			}
 
+			return false;
 		}
-
-		@Override
-		public void keyReleased(KeyEvent e) {
-		}
-
-		@Override
-		public void keyTyped(KeyEvent e) {
-		}
-
 	}
 }
