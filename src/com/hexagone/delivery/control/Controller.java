@@ -1,7 +1,10 @@
 package com.hexagone.delivery.control;
 
 import java.awt.Graphics;
-import java.awt.Window;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -13,6 +16,7 @@ import javax.swing.JOptionPane;
 import com.hexagone.delivery.models.ArrivalPoint;
 import com.hexagone.delivery.models.Delivery;
 import com.hexagone.delivery.models.DeliveryQuery;
+import com.hexagone.delivery.models.Intersection;
 import com.hexagone.delivery.models.Map;
 import com.hexagone.delivery.models.RouteHelper;
 import com.hexagone.delivery.ui.MainFrame;
@@ -210,7 +214,7 @@ public class Controller implements UserActions, MapPainter {
 				deliveries.toArray(newDeliveries);
 				deliveryQuery.setDelivery(newDeliveries);
 				computeRouteButtonClick();
-            }
+			}
 		}
 	}
 
@@ -220,22 +224,42 @@ public class Controller implements UserActions, MapPainter {
 		int rankDP = NAVIGATE_STATE.getRowSelected();
 		int idDP = routeHelper.getIdbyRank(rankDP);
 		if(idDP !=0){
-			int response = JOptionPane.showConfirmDialog(mainFrame,
-					"Voulez-vous retirer le point de livraison n°"+idDP, "Suppression",
-					JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-			if(response == JOptionPane.OK_OPTION ){
-				Delivery deliveryToRemove = null;
-				ArrayList<Delivery> deliveries = new ArrayList<Delivery>(Arrays.asList(deliveryQuery.getDeliveries()));
-				for(Delivery d: deliveries){
-					if(idDP==(d.getIntersection().getId())){
-						deliveryToRemove= d;
-					}
+
+			Delivery deliveryToModify = null;
+			ArrayList<Delivery> deliveries = new ArrayList<Delivery>(Arrays.asList(deliveryQuery.getDeliveries()));
+			for(Delivery d: deliveries){
+				if(idDP==(d.getIntersection().getId())){
+					deliveryToModify= d;
 				}
-				deliveries.remove(deliveryToRemove);
+			}
+			ModifyPanel modifyPanel = new ModifyPanel(deliveryToModify);
+			int response = JOptionPane.showConfirmDialog(mainFrame,modifyPanel, 
+					"Modification d'un poit de livraison", JOptionPane.OK_CANCEL_OPTION);
+			if(response == JOptionPane.OK_OPTION ){
+				Delivery deliveryModified = new Delivery();
+				String expectedPattern = "hh:mm";
+				SimpleDateFormat formatter = new SimpleDateFormat(expectedPattern);
+				deliveryModified.setIntersection(deliveryToModify.getIntersection());
+				deliveryModified.setDuration((Integer.parseInt(modifyPanel.getDurationTextField()))*60);
+				try {
+					if( !modifyPanel.getStartScheduleTextField().equals("")){
+						deliveryModified.setStartSchedule(formatter.parse(modifyPanel.getStartScheduleTextField()));
+						deliveryModified.setEndSchedule(formatter.parse(modifyPanel.getEndScheduleTextField()));
+					}
+
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				deliveries.remove(deliveryToModify);
+				deliveries.add(deliveryModified);
 				Delivery[] newDeliveries = new Delivery[deliveries.size()];
 				deliveries.toArray(newDeliveries);
 				deliveryQuery.setDelivery(newDeliveries);
+				System.out.println(deliveryModified);
 				computeRouteButtonClick();
+
+
 			}
 		}
 
