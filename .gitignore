@@ -14,7 +14,7 @@ local.properties
 # Generated text
 .DS_Store
 my_export/
-export/*.txt
+export/planning.txt
 
 # External tool builders
 .externalToolBuilders/
