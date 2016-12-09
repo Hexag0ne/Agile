@@ -24,8 +24,8 @@ public class TableModel extends AbstractTableModel {
 		columnNames.addElement("Heure d'arrivée");
 		columnNames.addElement("Heure de départ");
 		if (data.get(0).getStartSchedule() != null) {
-			columnNames.addElement("Temps d'attente (min)");
 			columnNames.addElement("Plage horaire");
+			columnNames.addElement("Temps d'attente (min)");
 		}
 	}
 
