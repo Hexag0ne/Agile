@@ -12,7 +12,6 @@ import com.hexagone.delivery.models.Map;
  * empty solution and no timeout.
  * 
  */
-
 public class DeliveryComputer {
 
 	private DeliveryQuery deliveryQuery;
@@ -21,7 +20,10 @@ public class DeliveryComputer {
 	private CompleteGraphComputer graphComputer;
 	private TSPSolver tspSolver;
 
-	
+	/**
+	 * Launches the computation of the shortest path. The result will be available later through the getDeliveryPoints
+	 * method. 
+	 */
 	public void compute(){
 		Double[][] costsAdjacencyMatrix = graphComputer.getAdjacencyMatrix();
 

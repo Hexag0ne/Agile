@@ -38,9 +38,19 @@ public interface UserActions {
 	 */
 	public void previousDelivery();
 
+	/**
+	 * Actions to make when the user looks for a specific delivery point and clicks on the search button
+	 * @param idDP the identifier of the delivery point the user wants to look for
+	 */
 	public void searchDP(int idDP);
-
+	
+	/**
+	 * This method is invoked when the user presses the delete key to remove a delivery point.
+	 */
 	public void deleteDP();
 
+	/**
+	 * This method is invoked when the user wants to modify a delivery point
+	 */
 	public void modifyDP();
 }

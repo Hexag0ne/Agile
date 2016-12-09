@@ -48,8 +48,4 @@ public class ModifyPanel extends JPanel {
 	public String getDurationTextField() {
 		return durationTextField.getText();
 	}
-
-	
-	
-
 }

@@ -39,6 +39,10 @@ public interface ControllerActions {
 	 */
 	public void DrawMap(Graphics g, float scale, Map m, DeliveryQuery delivery, RouteHelper routeHelper);
 
+	/**
+	 * Generates the planning of the delivery
+	 * @param routeHelper the object that contains all the informations needed to compute the planning.
+	 */
 	public void generatePlanning(RouteHelper routeHelper);
 
 }
