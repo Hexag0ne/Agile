@@ -1,7 +1,6 @@
 package com.hexagone.delivery.control;
 
 import java.awt.Dimension;
-import java.awt.LayoutManager;
 import java.awt.Toolkit;
 
 import javax.swing.Box;
