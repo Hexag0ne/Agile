@@ -1,11 +1,13 @@
 package com.hexagone.delivery.control;
 
 import java.awt.Graphics;
+import java.awt.Window;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Vector;
 
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 import com.hexagone.delivery.models.ArrivalPoint;
@@ -208,10 +210,8 @@ public class Controller implements UserActions, MapPainter {
 				deliveries.toArray(newDeliveries);
 				deliveryQuery.setDelivery(newDeliveries);
 				computeRouteButtonClick();
-			}
+            }
 		}
-
-
 	}
 
 	@Override
@@ -220,8 +220,8 @@ public class Controller implements UserActions, MapPainter {
 		int rankDP = NAVIGATE_STATE.getRowSelected();
 		int idDP = routeHelper.getIdbyRank(rankDP);
 		if(idDP !=0){
-			int response= JOptionPane.showConfirmDialog(mainFrame,
-					"Voulez-vous retirer le point de livraison n°= "+idDP, "Suppression",
+			int response = JOptionPane.showConfirmDialog(mainFrame,
+					"Voulez-vous retirer le point de livraison n°"+idDP, "Suppression",
 					JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
 			if(response == JOptionPane.OK_OPTION ){
 				Delivery deliveryToRemove = null;

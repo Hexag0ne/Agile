@@ -12,8 +12,8 @@ local.properties
 .recommenders
 
 # Generated text
-export/
 .DS_Store
+my_export/
 
 # External tool builders
 .externalToolBuilders/

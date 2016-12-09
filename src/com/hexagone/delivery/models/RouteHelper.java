@@ -46,6 +46,9 @@ public class RouteHelper {
 
 	private int oldDuration;
 
+	private static String ONE_INDENT = "        ";
+	private static String TWO_INDENT = "                ";
+	
 	public RouteHelper(Map map, DeliveryQuery dq, DeliveryComputer dc) {
 		this.map = map;
 		this.deliveryQuery = dq;
@@ -135,7 +138,7 @@ public class RouteHelper {
 		Date departureTime = deliveryQuery.getWarehouse().getDepartureTime();
 		String planningDate = full.format(departureTime);
 		res += "Mon planning (" + planningDate + ")\n\n";
-		res += "\tDépart de l'entrepôt à " + small.format(departureTime) + ". ";
+		res += ONE_INDENT + "Départ de l'entrepôt à " + small.format(departureTime) + ". ";
 		// Record for longest java call ?
 		res += "Rejoindre l'intersection " + route.entrySet().iterator().next().getValue().getRoads().get(0).getOrigin()
 				+ ".\n";
@@ -151,7 +154,7 @@ public class RouteHelper {
 			arrivalTime = route.get(it).getDelivery().getArrivalTime();
 
 			if (deliveryCounter > 0) {
-				res += "\tDépart du point de livraison à " + small.format(departureTime) + ".\n";
+				res += ONE_INDENT + "Départ du point de livraison à " + small.format(departureTime) + ".\n";
 			}
 
 			Road lastRoad = null;
@@ -163,18 +166,18 @@ public class RouteHelper {
 					deg = getAngleBetweenRoads(lastRoad, road);
 					pos = getPosition(road, lastRoad, deg);
 				}
-				res += "\t\t" + roadCounter + "- Prendre la " + getPlainPosition(pos) + " " + getPlainDegree(deg)
+				res += TWO_INDENT + roadCounter + "- Prendre la " + getPlainPosition(pos) + " " + getPlainDegree(deg)
 				+ " jusqu'à l'intersection " + road.getDestination() + "\n";
 				lastRoad = road;
 				roadCounter++;
 			}
 			if (deliveryCounter != route.values().size() - 1) {
-				res += "\tLivraison du point " + origin + ". Arrivée: " + small.format(arrivalTime) + ".\n";
+				res += ONE_INDENT + "Livraison du point " + origin + ". Arrivée: " + small.format(arrivalTime) + ".\n";
 			} else {
-				res += "\tFin de la tournée à " + small.format(arrivalTime);
+				res += ONE_INDENT + "Fin de la tournée à " + small.format(arrivalTime);
 			}
 			if (waitingTime != 0) {
-				res += "\tAttendre " + waitingTime + " minutes puis procéder à la livraison.\n";
+				res += ONE_INDENT + "Attendre " + waitingTime + " minutes puis procéder à la livraison.\n";
 			}
 			res += "\n";
 			deliveryCounter++;

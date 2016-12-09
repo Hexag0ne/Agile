@@ -1,0 +1,115 @@
+Mon planning (01 janvier. 1970)
+
+        Départ de l'entrepôt à 08:00. Rejoindre l'intersection 23.
+                1- Prendre la rue tout droit jusqu'à l'intersection 22
+                2- Prendre la 1ère rue à gauche jusqu'à l'intersection 21
+                3- Prendre la 1ère rue à droite jusqu'à l'intersection 16
+                4- Prendre la 1ère rue à gauche jusqu'à l'intersection 11
+                5- Prendre la 1ère rue à gauche jusqu'à l'intersection 10
+                6- Prendre la 2ème rue à gauche jusqu'à l'intersection 5
+                7- Prendre la 1ère rue à gauche jusqu'à l'intersection 0
+                8- Prendre la 1ère rue à gauche jusqu'à l'intersection 1
+                9- Prendre la 1ère rue à gauche jusqu'à l'intersection 6
+        Livraison du point 23. Arrivée: 08:13.
+        Attendre 106 minutes puis procéder à la livraison.
+
+        Départ du point de livraison à 10:05.
+                1- Prendre la rue tout droit jusqu'à l'intersection 24
+                2- Prendre la 1ère rue à droite jusqu'à l'intersection 23
+        Livraison du point 19. Arrivée: 08:23.
+
+        Départ du point de livraison à 08:28.
+                1- Prendre la rue tout droit jusqu'à l'intersection 2
+                2- Prendre la 2ème rue à gauche jusqu'à l'intersection 1
+                3- Prendre la 1ère rue à gauche jusqu'à l'intersection 0
+                4- Prendre la 1ère rue à gauche jusqu'à l'intersection 5
+                5- Prendre la 1ère rue à gauche jusqu'à l'intersection 10
+                6- Prendre la 1ère rue à gauche jusqu'à l'intersection 11
+                7- Prendre la 1ère rue à gauche jusqu'à l'intersection 16
+                8- Prendre la 2ème rue à gauche jusqu'à l'intersection 17
+                9- Prendre la 1ère rue à gauche jusqu'à l'intersection 18
+                10- Prendre la 1ère rue à gauche jusqu'à l'intersection 19
+        Livraison du point 3. Arrivée: 08:40.
+        Attendre 19 minutes puis procéder à la livraison.
+
+        Départ du point de livraison à 09:10.
+                1- Prendre la rue tout droit jusqu'à l'intersection 7
+                2- Prendre la 2ème rue à droite jusqu'à l'intersection 2
+                3- Prendre la 1ère rue à gauche jusqu'à l'intersection 3
+        Livraison du point 8. Arrivée: 08:55.
+        Attendre 4 minutes puis procéder à la livraison.
+
+        Départ du point de livraison à 09:15.
+                1- Prendre la rue tout droit jusqu'à l'intersection 19
+                2- Prendre la 1ère rue à gauche jusqu'à l'intersection 18
+                3- Prendre la 1ère rue à gauche jusqu'à l'intersection 17
+                4- Prendre la 1ère rue à gauche jusqu'à l'intersection 16
+                5- Prendre la 2ème rue à gauche jusqu'à l'intersection 11
+                6- Prendre la 1ère rue à droite jusqu'à l'intersection 12
+                7- Prendre la 1ère rue à gauche jusqu'à l'intersection 13
+                8- Prendre la 1ère rue à droite jusqu'à l'intersection 8
+        Livraison du point 24. Arrivée: 09:22.
+
+        Départ du point de livraison à 09:37.
+                1- Prendre la rue tout droit jusqu'à l'intersection 3
+                2- Prendre la 1ère rue à gauche jusqu'à l'intersection 2
+                3- Prendre la 2ème rue à gauche jusqu'à l'intersection 1
+                4- Prendre la 1ère rue à gauche jusqu'à l'intersection 0
+                5- Prendre la 1ère rue à gauche jusqu'à l'intersection 5
+                6- Prendre la 1ère rue à gauche jusqu'à l'intersection 10
+                7- Prendre la 1ère rue à gauche jusqu'à l'intersection 11
+                8- Prendre la 1ère rue à gauche jusqu'à l'intersection 16
+                9- Prendre la 2ème rue à gauche jusqu'à l'intersection 17
+                10- Prendre la 1ère rue à gauche jusqu'à l'intersection 18
+                11- Prendre la 1ère rue à gauche jusqu'à l'intersection 19
+                12- Prendre la 1ère rue à gauche jusqu'à l'intersection 24
+        Livraison du point 4. Arrivée: 09:53.
+
+        Départ du point de livraison à 10:08.
+                1- Prendre la rue tout droit jusqu'à l'intersection 21
+                2- Prendre la 1ère rue à droite jusqu'à l'intersection 16
+                3- Prendre la 1ère rue à gauche jusqu'à l'intersection 11
+                4- Prendre la 1ère rue à droite jusqu'à l'intersection 12
+                5- Prendre la 1ère rue à droite jusqu'à l'intersection 7
+                6- Prendre la 1ère rue à gauche jusqu'à l'intersection 2
+                7- Prendre la 1ère rue à gauche jusqu'à l'intersection 3
+                8- Prendre la 1ère rue à gauche jusqu'à l'intersection 4
+        Livraison du point 22. Arrivée: 10:23.
+        Attendre 96 minutes puis procéder à la livraison.
+
+        Départ du point de livraison à 12:15.
+                1- Prendre la rue tout droit jusqu'à l'intersection 4
+                2- Prendre la 1ère rue à droite jusqu'à l'intersection 3
+                3- Prendre la 1ère rue à gauche jusqu'à l'intersection 2
+                4- Prendre la 2ème rue à gauche jusqu'à l'intersection 1
+                5- Prendre la 1ère rue à gauche jusqu'à l'intersection 0
+                6- Prendre la 1ère rue à gauche jusqu'à l'intersection 5
+                7- Prendre la 1ère rue à gauche jusqu'à l'intersection 10
+                8- Prendre la 1ère rue à gauche jusqu'à l'intersection 11
+                9- Prendre la 1ère rue à gauche jusqu'à l'intersection 16
+                10- Prendre la 1ère rue à gauche jusqu'à l'intersection 21
+                11- Prendre la 1ère rue à droite jusqu'à l'intersection 22
+        Livraison du point 9. Arrivée: 10:55.
+
+        Départ du point de livraison à 11:00.
+                1- Prendre la rue tout droit jusqu'à l'intersection 16
+                2- Prendre la 2ème rue à gauche jusqu'à l'intersection 11
+                3- Prendre la 1ère rue à droite jusqu'à l'intersection 12
+                4- Prendre la 1ère rue à droite jusqu'à l'intersection 7
+                5- Prendre la 1ère rue à gauche jusqu'à l'intersection 2
+                6- Prendre la 1ère rue à gauche jusqu'à l'intersection 3
+                7- Prendre la 1ère rue à gauche jusqu'à l'intersection 4
+                8- Prendre la 1ère rue à droite jusqu'à l'intersection 9
+        Livraison du point 17. Arrivée: 11:13.
+        Attendre 106 minutes puis procéder à la livraison.
+
+        Départ du point de livraison à 13:15.
+                1- Prendre la rue tout droit jusqu'à l'intersection 1
+                2- Prendre la 1ère rue à gauche jusqu'à l'intersection 0
+                3- Prendre la 1ère rue à gauche jusqu'à l'intersection 5
+                4- Prendre la 1ère rue à gauche jusqu'à l'intersection 10
+                5- Prendre la 1ère rue à gauche jusqu'à l'intersection 11
+                6- Prendre la 1ère rue à gauche jusqu'à l'intersection 16
+                7- Prendre la 2ème rue à gauche jusqu'à l'intersection 17
+        Fin de la tournée à 11:22
+

@@ -245,7 +245,6 @@ public class MainFrame extends JFrame {
 			int keyCode = e.getKeyCode();
 			if ((keyCode == KeyEvent.VK_UP) || (keyCode == KeyEvent.VK_LEFT)) {
 				controller.previousDelivery();
-
 			}
 
 			if ((keyCode == KeyEvent.VK_DOWN) || (keyCode == KeyEvent.VK_RIGHT)) {
@@ -253,7 +252,7 @@ public class MainFrame extends JFrame {
 				controller.nextDelivery();
 			}
 
-			if (keyCode == KeyEvent.VK_DELETE) {
+			if (keyCode == KeyEvent.VK_DELETE || keyCode == KeyEvent.VK_BACK_SPACE || keyCode == KeyEvent.VK_S) {
 				
 				controller.deleteDP();
 
