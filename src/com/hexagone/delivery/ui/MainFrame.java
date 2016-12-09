@@ -134,9 +134,7 @@ public class MainFrame extends JFrame {
 		
 		allPanel.add(centerPanel, BorderLayout.CENTER);
 
-		// Set focus on center panel to detect keyboard events
-		setFocusableOnCenterPanel();
-        
+		
 		this.setContentPane(allPanel);
 		this.pack();
 	}
@@ -160,14 +158,8 @@ public class MainFrame extends JFrame {
 		tourTablePanel.selectionRow(step);
 	}
 
-	public void setFocusableOnCenterPanel() {
-
-		addWindowFocusListener(new WindowAdapter() {
-			public void windowGainedFocus(WindowEvent e) {
-				centerPanel.requestFocusInWindow();
-			}
-		});
-		setFocusable(true);
+	public int getRowSelected() {
+		return tourTablePanel.getRowSelected();
 	}
 
 	/**
@@ -262,20 +254,8 @@ public class MainFrame extends JFrame {
 			}
 
 			if (keyCode == KeyEvent.VK_DELETE) {
-				/*
-				 * System.out.println("Yassine supprimer"); if(
-				 * searchZone.getText()!= null){ int numberDP =
-				 * Integer.parseInt(searchZone.getText()); int response=
-				 * JOptionPane.showInternalConfirmDialog(all,
-				 * "Voulez-vous retirer le point de livraison n°= "+numberDP,
-				 * "Suppression", JOptionPane.OK_CANCEL_OPTION,
-				 * JOptionPane.INFORMATION_MESSAGE); if(response ==
-				 * JOptionPane.OK_OPTION ){
-				 * 
-				 * }
-				 * 
-				 * }
-				 */
+				
+				controller.deleteDP();
 
 			}
 
@@ -286,4 +266,6 @@ public class MainFrame extends JFrame {
 			return false;
 		}
 	}
+
+	
 }

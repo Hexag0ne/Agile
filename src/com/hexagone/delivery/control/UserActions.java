@@ -39,4 +39,6 @@ public interface UserActions {
 	public void previousDelivery();
 
 	public void searchDP(int idDP);
+
+	public void deleteDP();
 }

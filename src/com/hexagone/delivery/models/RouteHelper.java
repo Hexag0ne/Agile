@@ -43,7 +43,7 @@ public class RouteHelper {
 	private String planning;
 
 	private HashMap<Integer, Intersection> intersections;
-	
+
 	private int oldDuration;
 
 	public RouteHelper(Map map, DeliveryQuery dq, DeliveryComputer dc) {
@@ -58,11 +58,11 @@ public class RouteHelper {
 	public boolean routeFound(){
 		return deliveryComputer.checkNotEmptySolution();
 	}
-	
+
 	public boolean computationTimeOut(){
 		return deliveryComputer.checkTimeout();
 	}
-	
+
 	public LinkedHashMap<Integer, ArrivalPoint> getRoute() {
 		return route;
 	}
@@ -84,7 +84,7 @@ public class RouteHelper {
 		Integer[] its = { 0, 8, 12, 22, 5, 0 };
 		ArrayList<Integer> deliveryPoints2 = new ArrayList<Integer>();
 		deliveryPoints2.addAll(Arrays.asList(its));
-	
+
 
 		Calendar calArrival = Calendar.getInstance();
 		oldDuration = 0;
@@ -164,7 +164,7 @@ public class RouteHelper {
 					pos = getPosition(road, lastRoad, deg);
 				}
 				res += "\t\t" + roadCounter + "- Prendre la " + getPlainPosition(pos) + " " + getPlainDegree(deg)
-						+ " jusqu'à l'intersection " + road.getDestination() + "\n";
+				+ " jusqu'à l'intersection " + road.getDestination() + "\n";
 				lastRoad = road;
 				roadCounter++;
 			}
@@ -409,15 +409,15 @@ public class RouteHelper {
 		res = res * 180 / Math.PI;
 		return (int) res;
 	}
-	
+
 	/**
 	 * Returns the rank of a delivery point 
 	 * 
 	 * @param idDP: the delivery point id 
 	 */
-	
+
 	public int getRankDP(int idDP){
-		
+
 		int dpPosition=0;
 		Set<Integer> entrySet= route.keySet();
 		Iterator<Integer> iterator= entrySet.iterator();
@@ -428,8 +428,26 @@ public class RouteHelper {
 				dpPosition=i-1;
 			}
 		}
-		
+
 		return dpPosition;
 	}
-	
+
+	public int getIdbyRank(int rankDP) {
+
+		int dpId=0;
+		Set<Integer> entrySet= route.keySet();
+		Iterator<Integer> iterator= entrySet.iterator();
+		int i=0;
+		while(iterator.hasNext()){
+			i++;
+			if(i==rankDP){
+				dpId = iterator.next();
+				break;
+			}
+			iterator.next();
+		}
+
+		return dpId;
+	}
+
 }
