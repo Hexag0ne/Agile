@@ -30,7 +30,7 @@ public class Popup {
 		JScrollPane scrollPane = new JScrollPane(textArea);  
 		textArea.setLineWrap(true);  
 		textArea.setWrapStyleWord(true); 
-		scrollPane.setPreferredSize( new Dimension( 600, 400 ) );
+		scrollPane.setPreferredSize( new Dimension( 500, 400 ) );
 		JOptionPane.showMessageDialog(null, scrollPane, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 

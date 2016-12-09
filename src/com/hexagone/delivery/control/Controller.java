@@ -1,13 +1,16 @@
 package com.hexagone.delivery.control;
 
 import java.awt.Graphics;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Vector;
 
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 import com.hexagone.delivery.models.ArrivalPoint;
@@ -213,8 +216,6 @@ public class Controller implements UserActions, MapPainter {
 				computeRouteButtonClick();
 			}
 		}
-
-
 	}
 
 	@Override
@@ -223,6 +224,7 @@ public class Controller implements UserActions, MapPainter {
 		int rankDP = NAVIGATE_STATE.getRowSelected();
 		int idDP = routeHelper.getIdbyRank(rankDP);
 		if(idDP !=0){
+
 			Delivery deliveryToModify = null;
 			ArrayList<Delivery> deliveries = new ArrayList<Delivery>(Arrays.asList(deliveryQuery.getDeliveries()));
 			for(Delivery d: deliveries){
@@ -244,7 +246,7 @@ public class Controller implements UserActions, MapPainter {
 						deliveryModified.setStartSchedule(formatter.parse(modifyPanel.getStartScheduleTextField()));
 						deliveryModified.setEndSchedule(formatter.parse(modifyPanel.getEndScheduleTextField()));
 					}
-					
+
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -256,8 +258,8 @@ public class Controller implements UserActions, MapPainter {
 				deliveryQuery.setDelivery(newDeliveries);
 				System.out.println(deliveryModified);
 				computeRouteButtonClick();
-				
-				
+
+
 			}
 		}
 

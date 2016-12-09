@@ -266,8 +266,8 @@ public class MainFrame extends JFrame {
 					controller.modifyDP();
 
 				}
-			}
 
+			}
 			return true;
 		}
 	}

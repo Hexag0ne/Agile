@@ -21,10 +21,12 @@ public class TableModel extends AbstractTableModel {
 		this.data = data;
 		columnNames.addElement("N°");
 		columnNames.addElement("Durée(min)");
-		columnNames.addElement("Plage horaire");
 		columnNames.addElement("Heure d'arrivée");
 		columnNames.addElement("Heure de départ");
-		columnNames.addElement("Temps d'attente (min)");
+		if (data.get(0).getStartSchedule() != null) {
+			columnNames.addElement("Temps d'attente (min)");
+			columnNames.addElement("Plage horaire");
+		}
 	}
 
 	@Override
@@ -57,28 +59,26 @@ public class TableModel extends AbstractTableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Object value = "??";
 		Delivery dp = data.get(rowIndex);
-		switch (columnIndex) {
-		case 0:
+		if (columnIndex == 0) {
 			value = dp.getIntersection().getId();
-			break;
-		case 1:
-			value = (dp.getDuration()) / 60;
-			break;
-		case 2:
-			value = dp.getTimeslotDelivery();
-			break;
-		case 3:
-			value = dp.getArrivalTimeString();
-			break;
-		case 4:
-			value = dp.getDepartureTimeString();
-			break;
-		case 5:
-			value = dp.getWaitingTime();
-			break;
-
 		}
-
+		if (columnIndex == 1) {
+			value = (dp.getDuration()) / 60;
+		}
+		if (columnIndex == 2) {
+			value = dp.getArrivalTimeString();
+		}
+		if (columnIndex == 3) {
+			value = dp.getDepartureTimeString();
+		}
+		if (data.get(0).getStartSchedule() != null) {
+			if (columnIndex == 4) {
+				value = dp.getTimeslotDelivery();
+			}
+			if (columnIndex == 5) {
+				value = dp.getWaitingTime();
+			}	
+		}
 		return value;
 	}
 

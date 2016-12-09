@@ -267,7 +267,7 @@ public class TSPv1Test {
 		deliv.setDelivery(deliveryArray);
 		
 		DeliveryComputer deliveryComputer = new DeliveryComputer(map, deliv);
-		deliveryComputer.getDeliveryPoints();
+		deliveryComputer.compute();
 			
 		//Expected checkTimeout() is true
 		assertTrue(deliveryComputer.checkTimeout());
@@ -302,7 +302,7 @@ public class TSPv1Test {
 		deliv.setDelivery(deliveryArray);
 
 		DeliveryComputer deliveryComputer = new DeliveryComputer(map, deliv);
-		deliveryComputer.getDeliveryPoints();
+		deliveryComputer.compute();
 		
 		// NotEmptySolution should return false, because a path has been calculated
 		assertTrue(deliveryComputer.checkNotEmptySolution());
