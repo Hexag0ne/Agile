@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import com.hexagone.delivery.algo.DeliveryComputer;
 
@@ -234,9 +235,7 @@ public class RouteHelper {
 	 */
 	private Delivery completeDelivery(Calendar calArrival, Delivery d, ArrayList<Road> roads) { 
 		int roadTime = getTotalTime(roads);
-		if (oldDuration != 0) {
-			calArrival.add(Calendar.SECOND, oldDuration);
-		}
+		calArrival.add(Calendar.SECOND, oldDuration);
 		// Adding road time to arrival time
 		calArrival.add(Calendar.SECOND, roadTime);
 		int duration = d.getDuration();
@@ -257,7 +256,7 @@ public class RouteHelper {
 				calDeparture.add(Calendar.SECOND, (int) waitingSeconds);
 			}
 		}
-		oldDuration = waitingTime + duration;
+		oldDuration = waitingTime*60 + duration;
 		d.setTimes(calDeparture.getTime(), calArrival.getTime(), waitingTime);
 		return d;
 	}
