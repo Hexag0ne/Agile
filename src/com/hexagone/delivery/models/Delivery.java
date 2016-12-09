@@ -209,7 +209,7 @@ public class Delivery {
 	}
 
 	/**
-	 * This methods gives the arrival time of the delivery
+	 * This methods gives the arrival time of the delivery in the format hh:mm
 	 * 
 	 * @return the arrival time as a String
 	 */
@@ -217,6 +217,27 @@ public class Delivery {
 		if (this.getDepartureTime() != null) {
 			SimpleDateFormat small = new SimpleDateFormat("HH:mm", Locale.FRENCH);
 			return ("" + small.format(this.getArrivalTime()));
+
+		} else
+			return null;
+
+	}
+	
+	
+	public String getStartScheduleeString() {
+		if (this.getStartSchedule() != null) {
+			SimpleDateFormat small = new SimpleDateFormat("HH:mm", Locale.FRENCH);
+			return ("" + small.format(this.getStartSchedule()));
+
+		} else
+			return null;
+
+	}
+	
+	public String getEndScheduleString() {
+		if (this.getEndSchedule() != null) {
+			SimpleDateFormat small = new SimpleDateFormat("HH:mm", Locale.FRENCH);
+			return ("" + small.format(this.getEndSchedule()));
 
 		} else
 			return null;

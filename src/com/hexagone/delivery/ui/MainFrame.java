@@ -47,7 +47,7 @@ public class MainFrame extends JFrame {
 	private SearchPanel searchPanel;
 
 	private JPanel centerPanel;
-	
+
 	private JPanel rightPanel;
 	private JPanel leftPanel;
 
@@ -56,7 +56,7 @@ public class MainFrame extends JFrame {
 	private JButton computeTourButton;
 	private JButton generatePlanning;
 
-	
+
 
 	/**
 	 * Constructor for the main frame
@@ -66,7 +66,7 @@ public class MainFrame extends JFrame {
 	 *            when an event occurs
 	 */
 	public MainFrame(UserActions controller, MapPainter painter) {
-		
+
 		this.controller = controller;
 		setTitle("Delivery App");
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -105,36 +105,36 @@ public class MainFrame extends JFrame {
 
 		//left side
 		leftPanel = new JPanel(new BorderLayout());
-		
+
 		tourNavigationPanel = new TourNavigationPanel(controller);
 		leftPanel.add(tourNavigationPanel, BorderLayout.SOUTH);
 
 		mapPanel = new MapPanel(painter);
 		leftPanel.add(mapPanel, BorderLayout.CENTER);
-		
+
 		centerPanel.add(leftPanel);
-		
+
 		//right side
 		rightPanel = new JPanel(new BorderLayout());
-		
+
 		tourTablePanel = new TourTablePanel();
 		rightPanel.add(tourTablePanel, BorderLayout.CENTER);
-		
+
 		searchPanel = new SearchPanel(controller);
 		rightPanel.add(searchPanel, BorderLayout.NORTH);
-		
+
 		centerPanel.add(rightPanel);
-		
+
 		/*
 		 * To detect keyboard events.
 		 */
 		KeyboardFocusManager kfm = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 		kfm.addKeyEventDispatcher(new MyKeyEventDispatcher());
-		
-		
+
+
 		allPanel.add(centerPanel, BorderLayout.CENTER);
 
-		
+
 		this.setContentPane(allPanel);
 		this.pack();
 	}
@@ -236,38 +236,41 @@ public class MainFrame extends JFrame {
 	/**
 	 * Class handling keyboard events.
 	 */
-	
+
 	public class MyKeyEventDispatcher implements KeyEventDispatcher
 	{
 
 		@Override
 		public boolean dispatchKeyEvent(KeyEvent e) {
-			int keyCode = e.getKeyCode();
-			if ((keyCode == KeyEvent.VK_UP) || (keyCode == KeyEvent.VK_LEFT)) {
-				controller.previousDelivery();
 
+			if (e.getID() == KeyEvent.KEY_PRESSED){
+				int keyCode = e.getKeyCode();
+				if ((keyCode == KeyEvent.VK_UP) || (keyCode == KeyEvent.VK_LEFT)) {
+					controller.previousDelivery();
+
+				}
+
+				if ((keyCode == KeyEvent.VK_DOWN) || (keyCode == KeyEvent.VK_RIGHT)) {
+
+					controller.nextDelivery();
+				}
+
+				if (keyCode == KeyEvent.VK_DELETE) {
+
+					controller.deleteDP();
+
+				}
+
+				if (keyCode == KeyEvent.VK_M) {
+
+					controller.modifyDP();
+
+				}
 			}
 
-			if ((keyCode == KeyEvent.VK_DOWN) || (keyCode == KeyEvent.VK_RIGHT)) {
-
-				controller.nextDelivery();
-			}
-
-			if (keyCode == KeyEvent.VK_DELETE) {
-				
-				controller.deleteDP();
-
-			}
-
-			if (keyCode == KeyEvent.VK_M) {
-				
-				controller.modifyDP();
-
-			}
-
-			return false;
+			return true;
 		}
 	}
 
-	
+
 }
