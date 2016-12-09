@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +18,7 @@ import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 
 import com.hexagone.delivery.control.MapPainter;
 import com.hexagone.delivery.control.UserActions;
@@ -40,6 +43,8 @@ public class MainFrame extends JFrame {
 	private JPanel tourNavigationPanel;
 	/** JPanel on the right side of the window, below the tourNavigationPanel */
 	private TourTablePanel tourTablePanel;
+	/** JPanel for searching a delivery point by Id */ 
+	private SearchPanel searchPanel;
 
 	private JPanel centerPanel;
 	
@@ -50,6 +55,8 @@ public class MainFrame extends JFrame {
 	private JButton loadDeliveryButton;
 	private JButton computeTourButton;
 	private JButton generatePlanning;
+
+	
 
 	/**
 	 * Constructor for the main frame
@@ -112,17 +119,22 @@ public class MainFrame extends JFrame {
 		
 		tourTablePanel = new TourTablePanel();
 		rightPanel.add(tourTablePanel, BorderLayout.CENTER);
-
+		
+		searchPanel = new SearchPanel(controller);
+		rightPanel.add(searchPanel, BorderLayout.NORTH);
+		
 		centerPanel.add(rightPanel);
 		
-		// centerPanel.addKeyListener(keyListener);
-		centerPanel.addKeyListener(new KeyboardListenner());
+		/*
+		 * To detect keyboard events.
+		 */
+		KeyboardFocusManager kfm = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+		kfm.addKeyEventDispatcher(new MyKeyEventDispatcher());
+		
 		
 		allPanel.add(centerPanel, BorderLayout.CENTER);
 
-		// Set focus on center panel to detect keyboard events
-		setFocusableOnCenterPanel();
-
+		
 		this.setContentPane(allPanel);
 		this.pack();
 	}
@@ -134,6 +146,7 @@ public class MainFrame extends JFrame {
 	public void setSidePanelsVisible(boolean visible) {
 		tourNavigationPanel.setVisible(visible);
 		tourTablePanel.setVisible(visible);
+		searchPanel.setVisible(visible);
 		this.pack();
 	}
 
@@ -145,14 +158,8 @@ public class MainFrame extends JFrame {
 		tourTablePanel.selectionRow(step);
 	}
 
-	public void setFocusableOnCenterPanel() {
-
-		addWindowFocusListener(new WindowAdapter() {
-			public void windowGainedFocus(WindowEvent e) {
-				centerPanel.requestFocusInWindow();
-			}
-		});
-		setFocusable(true);
+	public int getRowSelected() {
+		return tourTablePanel.getRowSelected();
 	}
 
 	/**
@@ -227,14 +234,15 @@ public class MainFrame extends JFrame {
 	}
 
 	/**
-	 * Class handles keyboard events.
+	 * Class handling keyboard events.
 	 */
-	private class KeyboardListenner implements KeyListener {
+	
+	public class MyKeyEventDispatcher implements KeyEventDispatcher
+	{
 
 		@Override
-		public void keyPressed(KeyEvent e) {
+		public boolean dispatchKeyEvent(KeyEvent e) {
 			int keyCode = e.getKeyCode();
-
 			if ((keyCode == KeyEvent.VK_UP) || (keyCode == KeyEvent.VK_LEFT)) {
 				controller.previousDelivery();
 
@@ -246,36 +254,20 @@ public class MainFrame extends JFrame {
 			}
 
 			if (keyCode == KeyEvent.VK_DELETE) {
-				/*
-				 * System.out.println("Yassine supprimer"); if(
-				 * searchZone.getText()!= null){ int numberDP =
-				 * Integer.parseInt(searchZone.getText()); int response=
-				 * JOptionPane.showInternalConfirmDialog(all,
-				 * "Voulez-vous retirer le point de livraison n°= "+numberDP,
-				 * "Suppression", JOptionPane.OK_CANCEL_OPTION,
-				 * JOptionPane.INFORMATION_MESSAGE); if(response ==
-				 * JOptionPane.OK_OPTION ){
-				 * 
-				 * }
-				 * 
-				 * }
-				 */
+				
+				controller.deleteDP();
 
 			}
 
 			if (keyCode == KeyEvent.VK_M) {
+				
+				controller.modifyDP();
 
 			}
 
+			return false;
 		}
-
-		@Override
-		public void keyReleased(KeyEvent e) {
-		}
-
-		@Override
-		public void keyTyped(KeyEvent e) {
-		}
-
 	}
+
+	
 }

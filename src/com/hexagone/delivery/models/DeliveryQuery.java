@@ -42,7 +42,7 @@ public class DeliveryQuery {
 		for (int i = 1; i < tab.length; i++) {
 			tab[i] = deliveries[i - 1].getIntersection().getId();
 		}
-
+		
 		return tab;
 	}
 

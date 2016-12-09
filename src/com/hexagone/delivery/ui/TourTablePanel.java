@@ -61,4 +61,8 @@ public class TourTablePanel extends JPanel {
 		add(table.getTableHeader(), BorderLayout.PAGE_START);
 		add(table, BorderLayout.CENTER);
 	}
+
+		public int getRowSelected() {
+			return table.getSelectedRow()+1;
+		}
 }

@@ -214,7 +214,6 @@ public class NavigateState implements ControllerActions {
 	public void startTour() {
 		step = 0;
 		frame.repaint();
-		frame.setFocusableOnCenterPanel();
 	}
 
 	/**
@@ -231,7 +230,6 @@ public class NavigateState implements ControllerActions {
 		}
 		frame.selectionRow(step);
 		frame.repaint();
-		frame.setFocusableOnCenterPanel();
 	}
 
 	/**
@@ -245,7 +243,7 @@ public class NavigateState implements ControllerActions {
 
 		frame.selectionRow(step);
 		frame.repaint();
-		frame.setFocusableOnCenterPanel();
+		
 	}
 
 	/**
@@ -255,6 +253,17 @@ public class NavigateState implements ControllerActions {
 	 */
 	public NavigateState(MainFrame frame) {
 		this.frame = frame;
+	}
+
+	public void searchDPByID(int idP) {
+		frame.selectionRow(idP);
+		frame.repaint();
+		
+	}
+
+	public int getRowSelected() {
+		return frame.getRowSelected();
+		
 	}
 
 }
