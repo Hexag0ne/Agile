@@ -21,7 +21,7 @@ public class ModifyPanel extends JPanel {
 		super();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setSize(screenSize.width/5, screenSize.height/5);
-		Dimension preferredSize = new Dimension(screenSize.width/5, screenSize.height/5);
+		Dimension preferredSize = new Dimension(screenSize.width/5, screenSize.height/8);
 		setPreferredSize(preferredSize);
 		add(new JLabel("Durée de livraison: "));
 		durationTextField = new JTextField(""+(d.getDuration()/60));

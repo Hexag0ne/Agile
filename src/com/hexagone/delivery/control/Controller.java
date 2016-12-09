@@ -234,7 +234,7 @@ public class Controller implements UserActions, MapPainter {
 			}
 			ModifyPanel modifyPanel = new ModifyPanel(deliveryToModify);
 			int response = JOptionPane.showConfirmDialog(mainFrame,modifyPanel, 
-					"Modification d'un poit de livraison", JOptionPane.OK_CANCEL_OPTION);
+					"Modification du point de livraison n°" + idDP, JOptionPane.OK_CANCEL_OPTION);
 			if(response == JOptionPane.OK_OPTION ){
 				Delivery deliveryModified = new Delivery();
 				String expectedPattern = "hh:mm";

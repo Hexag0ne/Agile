@@ -23,10 +23,19 @@ public class TableModel extends AbstractTableModel {
 		columnNames.addElement("Durée(min)");
 		columnNames.addElement("Heure d'arrivée");
 		columnNames.addElement("Heure de départ");
-		if (data.get(0).getStartSchedule() != null) {
+		if (this.hasSchedule()) {
 			columnNames.addElement("Plage horaire");
 			columnNames.addElement("Temps d'attente (min)");
 		}
+	}
+	
+	public boolean hasSchedule() {
+		for (Delivery d : data) {
+			if (d.getStartSchedule() != null) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -71,7 +80,7 @@ public class TableModel extends AbstractTableModel {
 		if (columnIndex == 3) {
 			value = dp.getDepartureTimeString();
 		}
-		if (data.get(0).getStartSchedule() != null) {
+		if (this.hasSchedule()) {
 			if (columnIndex == 4) {
 				value = dp.getTimeslotDelivery();
 			}

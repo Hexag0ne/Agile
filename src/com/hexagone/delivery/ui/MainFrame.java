@@ -250,7 +250,7 @@ public class MainFrame extends JFrame {
 					controller.nextDelivery();
 				}
 
-				if (keyCode == KeyEvent.VK_DELETE) {
+				if ((keyCode == KeyEvent.VK_DELETE) || (keyCode == KeyEvent.VK_S)) {
 
 					controller.deleteDP();
 
