@@ -201,7 +201,7 @@ abstract class TSPSolver {
 	/**
 	 * This method gives the lower bound of the permutations cost
 	 * 
-	 * @param sommetCourant
+	 * @param the intersection at which the algorithm is currently stopped
 	 * @param nonVus
 	 *            : table of the unvisited intersections
 	 * @param cout
@@ -214,12 +214,12 @@ abstract class TSPSolver {
 	 *         sommetCourant, including each 'nonVus' intersection exactly once
 	 *         and ending with intersection 0
 	 */
-	protected abstract int bound(Integer sommetCourant, ArrayList<Integer> nonVus, Double[][] cout, Integer[] duree);
+	protected abstract int bound(Integer currentIntersection, ArrayList<Integer> nonVus, Double[][] cout, Integer[] duree);
 
 	/**
 	 * This method provides an iterator for nonVus
 	 * 
-	 * @param sommetCrt
+	 * @param currentIntersection the intersection at which the user is currently stopped
 	 * @param nonVus
 	 *            : table of the intersections that have not been visited yet
 	 * @param cout
@@ -231,7 +231,7 @@ abstract class TSPSolver {
 	 * @return an iterator that allows us to iterate on all of the 'nonVus'
 	 *         intersections
 	 */
-	protected abstract Iterator<Integer> iterator(Integer sommetCrt, ArrayList<Integer> nonVus, Double[][] cout,
+	protected abstract Iterator<Integer> iterator(Integer currentIntersection, ArrayList<Integer> nonVus, Double[][] cout,
 			Integer[] duree);
 
 	/**

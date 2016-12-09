@@ -35,16 +35,8 @@ public class DeliveryComputer {
 	 * 
 	 * This methods calculates the intersections of the delivery in the right
 	 * order.
-	 * 
-	 * @param map
-	 *            the map in which the problem takes place
-	 * @param deliveryQuery
-	 *            the delivery query
-	 * 
 	 * @return deliveryIntersections the list of intersections of the delivery
 	 *         in order
-	 * 
-	 * 
 	 */
 	public ArrayList<Integer> getDeliveryPoints() {
 		if (deliveryIntersections.isEmpty()) {

@@ -105,17 +105,10 @@ class CompleteGraphComputer {
 	 * all the other points in the map The result is stored in the HashMap cost.
 	 * The HashMap previous stores the Intersection from which one needs to come
 	 * from to go by the shortest path.
-	 * 
-	 * @param map
-	 *            the map in which the problem takes place
-	 * @param intersection
-	 *            the starting intersection identifier
-	 * @param previousIntersection
-	 *            hashMap that will contain for each Intersection the
-	 *            Intersection one needs to come from
-	 * @param cost
-	 *            the hashMap that will contain the costs of going from
-	 *            intersection to each node
+	 * @param intersection the starting intersection identifier
+	 * @param previousIntersection hashMap that will contain for each Intersection the Intersection one needs to come 
+	 * from
+	 * @param cost the hashMap that will contain the costs of going from intersection to each node
 	 */
 	void computeCosts(Integer intersection, HashMap<Integer, Integer> previousIntersection,
 			HashMap<Integer, Double> cost) {
@@ -164,11 +157,10 @@ class CompleteGraphComputer {
 	}
 
 	/**
-	 * This method gives the key of the smallest element in the array
-	 * 
-	 * @param array
-	 *            the array from which one wants to find the minimum
-	 * @return the index of the minimum element in the array as an integer
+	 * This method gives the key of the smallest element in the hashSet among the keys given as parameters
+	 * @param hashMap from which one wants to find the minimum
+	 * @param keyCandidates the keys that are available for computation
+	 * @return the index of the minimum element in the hashMap among the candidate keys
 	 */
 	static Integer smallestCost(HashMap<Integer, Double> hashMap, HashSet<Integer> keyCandidates) {
 		Iterator<Integer> keySetIterator = keyCandidates.iterator();

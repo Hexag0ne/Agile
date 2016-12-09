@@ -36,7 +36,7 @@ class TSPSolverV1 extends TSPSolver {
 	/**
 	 * This method gives the lower bound of the permutations cost
 	 * 
-	 * @param sommetCourant
+	 * @param currentIntersection the intersection at which the algorithm is currently stopped when invoking this method
 	 * @param nonVus
 	 *            : table of the unvisited intersections
 	 * @param cout
@@ -50,7 +50,7 @@ class TSPSolverV1 extends TSPSolver {
 	 *         and ending with intersection 0
 	 */
 	@Override
-	protected int bound(Integer sommetCourant, ArrayList<Integer> nonVus, Double[][] cout, Integer[] duree) {
+	protected int bound(Integer currentIntersection, ArrayList<Integer> nonVus, Double[][] cout, Integer[] duree) {
 		return 0;
 	}
 
@@ -64,7 +64,7 @@ class TSPSolverV1 extends TSPSolver {
 	/**
 	 * This method provides an iterator for nonVus
 	 * 
-	 * @param sommetCrt
+	 * @param sommetCrt the current intersection at which the algorithm is when invoking this method
 	 * @param nonVus
 	 *            : table of the intersections that have not been visited yet
 	 * @param cout

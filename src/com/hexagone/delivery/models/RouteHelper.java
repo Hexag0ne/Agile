@@ -76,7 +76,7 @@ public class RouteHelper {
 	/**
 	 * Generates a route, from the calculation of the intersections of the map,
 	 * the delivery points, the roads between two intersections
-	 * 
+	 * @return a linkedHashMap of intersections identifiers to arrival point
 	 */
 	public LinkedHashMap<Integer, ArrivalPoint> generateRoute() {
 		LinkedHashMap<Integer, ArrivalPoint> route = new LinkedHashMap<Integer, ArrivalPoint>();
@@ -397,8 +397,7 @@ public class RouteHelper {
 	/**
 	 * Returns the angle between three points (marked as p1/p2/p3)
 	 * 
-	 * @param p0,
-	 *            p1, p2 : Points that we want to get the angle of
+	 * @param p0, p1, p2 : Points that we want to get the angle of
 	 * @return the angle as an Integer
 	 */
 	public int getAngle(Point p0, Point p1, Point p2) {
@@ -412,10 +411,9 @@ public class RouteHelper {
 
 	/**
 	 * Returns the rank of a delivery point 
-	 * 
 	 * @param idDP: the delivery point id 
+	 * @return the rank of the delivery point
 	 */
-
 	public int getRankDP(int idDP){
 
 		int dpPosition=0;

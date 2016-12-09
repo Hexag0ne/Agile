@@ -56,9 +56,8 @@ public class MainFrame extends JFrame {
 	/**
 	 * Constructor for the main frame
 	 * 
-	 * @param controller
-	 *            the controller implementing the UserActions to be performed
-	 *            when an event occurs
+	 * @param controller the controller implementing the UserActions to be performed when an event occurs
+	 * @param painter the class implementing the MapPainter interface
 	 */
 	public MainFrame(UserActions controller, MapPainter painter) {
 

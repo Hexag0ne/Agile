@@ -137,9 +137,10 @@ public class Controller implements UserActions, MapPainter {
 	}
 
 	/**
-	 * This method updates the state of the application depending on the state
-	 * of the model variables As the state changes, the display may vary a lot.
+	 * This method returns the next state of the application depending on the state
+	 * of the model variables. As the state changes, the display may vary a lot.
 	 * This method also calls for a repaint of the mainFrame.
+	 * @return the next state of the application
 	 */
 	private ControllerActions nextState() {
 		ControllerActions nextState = LOADMAP_STATE;

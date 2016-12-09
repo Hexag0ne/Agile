@@ -43,7 +43,7 @@ public class Map {
 	 * @param identifier
 	 *            the unique identifier of the intersection
 	 * @return the list of all roads originating from the intersection as an
-	 *         ArrayList<Road>
+	 *         ArrayList of Road
 	 */
 	public ArrayList<Road> getRoadsStartingFrom(Integer identifier) {
 		return roads.get(identifier);
@@ -51,9 +51,8 @@ public class Map {
 
 	/**
 	 * Allows the user to define in one shot all the roads of the map
-	 * 
-	 * @param roads
-	 *            the hashMap<Integer,ArrayList<Road>>
+	 * @param roads the hashMap from integers (intersections identifiers) 
+	 * to arraylist of roads originating from this intersection
 	 */
 	public void setRoads(HashMap<Integer, ArrayList<Road>> roads) {
 		this.roads = roads;
@@ -86,7 +85,7 @@ public class Map {
 	/**
 	 * Allows to add a road between two intersections to the map
 	 * 
-	 * @param road
+	 * @param r
 	 *            the road to add to the map This method does not check if the
 	 *            road is valid. That is if there are really two intersections
 	 *            already in the map from the origin towards the destination of

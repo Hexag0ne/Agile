@@ -10,6 +10,7 @@ public class Main {
 
 	/**
 	 * Launching of the application. No parameters.
+	 * @param args no parameters needed
 	 */
 	public static void main(String[] args) {
 		Controller c = new Controller();

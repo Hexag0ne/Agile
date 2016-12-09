@@ -246,8 +246,7 @@ public class Delivery {
 
 	/**
 	 * Constructs a Delivery from an intersection
-	 * 
-	 * @param intersection
+	 * @param intersection the identifier of the intersection where the delivery if going to take place.
 	 */
 	public Delivery(Intersection intersection) {
 		this.intersection = intersection;

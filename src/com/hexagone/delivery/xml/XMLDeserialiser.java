@@ -38,7 +38,7 @@ public class XMLDeserialiser {
 	 * @throws XMLException
 	 *             in case of a parsing problem, or if the user cancels the file
 	 *             selection
-	 * @throws NoFileChosenException
+	 * @throws NoFileChosenException if the user cancelled the operation
 	 * @see com.hexagone.delivery.models.Map
 	 */
 	public static Map loadMap() throws XMLException, NoFileChosenException {
@@ -61,8 +61,8 @@ public class XMLDeserialiser {
 	 * formated file, this method will throw an XMLException.
 	 * 
 	 * @return a properly formated DeliveryQuery
-	 * @throws XMLException
-	 * @throws NoFileChosenException
+	 * @throws XMLException in case the DeliveryQuery formed from the file chosen by the user is incorrect
+	 * @throws NoFileChosenException in case the user cancels the operation
 	 * @see DeliveryQuery
 	 */
 	public static DeliveryQuery loadDeliveryQuery() throws XMLException, NoFileChosenException {
@@ -85,10 +85,10 @@ public class XMLDeserialiser {
 	 * This method creates a Map from the root node of a properly formed xml
 	 * document.
 	 * 
-	 * @param racine
+	 * @param root
 	 *            the root node of the xml maps file
 	 * @return Map object corresponding to the node given as parameter
-	 * @throws XMLException
+	 * @throws XMLException in case the xml file does not comply with the consistency of a Map
 	 * @see Map
 	 */
 	private static Map buildMap(Element root) throws XMLException {

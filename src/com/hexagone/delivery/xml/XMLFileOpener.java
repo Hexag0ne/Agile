@@ -42,7 +42,7 @@ public class XMLFileOpener extends FileFilter {
 	 * system.
 	 * 
 	 * @return an XML file as the File java object
-	 * @throws XMLException
+	 * @throws NoFileChosenException
 	 *             if the user cancels the operation
 	 */
 	public File open() throws NoFileChosenException {

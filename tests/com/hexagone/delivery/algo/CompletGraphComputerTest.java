@@ -140,7 +140,7 @@ public class CompletGraphComputerTest {
 	/**
 	 * Test of the method getAdjacencyMatrix 
 	 * @throws Exception
-	 * @see {@link CompleteGraphComputer}{@link #testGetAdjacencyMatrix()}
+	 * @see CompleteGraphComputer
 	 */
 	@Test
 	public void testGetAdjacencyMatrix() throws Exception {

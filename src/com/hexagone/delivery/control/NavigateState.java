@@ -69,13 +69,9 @@ public class NavigateState implements ControllerActions {
 		}
 	}
 
-	/**
-	 * This method computes a delivery and returns a Route
-	 * 
-	 * @param map
-	 * @param delivery
-	 * @return the route computed as a Route Object
-	 * 
+	/*
+	 * (non-Javadoc)
+	 * @see com.hexagone.delivery.control.ControllerActions#computeDelivery(com.hexagone.delivery.models.Map, com.hexagone.delivery.models.DeliveryQuery)
 	 */
 	@Override
     public RouteHelper computeDelivery(Map map, DeliveryQuery delivery) {
@@ -97,22 +93,19 @@ public class NavigateState implements ControllerActions {
         return new RouteHelper(map, delivery, computer);
     }
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.hexagone.delivery.control.ControllerActions#generatePlanning(com.hexagone.delivery.models.RouteHelper)
+	 */
 	@Override
 	public void generatePlanning(RouteHelper routeHelper) {
 		routeHelper.writeToTxt("export/planning.txt");		
 		Popup.showInformationWithScroll(routeHelper.getPlanning(), "Feuille de route généré !");
 	}
 
-	/**
-	 * This methods draws the map and the points of the delivery on top of it
-	 * (as the map and the deliveryQuery are known in the class).
-	 * 
-	 * @param g
-	 * @param scale
-	 *            : ratio chosen for the drawing of the map
-	 * @param map
-	 * @param deliveryQuery
-	 * @param route
+	/*
+	 * (non-Javadoc)
+	 * @see com.hexagone.delivery.control.ControllerActions#DrawMap(java.awt.Graphics, float, com.hexagone.delivery.models.Map, com.hexagone.delivery.models.DeliveryQuery, com.hexagone.delivery.models.RouteHelper)
 	 */
 	@Override
 	public void DrawMap(Graphics g, float coefficient, Map map, DeliveryQuery deliveryQuery, RouteHelper routeHelper) {
@@ -222,7 +215,6 @@ public class NavigateState implements ControllerActions {
 	 * @param maxValue
 	 *            : maximum value for the step
 	 */
-
 	public void nextDelivery(int maxValue) {
 		step++;
 		if (step > maxValue) {
@@ -248,8 +240,7 @@ public class NavigateState implements ControllerActions {
 
 	/**
 	 * Constructor
-	 * 
-	 * @param frame
+	 * @param frame the mainFrame the controller controls.
 	 */
 	public NavigateState(MainFrame frame) {
 		this.frame = frame;

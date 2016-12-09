@@ -27,15 +27,20 @@ public interface ControllerActions {
 	public DeliveryQuery loadDeliveryQuery();
 
 	/**
-	 * Computes a delivery
-	 * 
-	 * @return a DeliveryQuery solving the Map / DeliveryQuery selected by the
-	 *         user
+	 * Computes a delivery with the given map and delivery.
+	 * @param map the map on which the problem takes place
+	 * @param delivery the deliveries to make
+	 * @return a RouteHelper object containing the solution to the problem
 	 */
 	public RouteHelper computeDelivery(Map map, DeliveryQuery delivery);
 
 	/**
-	 * Draws a map
+	 * Draws the map with the 'g' Graphics parameter
+	 * @param g the paint brush to draw the map with
+	 * @param scale the scale at which the map is to be drawn
+	 * @param m the map to be drawn
+	 * @param delivery the deliveryQuery to be done on the map
+	 * @param routeHelper the routeHelper in case a solution to the deliveries has been found
 	 */
 	public void DrawMap(Graphics g, float scale, Map m, DeliveryQuery delivery, RouteHelper routeHelper);
 

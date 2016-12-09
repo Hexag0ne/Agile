@@ -58,13 +58,9 @@ public class LoadDeliveryState implements ControllerActions {
 		}
 	}
 
-	/**
-	 * This method computes a delivery and returns a Route
-	 * 
-	 * @param map
-	 * @param delivery
-	 * @return the route computed as a Route Object
-	 * 
+	/*
+	 * (non-Javadoc)
+	 * @see com.hexagone.delivery.control.ControllerActions#computeDelivery(com.hexagone.delivery.models.Map, com.hexagone.delivery.models.DeliveryQuery)
 	 */
 	@Override
 	public RouteHelper computeDelivery(Map map, DeliveryQuery delivery) {
@@ -72,24 +68,18 @@ public class LoadDeliveryState implements ControllerActions {
 		return null;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.hexagone.delivery.control.ControllerActions#generatePlanning(com.hexagone.delivery.models.RouteHelper)
+	 */
 	@Override
 	public void generatePlanning(RouteHelper routeHelper) {
 		JOptionPane.showMessageDialog(null, "Veuillez calculez la tournée.", "Erreur", JOptionPane.ERROR_MESSAGE);
 	}
 
-	/**
-	 * This methods draws the map and the points of the delivery on top of it
-	 * (as the map and the deliveryQuery are known in the class).
-	 * 
-	 * In the LoadDeliveryState, the map has been loaded. We draw the roads and
-	 * intersections of this map
-	 * 
-	 * @param g
-	 * @param scale
-	 *            : ratio chosen for the drawing of the map
-	 * @param map
-	 * @param deliveryQuery
-	 * @param route
+	/*
+	 * (non-Javadoc)
+	 * @see com.hexagone.delivery.control.ControllerActions#DrawMap(java.awt.Graphics, float, com.hexagone.delivery.models.Map, com.hexagone.delivery.models.DeliveryQuery, com.hexagone.delivery.models.RouteHelper)
 	 */
 	@Override
 	public void DrawMap(Graphics g, float scale, Map map, DeliveryQuery delivery, RouteHelper routeHelper) {
