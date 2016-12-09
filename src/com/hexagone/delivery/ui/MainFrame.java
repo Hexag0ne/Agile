@@ -263,7 +263,7 @@ public class MainFrame extends JFrame {
 				}
 
 			}
-			return true;
+			return false;
 		}
 	}
 
