@@ -71,7 +71,11 @@ public class XMLDeserialiser {
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(DeliveryQuery.class);
 			javax.xml.bind.Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-			return (DeliveryQuery) jaxbUnmarshaller.unmarshal(xml);
+			DeliveryQuery deliveryQuery = (DeliveryQuery) jaxbUnmarshaller.unmarshal(xml);
+			if (deliveryQuery.getWarehouse() == null || deliveryQuery.getPassagePointsNumber() < 1) {
+				throw new XMLException("Not a valid DeliveryQuery");
+			}
+			return deliveryQuery;
 		} catch (JAXBException e) {
 			throw new XMLException("Could not parse Delivery Query xml file.");
 		}
