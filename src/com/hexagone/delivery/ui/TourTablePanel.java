@@ -28,8 +28,10 @@ public class TourTablePanel extends JPanel {
 		table.getColumnModel().getColumn(1).setPreferredWidth(70);
 		table.getColumnModel().getColumn(2).setPreferredWidth(100);
 		table.getColumnModel().getColumn(3).setPreferredWidth(100);
-		table.getColumnModel().getColumn(4).setPreferredWidth(100);
-		table.getColumnModel().getColumn(5).setPreferredWidth(150);
+		if (data.get(0).getStartSchedule() != null) {
+			table.getColumnModel().getColumn(4).setPreferredWidth(100);
+			table.getColumnModel().getColumn(5).setPreferredWidth(150);
+		}
 
 		add(table.getTableHeader(), BorderLayout.PAGE_START);
 		add(table, BorderLayout.CENTER);
