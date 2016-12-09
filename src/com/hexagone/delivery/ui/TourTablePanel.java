@@ -16,7 +16,6 @@ public class TourTablePanel extends JPanel {
 
 	private JTable table;
 	private TableModel tableModel;
-	private Vector<Delivery> data;
 
 
 	public void setTableData(Vector<Delivery> data) {
